@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Profile;
 public class DemoApplication {
 
 	@Bean
-	@Profile("AzureOpenAI")
+	@Profile("!MistralAI")
 	ChatLanguageModel openAIChatLanguageModel() {
 		return AzureOpenAiChatModel.builder()
 				.endpoint(System.getenv("AZURE_OPENAI_ENDPOINT"))
