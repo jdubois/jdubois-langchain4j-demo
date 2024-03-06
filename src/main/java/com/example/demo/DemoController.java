@@ -58,7 +58,7 @@ public class DemoController {
     @GetMapping("/2")
     String getAnswer(Model model) {
         String question = "Who painted the Mona Lisa?";
-        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text() + "\n";
+        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
 
         model.addAttribute("demo", "Demo 2: simple question");
         model.addAttribute("question", question);
