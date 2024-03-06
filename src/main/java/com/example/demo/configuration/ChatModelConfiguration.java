@@ -23,7 +23,6 @@ public class ChatModelConfiguration {
         return MistralAiChatModel.builder()
                 .baseUrl(System.getenv("MISTRAL_AI_BASE_URL"))
                 .apiKey(System.getenv("MISTRAL_AI_KEY"))
-                .temperature(0.1)
                 .logRequests(true)
                 .logResponses(true)
                 .build();
