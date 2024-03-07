@@ -2,6 +2,10 @@
 
 _Author: [Julien Dubois](https://www.julien-dubois.com)_
 
+## Video
+
+This demo is supporting a video called "LangChain4J - use the power of LLMs in Java!", available at [https://youtu.be/x8kkjmCZTaw](https://youtu.be/x8kkjmCZTaw).
+
 ## Goal
 
 This is a Spring Boot project that demonstrates how to use LangChain4J to create Java applications using LLMs.
