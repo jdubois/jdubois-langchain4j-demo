@@ -24,7 +24,7 @@ It contains 7 demos:
 You need to set the following environment variables:
 
 - `AZURE_OPENAI_ENDPOINT`: your Azure OpenAI URL endpoint.
-- `AZURE_OPENAI_API_KEY`: your Azure OpenAI API key.
+- `AZURE_OPENAI_KEY`: your Azure OpenAI API key.
 
 ### MistralAI
 
