@@ -13,7 +13,7 @@ This is a Spring Boot project that demonstrates how to use LangChain4J to create
 It contains 7 demos:
 
 - How to generate an image using Dalle-3.
-- How to generate a text using GPT-4 and Mistral 7B.
+- How to generate a text using GPT-4o and Mistral 7B.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 
@@ -24,7 +24,6 @@ It contains 7 demos:
 You need to set the following environment variables:
 
 - `AZURE_OPENAI_ENDPOINT`: your Azure OpenAI URL endpoint.
-- `AZURE_OPENAI_KEY`: your Azure OpenAI API key.
 
 ### MistralAI
 
