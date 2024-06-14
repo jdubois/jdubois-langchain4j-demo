@@ -11,6 +11,8 @@ import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.store.embedding.EmbeddingMatch;
+import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
+import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -139,11 +142,17 @@ public class DemoController {
         String question = "fruit";
 
         Embedding relevantEmbedding = embeddingModel.embed(question).content();
-        List<EmbeddingMatch<TextSegment>> relevant = embeddingStore.findRelevant(relevantEmbedding, 3);
+        EmbeddingSearchRequest relevantEmbeddingSearchRequest = EmbeddingSearchRequest.builder()
+                .queryEmbedding(relevantEmbedding)
+                .maxResults(3)
+                .build();
 
-        String answer = relevant.get(0).embedded().text() + "\n";
-        answer += relevant.get(1).embedded().text() + "\n";
-        answer += relevant.get(2).embedded().text() + "\n";
+        EmbeddingSearchResult<TextSegment> relevant = embeddingStore.search(relevantEmbeddingSearchRequest);
+
+        String answer = relevant.matches().stream()
+                .limit(3)
+                .map(match -> match.embedded().text())
+                .collect(Collectors.joining("\n"));
 
         model.addAttribute("demo", "Demo 7: Querying the vector database");
         model.addAttribute("question", question);
@@ -156,11 +165,17 @@ public class DemoController {
         String question = "fruit";
 
         Embedding relevantEmbedding = embeddingModel.embed(question).content();
-        List<EmbeddingMatch<TextSegment>> relevant = embeddingStore.findRelevant(relevantEmbedding, 3);
+        EmbeddingSearchRequest relevantEmbeddingSearchRequest = EmbeddingSearchRequest.builder()
+                .queryEmbedding(relevantEmbedding)
+                .maxResults(3)
+                .build();
 
-        String answer = relevant.get(0).embedded().text() + " | " + Arrays.toString(relevant.get(0).embedding().vector()) + "\n";
-        answer += relevant.get(1).embedded().text() + " | " + Arrays.toString(relevant.get(1).embedding().vector()) + "\n";
-        answer += relevant.get(2).embedded().text() + " | " + Arrays.toString(relevant.get(2).embedding().vector()) + "\n";
+        EmbeddingSearchResult<TextSegment> relevant = embeddingStore.search(relevantEmbeddingSearchRequest);
+
+        String answer = relevant.matches().stream()
+                .limit(3)
+                .map(match -> match.embedded().text() + " | " + Arrays.toString(match.embedding().vector()))
+                .collect(Collectors.joining("\n"));
 
         model.addAttribute("demo", "Demo 8: Getting the vectors from the vector database");
         model.addAttribute("question", question);

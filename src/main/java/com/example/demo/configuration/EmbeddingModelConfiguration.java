@@ -1,28 +1,34 @@
 package com.example.demo.configuration;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.embedding.AllMiniLmL6V2QuantizedEmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.openai.OpenAiTokenizer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static dev.langchain4j.model.azure.AzureOpenAiModelName.TEXT_EMBEDDING_ADA_002;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class EmbeddingModelConfiguration {
 
+    @Value("${AZURE_OPENAI_ENDPOINT}")
+    private String azureOpenAiEndpoint;
+
     @Bean
+    @Profile("azure")
     EmbeddingModel azureOpenAiEmbeddingModel() {
         return AzureOpenAiEmbeddingModel.builder()
-                .endpoint(System.getenv("AZURE_OPENAI_ENDPOINT"))
-                .apiKey(System.getenv("AZURE_OPENAI_KEY"))
+                .endpoint(azureOpenAiEndpoint)
+                .tokenCredential(new DefaultAzureCredentialBuilder().build())
                 .deploymentName("text-embedding-ada-002")
-                .tokenizer(new OpenAiTokenizer(TEXT_EMBEDDING_ADA_002))
+                //.tokenizer(new OpenAiTokenizer(TEXT_EMBEDDING_ADA_002))
                 .logRequestsAndResponses(true)
                 .build();
     }
 
+    @Bean
+    @Profile("local")
     EmbeddingModel localEmbeddingModel() {
         return new AllMiniLmL6V2QuantizedEmbeddingModel();
     }
