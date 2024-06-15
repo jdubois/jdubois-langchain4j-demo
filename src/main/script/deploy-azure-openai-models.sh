@@ -111,15 +111,19 @@ az search service create \
 
 echo "Storing Azure AI Search endpoint and key in environment variables..."
 echo "--------------------------------------------------------"
-AZURE_SEARCH_ENDOINT="https://$SEARCH_SERVICE.search.windows.net"
+AZURE_SEARCH_ENDPOINT="https://$SEARCH_SERVICE.search.windows.net"
 AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$RESOURCE_GROUP" | jq -r .primaryKey)
 
+echo "#####################################################################"
+echo "Here are the environment variables you need to set."
+echo "They are also stored in the .env file in the root of the project."
+echo "#####################################################################"
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT"
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY"
 
-echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" > .env
-echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> .env
-echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> .env
+echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" > ../../../.env
+echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> ../../../.env
+echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> ../../../.env
 
 echo "Done!"
