@@ -21,8 +21,7 @@ public class EmbeddingModelConfiguration {
         return AzureOpenAiEmbeddingModel.builder()
                 .endpoint(azureOpenAiEndpoint)
                 .tokenCredential(new DefaultAzureCredentialBuilder().build())
-                .deploymentName("text-embedding-ada-002")
-                //.tokenizer(new OpenAiTokenizer(TEXT_EMBEDDING_ADA_002))
+                .deploymentName("text-embedding-ada")
                 .logRequestsAndResponses(true)
                 .build();
     }
