@@ -1,0 +1,50 @@
+services:
+  ollama:
+    image: ollama/ollama:0.1.44
+    ports:
+      - 11434:11434
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    volumes:
+      - ./run-phi-3.sh:/run-phi-3.sh
+    entrypoint: ["/usr/bin/bash", "/run-phi-3.sh"]
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ollama-docker
+
+  ollama-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: ollama-webui
+    depends_on:
+      - ollama
+    ports:
+      - 8081:8080
+    environment: # https://docs.openwebui.com/getting-started/env-configuration#default_models
+      - OLLAMA_BASE_URLS=http://host.docker.internal:7869 #comma separated ollama hosts
+      - ENV=dev
+      - WEBUI_AUTH=False
+      - WEBUI_URL=http://localhost:8080
+      - WEBUI_SECRET_KEY=t0p-s3cr3t
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    networks:
+      - ollama-docker
+
+  qdrant:
+    container_name: qdrant_demo_qdrant
+    image: qdrant/qdrant:v1.9.5
+    volumes:
+      - ./setup-qdrant.sh:/setup-qdrant.sh
+    #entrypoint: [ "/usr/bin/bash", "/setup-qdrant.sh" ]
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+
+networks:
+  ollama-docker:
+    external: false

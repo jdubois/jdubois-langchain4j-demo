@@ -1,6 +1,5 @@
-package com.example.demo.configuration;
+package com.example.demo.configuration.azure;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.azure.search.AzureAiSearchEmbeddingStore;
@@ -10,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class EmbeddingStoreConfiguration {
+@Profile("azure")
+public class AzureEmbeddingStoreConfiguration {
 
     @Value("${AZURE_SEARCH_ENDPOINT}")
     private String azureSearchEndpoint;
@@ -19,7 +19,6 @@ public class EmbeddingStoreConfiguration {
     private String azureSearchKey;
 
     @Bean
-    @Profile("azure")
     EmbeddingStore<TextSegment> embeddingStore() {
         return AzureAiSearchEmbeddingStore.builder()
                 .endpoint(azureSearchEndpoint)

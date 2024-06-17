@@ -10,7 +10,6 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
-import dev.langchain4j.store.embedding.EmbeddingMatch;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -70,6 +69,17 @@ public class DemoController {
     }
 
     @GetMapping("/3")
+    String reasonning(Model model) {
+        String question = "Maria's father has 4 daugthers: Spring, Autumn, Winter. What is the name of the fourth daughter?";
+        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
+
+        model.addAttribute("demo", "Demo 2: simple question");
+        model.addAttribute("question", question);
+        model.addAttribute("answer", answer);
+        return "demo";
+    }
+
+    @GetMapping("/4")
     String getAnswerWithSystemMessage(Model model) {
         SystemMessage systemMessage = SystemMessage.from("I am the king of France. " +
                 "Talk to me with extreme deference.");
@@ -83,7 +93,7 @@ public class DemoController {
         return "demo";
     }
 
-    @GetMapping("/4")
+    @GetMapping("/5")
     String getAnswerWithLocation(Model model) {
         String question = "Where can you see this painting?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
@@ -94,7 +104,7 @@ public class DemoController {
         return "demo";
     }
 
-    @GetMapping("/5")
+    @GetMapping("/6")
     String getAnswerUsingConversationChain(Model model) {
         String context = "Who painted the Mona Lisa?";
         String question = "Where can you see this painting?";
@@ -114,7 +124,7 @@ public class DemoController {
         return "demo";
     }
 
-    @GetMapping("/6")
+    @GetMapping("/7")
     String loadVectorDatabase(Model model) {
         String content1 = "banana";
         String content2 = "computer";
@@ -137,7 +147,7 @@ public class DemoController {
         return "demo";
     }
 
-    @GetMapping("/7")
+    @GetMapping("/8")
     String queryVectorDatabase(Model model) {
         String question = "fruit";
 
@@ -160,7 +170,7 @@ public class DemoController {
         return "demo";
     }
 
-    @GetMapping("/8")
+    @GetMapping("/9")
     String queryVectorDatabaseWithDetails(Model model) {
         String question = "fruit";
 

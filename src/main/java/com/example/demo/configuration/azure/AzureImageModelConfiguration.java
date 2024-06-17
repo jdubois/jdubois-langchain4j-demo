@@ -1,34 +1,27 @@
-package com.example.demo.configuration;
+package com.example.demo.configuration.azure;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
-import dev.langchain4j.model.embedding.AllMiniLmL6V2QuantizedEmbeddingModel;
-import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.azure.AzureOpenAiImageModel;
+import dev.langchain4j.model.image.ImageModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class EmbeddingModelConfiguration {
+@Profile("azure")
+public class AzureImageModelConfiguration {
 
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
 
     @Bean
-    @Profile("azure")
-    EmbeddingModel azureOpenAiEmbeddingModel() {
-        return AzureOpenAiEmbeddingModel.builder()
+    ImageModel imageModel() {
+        return AzureOpenAiImageModel.builder()
                 .endpoint(azureOpenAiEndpoint)
                 .tokenCredential(new DefaultAzureCredentialBuilder().build())
-                .deploymentName("text-embedding-ada")
+                .deploymentName("dall-e-3")
                 .logRequestsAndResponses(true)
                 .build();
-    }
-
-    @Bean
-    @Profile("local")
-    EmbeddingModel localEmbeddingModel() {
-        return new AllMiniLmL6V2QuantizedEmbeddingModel();
     }
 }
