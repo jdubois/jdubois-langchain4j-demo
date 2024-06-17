@@ -73,7 +73,7 @@ public class DemoController {
         String question = "Maria's father has 4 daugthers: Spring, Autumn, Winter. What is the name of the fourth daughter?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
 
-        model.addAttribute("demo", "Demo 2: simple question");
+        model.addAttribute("demo", "Demo 3: Reasoning question");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
@@ -87,7 +87,7 @@ public class DemoController {
         String question = "Who painted the Mona Lisa?";
         String answer = chatLanguageModel.generate(systemMessage, UserMessage.from(question)).content().text();
 
-        model.addAttribute("demo", "Demo 3: advanced question");
+        model.addAttribute("demo", "Demo 4: advanced question");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
@@ -98,7 +98,7 @@ public class DemoController {
         String question = "Where can you see this painting?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
 
-        model.addAttribute("demo", "Demo 4: A question without memory");
+        model.addAttribute("demo", "Demo 5: A question without memory");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
@@ -118,7 +118,7 @@ public class DemoController {
         chain.execute(context);
         String answer = chain.execute(question);
 
-        model.addAttribute("demo", "Demo 5: A question with memory");
+        model.addAttribute("demo", "Demo 6: A question with memory");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
@@ -141,7 +141,7 @@ public class DemoController {
             embeddingStore.add(embedding, textSegment);
         }
 
-        model.addAttribute("demo", "Demo 6: Data ingestion");
+        model.addAttribute("demo", "Demo 7: Data ingestion");
         model.addAttribute("question", "Ingesting data into the vector database");
         model.addAttribute("answer", "OK");
         return "demo";
@@ -164,7 +164,7 @@ public class DemoController {
                 .map(match -> match.embedded().text())
                 .collect(Collectors.joining("\n"));
 
-        model.addAttribute("demo", "Demo 7: Querying the vector database");
+        model.addAttribute("demo", "Demo 8: Querying the vector database");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
@@ -187,7 +187,7 @@ public class DemoController {
                 .map(match -> match.embedded().text() + " | " + Arrays.toString(match.embedding().vector()))
                 .collect(Collectors.joining("\n"));
 
-        model.addAttribute("demo", "Demo 8: Getting the vectors from the vector database");
+        model.addAttribute("demo", "Demo 9: Getting the vectors from the vector database");
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
