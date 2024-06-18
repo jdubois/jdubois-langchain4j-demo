@@ -27,7 +27,7 @@ public class LocalEmbeddingStoreConfiguration {
             client.createCollectionAsync(COLLECTION_NAME,
                             Collections.VectorParams.newBuilder()
                                     .setDistance(Collections.Distance.Cosine)
-                                    .setSize(384)
+                                    .setSize(768)
                                     .build())
                     .get();
         }

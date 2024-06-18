@@ -41,7 +41,7 @@ To set up the necessary resources, you need to have Docker installed on your mac
 
 It will set up:
 
-- An Ollama instance, with the Phi-3 model. Its Web UI is available at `http://localhost:8081/`.
+- An Ollama instance, with the Phi-3 and the nomic-embed-text models. Its Web UI is available at `http://localhost:8081/`.
 - A Qdrant instance. Its Web UI is available at `http://localhost:6333/dashboard`.
 
 ## Running the demos
