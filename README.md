@@ -52,8 +52,6 @@ Once the resources (Azure or local) are configured, you can run the demos using 
 ./mvnw spring-boot:run
 ```
 
-Then you can access the base URL, where you find the Web UI:
+Then you can access the base URL, where you find the Web UI: [http://localhost:8080/](http://localhost:8080/).
 
-```
-http://localhost:8080/
-```
+The demos are available in the top menu.
