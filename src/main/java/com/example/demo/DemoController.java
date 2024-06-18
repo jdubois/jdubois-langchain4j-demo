@@ -1,6 +1,10 @@
 package com.example.demo;
 
 import dev.langchain4j.chain.ConversationalChain;
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.loader.UrlDocumentLoader;
+import dev.langchain4j.data.document.parser.TextDocumentParser;
+import dev.langchain4j.data.document.transformer.HtmlTextExtractor;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
@@ -10,9 +14,12 @@ import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
+import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -192,4 +199,43 @@ public class DemoController {
         model.addAttribute("answer", answer);
         return "demo";
     }
+
+    @GetMapping("/10")
+    String ingestNews(Model model) {
+        Document document = UrlDocumentLoader.load("https://lite.cnn.com", new TextDocumentParser());
+
+        EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
+                .documentTransformer(new HtmlTextExtractor())
+                .embeddingModel(embeddingModel)
+                .embeddingStore(embeddingStore)
+                .build();
+
+        ingestor.ingest(document);
+
+        model.addAttribute("demo", "Demo 10: News ingestion");
+        model.addAttribute("question", "Ingesting news into the vector database");
+        model.addAttribute("answer", "OK");
+        return "demo";
+    }
+
+    @GetMapping("/11")
+    String rag(Model model) {
+        String question = "Give me the name of the one politician who is making the top news today. I only want this person's name, and nothing else.";
+
+        Assistant assistant = AiServices.builder(Assistant.class)
+                .chatLanguageModel(chatLanguageModel)
+                .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 20))
+                .build();
+
+        String answer = assistant.chat(question);
+
+        model.addAttribute("demo", "Demo 10: Retrieval-Augmented Generation (RAG)");
+        model.addAttribute("question", question);
+        model.addAttribute("answer", answer);
+        return "demo";
+    }
+}
+
+interface Assistant {
+    String chat(String userMessage);
 }
