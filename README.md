@@ -6,7 +6,7 @@ _Author: [Julien Dubois](https://www.julien-dubois.com)_
 
 This is a Spring Boot project that demonstrates how to use LangChain4J to create Java applications using LLMs.
 
-It contains 8 demos:
+It contains the following demos:
 
 - How to generate an image using Dalle-3.
 - How to generate a text using GPT-4o and Phi-3.
