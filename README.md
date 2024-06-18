@@ -13,7 +13,7 @@ It contains the following demos:
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 
-Those demo either run in the cloud (using Azure, with Azure OpenAI and Azure AI Search), or locally (with Docker, using Ollama + Phi-3 and Qdrant).
+Those demos either run in the cloud (using Azure, with Azure OpenAI and Azure AI Search), or locally (with Docker, using Ollama + Phi-3 and Qdrant).
 
 ## Configuration
 
