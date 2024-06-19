@@ -220,7 +220,7 @@ public class DemoController {
 
     @GetMapping("/11")
     String rag(Model model) {
-        String question = "The information that is given is a list of news, each of them starting with a \"*   \". Select one important event that occured in the US.";
+        String question = "The information that is given is a list of news, each of them starting with a \"*   \". Select one important event that occurred in the US.";
 
         Assistant assistant = AiServices.builder(Assistant.class)
                 .chatLanguageModel(chatLanguageModel)
