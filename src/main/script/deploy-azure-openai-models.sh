@@ -5,7 +5,7 @@
 
 echo "Setting up environment variables..."
 echo "----------------------------------"
-PROJECT="langchain4j-$RANDOM"
+PROJECT="langchain4j-$RANDOM-$RANDOM-$RANDOM"
 RESOURCE_GROUP="rg-$PROJECT"
 LOCATION="swedencentral"
 AI_SERVICE="ai-$PROJECT"
