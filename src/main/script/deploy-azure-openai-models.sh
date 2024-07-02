@@ -19,6 +19,8 @@ az group create \
   --location "$LOCATION" \
   --tags system="$TAG"
 
+echo "AZURE_RESOURCE_GROUP=$RESOURCE_GROUP" > ../../../.env
+
 # If you want to know the available SKUs, run the following Azure CLI command:
 # az cognitiveservices account list-skus --location "$LOCATION"  -o table
 
@@ -122,7 +124,7 @@ echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT"
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY"
 
-echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" > ../../../.env
+echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> ../../../.env
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> ../../../.env
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> ../../../.env
 
