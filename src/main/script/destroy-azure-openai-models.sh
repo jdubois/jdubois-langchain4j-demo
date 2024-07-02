@@ -3,6 +3,10 @@
 # Execute this script to destroy the Azure OpenAI models and associated services.
 
 echo "Reading environment variables..."
+
+SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+source $SCRIPTPATH/../../../.env
+
 echo "----------------------------------"
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
 echo "RESOURCE_GROUP=$RESOURCE_GROUP"
