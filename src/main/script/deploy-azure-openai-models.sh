@@ -6,32 +6,34 @@
 echo "Setting up environment variables..."
 echo "----------------------------------"
 PROJECT="langchain4j-$RANDOM-$RANDOM-$RANDOM"
-RESOURCE_GROUP="rg-$PROJECT"
-LOCATION="swedencentral"
-AI_SERVICE="ai-$PROJECT"
+AZURE_RESOURCE_GROUP="rg-$PROJECT"
+AZURE_LOCATION="swedencentral"
+AZURE_AI_SERVICE="ai-$PROJECT"
 SEARCH_SERVICE="search-$PROJECT"
 TAG="$PROJECT"
 
 echo "Creating the resource group..."
 echo "------------------------------"
 az group create \
-  --name "$RESOURCE_GROUP" \
-  --location "$LOCATION" \
+  --name "$AZURE_RESOURCE_GROUP" \
+  --location "$AZURE_LOCATION" \
   --tags system="$TAG"
 
 SCRIPTPATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
-echo "AZURE_RESOURCE_GROUP=$RESOURCE_GROUP" > $SCRIPTPATH/../../../.env
+echo "AZURE_RESOURCE_GROUP=$AZURE_RESOURCE_GROUP" > $SCRIPTPATH/../../../.env
+echo "AZURE_LOCATION=$AZURE_LOCATION" >> $SCRIPTPATH/../../../.env
+echo "AZURE_AI_SERVICE=$AZURE_AI_SERVICE" >> $SCRIPTPATH/../../../.env
 
 # If you want to know the available SKUs, run the following Azure CLI command:
-# az cognitiveservices account list-skus --location "$LOCATION"  -o table
+# az cognitiveservices account list-skus --location "$AZURE_LOCATION"  -o table
 
 echo "Creating the Cognitive Service..."
 echo "---------------------------------"
 COGNITIVE_SERVICE_ID=$(az cognitiveservices account create \
-  --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP" \
-  --location "$LOCATION" \
-  --custom-domain "$AI_SERVICE" \
+  --name "$AZURE_AI_SERVICE" \
+  --resource-group "$AZURE_RESOURCE_GROUP" \
+  --location "$AZURE_LOCATION" \
+  --custom-domain "$AZURE_AI_SERVICE" \
   --tags system="$TAG" \
   --kind "OpenAI" \
   --sku "S0" \
@@ -44,8 +46,8 @@ COGNITIVE_SERVICE_ID=$(az cognitiveservices account create \
 az resource update --ids $COGNITIVE_SERVICE_ID --set properties.disableLocalAuth=true --latest-include-preview
 
 az cognitiveservices account identity assign \
-  --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP"
+  --name "$AZURE_AI_SERVICE" \
+  --resource-group "$AZURE_RESOURCE_GROUP"
 
 PRINCIPAL_ID=$(az ad signed-in-user show --query id -o tsv)
 SUBSCRIPTION_ID=$(az account show --query id -o tsv)
@@ -53,25 +55,25 @@ SUBSCRIPTION_ID=$(az account show --query id -o tsv)
 az role assignment create \
         --role "Azure AI Developer" \
         --assignee "$PRINCIPAL_ID" \
-        --scope /subscriptions/"$SUBSCRIPTION_ID"/resourceGroups/"$RESOURCE_GROUP"
+        --scope /subscriptions/"$SUBSCRIPTION_ID"/resourceGroups/"$AZURE_RESOURCE_GROUP"
 
 echo "Storing Azure OpenAI endpoint in an environment variable..."
 echo "--------------------------------------------------------"
 AZURE_OPENAI_ENDPOINT=$(
   az cognitiveservices account show \
-    --name "$AI_SERVICE" \
-    --resource-group "$RESOURCE_GROUP" \
+    --name "$AZURE_AI_SERVICE" \
+    --resource-group "$AZURE_RESOURCE_GROUP" \
     | jq -r .properties.endpoint
   )
 
 # If you want to know the available models, run the following Azure CLI command:
-# az cognitiveservices account list-models --resource-group "$RESOURCE_GROUP" --name "$AI_SERVICE" -o table  
+# az cognitiveservices account list-models --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_AI_SERVICE" -o table  
 
 echo "Deploying a gpt-4o model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
-  --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP" \
+  --name "$AZURE_AI_SERVICE" \
+  --resource-group "$AZURE_RESOURCE_GROUP" \
   --deployment-name "gpt-4o" \
   --model-name "gpt-4o" \
   --model-version "2024-05-13"  \
@@ -82,8 +84,8 @@ az cognitiveservices account deployment create \
 echo "Deploying a text-embedding-ada model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
-  --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP" \
+  --name "$AZURE_AI_SERVICE" \
+  --resource-group "$AZURE_RESOURCE_GROUP" \
   --deployment-name "text-embedding-ada" \
   --model-name "text-embedding-ada-002" \
   --model-version "2"  \
@@ -94,8 +96,8 @@ az cognitiveservices account deployment create \
 echo "Deploying a dall-e-3 model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
-  --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP" \
+  --name "$AZURE_AI_SERVICE" \
+  --resource-group "$AZURE_RESOURCE_GROUP" \
   --deployment-name "dall-e-3" \
   --model-name "dall-e-3" \
   --model-version "3.0"  \
@@ -107,15 +109,15 @@ echo "Creating the AI Search Service..."
 echo "---------------------------------"
 az search service create \
   --name "$SEARCH_SERVICE" \
-  --resource-group "$RESOURCE_GROUP" \
-  --location "$LOCATION" \
+  --resource-group "$AZURE_RESOURCE_GROUP" \
+  --location "$AZURE_LOCATION" \
   --sku "basic" \
   --tags system="$TAG"
 
 echo "Storing Azure AI Search endpoint and key in environment variables..."
 echo "--------------------------------------------------------"
 AZURE_SEARCH_ENDPOINT="https://$SEARCH_SERVICE.search.windows.net"
-AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$RESOURCE_GROUP" | jq -r .primaryKey)
+AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$AZURE_RESOURCE_GROUP" | jq -r .primaryKey)
 
 echo "#####################################################################"
 echo "Here are the environment variables you need to set."

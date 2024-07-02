@@ -9,9 +9,9 @@ source $SCRIPTPATH/../../../.env
 
 echo "----------------------------------"
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
-echo "RESOURCE_GROUP=$RESOURCE_GROUP"
-echo "LOCATION=$LOCATION"
-echo "AI_SERVICE=$AI_SERVICE"
+echo "AZURE_RESOURCE_GROUP=$AZURE_RESOURCE_GROUP"
+echo "AZURE_LOCATION=$AZURE_LOCATION"
+echo "AZURE_AI_SERVICE=$AZURE_AI_SERVICE"
 
 // stop if the environment variables are not set
 if [ -z "$AZURE_OPENAI_ENDPOINT" ]; then
@@ -22,14 +22,14 @@ fi
 echo "Deleting the resource group..."
 echo "------------------------------"
 az group delete \
-  --name "$RESOURCE_GROUP" \
+  --name "$AZURE_RESOURCE_GROUP" \
   --yes
 
 echo "Purging the models..."
 echo "------------------------------"
 az cognitiveservices account purge \
-  --location "$LOCATION" \
+  --location "$AZURE_LOCATION" \
   --name "$AI_SERVICE" \
-  --resource-group "$RESOURCE_GROUP"
+  --resource-group "$AZURE_RESOURCE_GROUP"
 
 echo "Done!"
