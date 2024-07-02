@@ -119,16 +119,16 @@ echo "--------------------------------------------------------"
 AZURE_SEARCH_ENDPOINT="https://$SEARCH_SERVICE.search.windows.net"
 AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$AZURE_RESOURCE_GROUP" | jq -r .primaryKey)
 
-echo "#####################################################################"
-echo "Here are the environment variables you need to set."
-echo "They are also stored in the .env file at the root of the project."
-echo "#####################################################################"
-echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
-echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT"
-echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY"
-
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $SCRIPTPATH/../../../.env
 
+# For using the environment variables in z GitHub Actions workflow
+echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $GITHUB_ENV
+echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $GITHUB_ENV
+echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $GITHUB_ENV
+
+echo "#########################################################################################################"
+echo "The environment variables you need to set are also stored in the .env file at the root of the project."
+echo "#########################################################################################################"
 echo "Done!"

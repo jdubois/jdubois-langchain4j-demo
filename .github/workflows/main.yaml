@@ -37,7 +37,6 @@ jobs:
           cache: 'maven'
       - name: 'Run integration tests with Azure'
         run: |
-          source $GITHUB_WORKSPACE/.env
           ./mvnw package -Dspring.profiles.active=azure
       - name: 'Clean up Azure resources after integration tests'
         if: always()
