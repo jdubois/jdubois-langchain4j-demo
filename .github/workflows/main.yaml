@@ -46,5 +46,4 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
-            source .env
             $GITHUB_WORKSPACE/src/main/script/destroy-azure-openai-models.sh

@@ -119,7 +119,7 @@ AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --r
 
 echo "#####################################################################"
 echo "Here are the environment variables you need to set."
-echo "They are also stored in the .env file in the root of the project."
+echo "They are also stored in the .env file at the root of the project."
 echo "#####################################################################"
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT"
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT"
