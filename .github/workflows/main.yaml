@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  id-token: write
+  contents: read
 jobs:
   azure_infrastructure_creation:
     name: 'Create the Azure resources needed for integration tests'
