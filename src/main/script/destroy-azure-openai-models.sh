@@ -13,7 +13,7 @@ echo "AZURE_RESOURCE_GROUP=$AZURE_RESOURCE_GROUP"
 echo "AZURE_LOCATION=$AZURE_LOCATION"
 echo "AZURE_AI_SERVICE=$AZURE_AI_SERVICE"
 
-// stop if the environment variables are not set
+# stop if the environment variables are not set
 if [ -z "$AZURE_OPENAI_ENDPOINT" ]; then
   echo "The AZURE_OPENAI_ENDPOINT environment variable is not set."
   exit 1
