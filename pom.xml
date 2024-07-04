@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
-		<langchain4j.version>0.31.0</langchain4j.version>
+		<langchain4j.version>0.32.0</langchain4j.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -79,11 +79,6 @@
 		<dependency>
 			<groupId>com.azure</groupId>
 			<artifactId>azure-search-documents</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-ai-openai</artifactId>
-			<version>1.0.0-beta.9</version>
 		</dependency>
 
 	</dependencies>
