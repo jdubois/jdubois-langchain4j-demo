@@ -1,5 +1,8 @@
 name: Java CI
 
+# This GitHub Action uses Azure Login with OpenID Connect OIDC), see documentation at https://github.com/Azure/login?tab=readme-ov-file#login-with-openid-connect-oidc-recommended
+# More specifically, it uses a federated identity credential on a user-assigned managed identity, see documentation at https://learn.microsoft.com/en-us/entra/workload-id/workload-identity-federation-create-trust-user-assigned-managed-identity?pivots=identity-wif-mi-methods-azp#github-actions-deploying-azure-resources
+
 on:
   push:
     branches:

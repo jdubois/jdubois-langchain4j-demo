@@ -123,7 +123,7 @@ echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $SCRIPTPATH/../../../.env
 
-# For using the environment variables in z GitHub Actions workflow
+# For using the environment variables in a GitHub Actions workflow
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $GITHUB_ENV
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $GITHUB_ENV
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $GITHUB_ENV
