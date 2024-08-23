@@ -148,7 +148,7 @@ public class DemoController {
             embeddingStore.add(embedding, textSegment);
         }
 
-        model.addAttribute("demo", "7: Data ingestion");
+        model.addAttribute("demo", "7: Simple data ingestion");
         model.addAttribute("question", "Ingesting data into the vector database");
         model.addAttribute("answer", "OK");
         return "demo";
@@ -202,7 +202,7 @@ public class DemoController {
 
     @GetMapping("/10")
     String ingestNews(Model model) {
-        Document document = UrlDocumentLoader.load("https://lite.cnn.com", new TextDocumentParser());
+        Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar23/index.html", new TextDocumentParser());
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentTransformer(new HtmlTextExtractor())
@@ -212,7 +212,7 @@ public class DemoController {
 
         ingestor.ingest(document);
 
-        model.addAttribute("demo", "10: News ingestion");
+        model.addAttribute("demo", "10: Advanced data ingestion");
         model.addAttribute("question", "Ingesting news into the vector database");
         model.addAttribute("answer", "OK");
         return "demo";
@@ -220,11 +220,11 @@ public class DemoController {
 
     @GetMapping("/11")
     String rag(Model model) {
-        String question = "The information that is given is a list of news, each of them starting with a \"*   \". Select one important event that occurred in the US.";
+        String question = "How many people are employed by Microsoft in the US?";
 
         Assistant assistant = AiServices.builder(Assistant.class)
                 .chatLanguageModel(chatLanguageModel)
-                .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 20))
+                .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 3))
                 .build();
 
         String answer = assistant.chat(question);
