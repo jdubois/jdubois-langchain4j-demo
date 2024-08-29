@@ -39,31 +39,20 @@ COGNITIVE_SERVICE_ID=$(az cognitiveservices account create \
   --sku "S0" \
    | jq -r ".id")
 
-# Security
-# - Disable API Key authentication
-# - Assign a system Managed Identity to the Cognitive Service -> this is for using from other Azure services, like Azure Container Apps
-# - Assign the Contributor role on this resource group to the current user, so he can use the models from the CLI (this is how tests would be normally executed)
-az resource update --ids $COGNITIVE_SERVICE_ID --set properties.disableLocalAuth=true --latest-include-preview
-
-az cognitiveservices account identity assign \
-  --name "$AZURE_AI_SERVICE" \
-  --resource-group "$AZURE_RESOURCE_GROUP"
-
-PRINCIPAL_ID=$(az ad signed-in-user show --query id -o tsv)
-SUBSCRIPTION_ID=$(az account show --query id -o tsv)
-
-az role assignment create \
-        --role "Azure AI Developer" \
-        --assignee "$PRINCIPAL_ID" \
-        --scope /subscriptions/"$SUBSCRIPTION_ID"/resourceGroups/"$AZURE_RESOURCE_GROUP"
-
-echo "Storing Azure OpenAI endpoint in an environment variable..."
+echo "Storing Azure OpenAI endpoint and key in an environment variable..."
 echo "--------------------------------------------------------"
 AZURE_OPENAI_ENDPOINT=$(
   az cognitiveservices account show \
     --name "$AZURE_AI_SERVICE" \
     --resource-group "$AZURE_RESOURCE_GROUP" \
     | jq -r .properties.endpoint
+  )
+
+AZURE_OPENAI_KEY=$(
+  az cognitiveservices account keys list \
+    --name "$AZURE_AI_SERVICE" \
+    --resource-group "$AZURE_RESOURCE_GROUP" \
+    | jq -r .key1
   )
 
 # If you want to know the available models, run the following Azure CLI command:
@@ -120,13 +109,9 @@ AZURE_SEARCH_ENDPOINT="https://$SEARCH_SERVICE.search.windows.net"
 AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$AZURE_RESOURCE_GROUP" | jq -r .primaryKey)
 
 echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $SCRIPTPATH/../../../.env
+echo "AZURE_OPENAI_KEY=$AZURE_OPENAI_KEY" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $SCRIPTPATH/../../../.env
-
-# For using the environment variables in a GitHub Actions workflow
-echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $GITHUB_ENV
-echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $GITHUB_ENV
-echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $GITHUB_ENV
 
 echo "#########################################################################################################"
 echo "The environment variables you need to set are also stored in the .env file at the root of the project."

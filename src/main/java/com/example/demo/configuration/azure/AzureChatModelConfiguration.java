@@ -1,6 +1,5 @@
 package com.example.demo.configuration.azure;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import dev.langchain4j.model.azure.AzureOpenAiChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +14,14 @@ public class AzureChatModelConfiguration {
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
 
+    @Value("${AZURE_OPENAI_KEY}")
+    private String azureOpenAiKey;
+
     @Bean
     ChatLanguageModel azureOpenAIChatLanguageModel() {
         return AzureOpenAiChatModel.builder()
                 .endpoint(azureOpenAiEndpoint)
-                .tokenCredential(new DefaultAzureCredentialBuilder().build())
+                .apiKey(azureOpenAiKey)
                 .deploymentName("gpt-4o")
                 .logRequestsAndResponses(true)
                 .build();

@@ -1,6 +1,5 @@
 package com.example.demo.configuration.azure;
 
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.image.ImageModel;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +14,14 @@ public class AzureImageModelConfiguration {
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
 
+    @Value("${AZURE_OPENAI_KEY}")
+    private String azureOpenAiKey;
+
     @Bean
     ImageModel imageModel() {
         return AzureOpenAiImageModel.builder()
                 .endpoint(azureOpenAiEndpoint)
-                .tokenCredential(new DefaultAzureCredentialBuilder().build())
+                .apiKey(azureOpenAiKey)
                 .deploymentName("dall-e-3")
                 .logRequestsAndResponses(true)
                 .build();
