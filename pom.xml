@@ -71,12 +71,6 @@
 			<artifactId>langchain4j-easy-rag</artifactId>
 		</dependency>
 
-		<!-- Azure dependencies -->
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-search-documents</artifactId>
-		</dependency>
-
 	</dependencies>
 
 	<build>
