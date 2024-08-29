@@ -51,6 +51,12 @@
 			<artifactId>langchain4j</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-easy-rag</artifactId>
+		</dependency>
+
+		<!-- Using AI services on Azure -->
+		<dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-azure-open-ai</artifactId>
         </dependency>
@@ -58,6 +64,8 @@
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-azure-ai-search</artifactId>
 		</dependency>
+
+		<!-- Using AI services locally -->
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-ollama</artifactId>
@@ -66,10 +74,7 @@
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-qdrant</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-easy-rag</artifactId>
-		</dependency>
+
 
 	</dependencies>
 
