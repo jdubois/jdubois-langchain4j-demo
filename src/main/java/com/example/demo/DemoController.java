@@ -11,6 +11,7 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
+import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
@@ -56,34 +57,26 @@ public class DemoController {
     @GetMapping("/1")
     String createImage(Model model) {
         String question = "A coffee mug in Paris, France";
-        String answer = imageModel.generate(question).content().url().toString();
-
-        model.addAttribute("demo", "1: image generation");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        if (imageModel instanceof AzureOpenAiImageModel) {
+            String answer = imageModel.generate(question).content().url().toString();
+            return getView(model, "1: image generation", question, answer);
+        } else {
+            return getView(model, "1: image generation", question, "Image generation is only supported by Azure OpenAI");
+        }
     }
 
     @GetMapping("/2")
     String getAnswer(Model model) {
         String question = "Who painted the Mona Lisa?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
-
-        model.addAttribute("demo", "2: simple question");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "2: simple question", question, answer);
     }
 
     @GetMapping("/3")
     String reasonning(Model model) {
         String question = "Maria's father has 4 daughters: Spring, Autumn, Winter. What is the name of the fourth daughter?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
-
-        model.addAttribute("demo", "3: Reasoning question");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "3: Reasoning question", question, answer);
     }
 
     @GetMapping("/4")
@@ -93,22 +86,14 @@ public class DemoController {
 
         String question = "Who painted the Mona Lisa?";
         String answer = chatLanguageModel.generate(systemMessage, UserMessage.from(question)).content().text();
-
-        model.addAttribute("demo", "4: advanced question");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "4: advanced question", question, answer);
     }
 
     @GetMapping("/5")
     String getAnswerWithLocation(Model model) {
         String question = "Where can you see this painting?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
-
-        model.addAttribute("demo", "5: A question without memory");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "5: A question without memory", question, answer);
     }
 
     @GetMapping("/6")
@@ -124,11 +109,7 @@ public class DemoController {
 
         chain.execute(context);
         String answer = chain.execute(question);
-
-        model.addAttribute("demo", "6: A question with memory");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "6: A question with memory", question, answer);
     }
 
     @GetMapping("/7")
@@ -147,11 +128,7 @@ public class DemoController {
             Embedding embedding = embeddingModel.embed(content).content();
             embeddingStore.add(embedding, textSegment);
         }
-
-        model.addAttribute("demo", "7: Simple data ingestion");
-        model.addAttribute("question", "Ingesting data into the vector database");
-        model.addAttribute("answer", "OK");
-        return "demo";
+        return getView(model, "7: Simple data ingestion", "Ingesting data into the vector database", "OK");
     }
 
     @GetMapping("/8")
@@ -171,10 +148,7 @@ public class DemoController {
                 .map(match -> match.embedded().text())
                 .collect(Collectors.joining("\n"));
 
-        model.addAttribute("demo", "8: Querying the vector database");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "8: Querying the vector database", question, answer);
     }
 
     @GetMapping("/9")
@@ -194,10 +168,7 @@ public class DemoController {
                 .map(match -> match.embedded().text() + " | " + Arrays.toString(match.embedding().vector()))
                 .collect(Collectors.joining("\n"));
 
-        model.addAttribute("demo", "9: Getting the vectors from the vector database");
-        model.addAttribute("question", question);
-        model.addAttribute("answer", answer);
-        return "demo";
+        return getView(model, "9: Getting the vectors from the vector database", question, answer);
     }
 
     @GetMapping("/10")
@@ -212,10 +183,7 @@ public class DemoController {
 
         ingestor.ingest(document);
 
-        model.addAttribute("demo", "10: Advanced data ingestion");
-        model.addAttribute("question", "Ingesting news into the vector database");
-        model.addAttribute("answer", "OK");
-        return "demo";
+        return getView(model, "10: Advanced data ingestion", "Ingesting news into the vector database", "OK");
     }
 
     @GetMapping("/11")
@@ -229,7 +197,11 @@ public class DemoController {
 
         String answer = assistant.chat(question);
 
-        model.addAttribute("demo", "11: Retrieval-Augmented Generation (RAG)");
+        return getView(model, "11: Retrieval-Augmented Generation (RAG)", question, answer);
+    }
+
+    private static String getView(Model model, String demoName, String question, String answer) {
+        model.addAttribute("demo", demoName);
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
