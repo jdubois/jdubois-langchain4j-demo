@@ -13,26 +13,13 @@ It contains the following demos:
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 
-Those demos either run in the cloud (using Azure, with Azure OpenAI and Azure AI Search), or locally (with Docker, using Ollama + Phi-3 and Qdrant).
+Those demos either run locally (with Docker, using Ollama + Phi-3 and Qdrant) or in the cloud (using Azure, with Azure OpenAI and Azure AI Search).
 
 ## Configuration
 
-### Running in the cloud with Azure
-
-Azure is enabled by using the `azure` Spring Boot profile.
-One way to do this is to set `spring.profiles.active=azure` in the `src/main/resources/application.properties` file.
-
-To provision the Azure resources, you need to run the `src/main/script/deploy-azure-openai-models.sh` script. It will create the following resources:
-
-- An Azure OpenAI instance, secured using Entra ID, with the necessary OpenAI models for this demo.
-- An Azure AI Search instance.
-
-At the end of this script, the following environment variables will be displayed (and stored in the `.env` file), and you will need them to run the application:
-- `AZURE_OPENAI_ENDPOINT`: your Azure OpenAI URL endpoint.
-- `AZURE_SEARCH_ENDPOINT`: your Azure AI Search URL endpoint.
-- `AZURE_SEARCH_KEY`: your Azure AI Search API key.
-
 ### Running locally with Docker
+
+This configuration uses Ollama and Qdrant, running in Docker containers. Image generation with Dalles-3 is not available in this configuration.
 
 Local execution is enabled by using the `local` Spring Boot profile.
 One way to do this is to set `spring.profiles.active=local` in the `src/main/resources/application.properties` file.
@@ -43,6 +30,27 @@ It will set up:
 
 - An Ollama instance, with the Phi-3 and the nomic-embed-text models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
 - A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
+
+__Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
+models like in the `src/main/docker/install-ollama-models.sh` script.
+
+### Running in the cloud with Azure
+
+This configuration uses Azure OpenAI and Azure AI Search.
+
+Azure is enabled by using the `azure` Spring Boot profile.
+One way to do this is to set `spring.profiles.active=azure` in the `src/main/resources/application.properties` file.
+
+To provision the Azure resources, you need to run the `src/main/script/deploy-azure-openai-models.sh` script. It will create the following resources:
+
+- An Azure OpenAI instance, with the necessary OpenAI models for this demo.
+- An Azure AI Search instance.
+
+At the end of this script, the following environment variables will be displayed (and stored in the `.env` file), and you will need them to run the application:
+- `AZURE_OPENAI_ENDPOINT`: your Azure OpenAI URL endpoint.
+- `AZURE_OPENAI_KEY`: your Azure OpenAI API key.
+- `AZURE_SEARCH_ENDPOINT`: your Azure AI Search URL endpoint.
+- `AZURE_SEARCH_KEY`: your Azure AI Search API key.
 
 ## Running the demos
 
