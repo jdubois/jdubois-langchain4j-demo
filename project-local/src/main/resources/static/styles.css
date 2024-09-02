@@ -1,0 +1,16 @@
+/*
+ * Custom CSS
+ */
+
+:root {
+  --bs-body-bg: var(--bs-gray-100);
+}
+
+.bg-darkblue {
+  background-color: #00008b !important; /* This is a dark blue color */
+}
+
+.navbar-dark .navbar-brand,
+.navbar-dark .navbar-nav .nav-link {
+  color: #ffffff !important; /* This is white color */
+}
