@@ -81,10 +81,9 @@ public class DemoController {
 
     @GetMapping("/4")
     String getAnswerWithSystemMessage(Model model) {
-        SystemMessage systemMessage = SystemMessage.from("I am the king of France. " +
-                "Talk to me with extreme deference.");
+        SystemMessage systemMessage = SystemMessage.from("I answer questions in French, in 100 words or less.");
 
-        String question = "Who painted the Mona Lisa?";
+        String question = "Give an explanation on how the Mona Lisa was painted.";
         String answer = chatLanguageModel.generate(systemMessage, UserMessage.from(question)).content().text();
         return getView(model, "4: advanced question", question, answer);
     }
