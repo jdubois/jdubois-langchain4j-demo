@@ -17,7 +17,7 @@ Those demos either run locally (with Docker, using Ollama + Phi-3 and Qdrant) or
 
 ## Slides
 
-Slides explaining this demo are available here: [LangChain4J intro.pdf](LangChain4J intro.pdf).
+Slides explaining this demo are available here: [LangChain4J intro.pdf](LangChain4J%20intro.pdf).
 
 ## Configuration
 
