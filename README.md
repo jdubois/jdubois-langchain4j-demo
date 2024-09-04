@@ -15,6 +15,10 @@ It contains the following demos:
 
 Those demos either run locally (with Docker, using Ollama + Phi-3 and Qdrant) or in the cloud (using Azure, with Azure OpenAI and Azure AI Search).
 
+## Slides
+
+Slides explaining this demo are available here: [LangChain4J intro.pdf](LangChain4J intro.pdf).
+
 ## Configuration
 
 ### Running locally with Docker
