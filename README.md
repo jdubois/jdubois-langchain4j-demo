@@ -9,11 +9,11 @@ This is a Spring Boot project that demonstrates how to use LangChain4J to create
 It contains the following demos:
 
 - How to generate an image using Dalle-3.
-- How to generate a text using GPT-4o and Phi-3.
+- How to generate a text using GPT-4o and Phi-3.5.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 
-Those demos either run locally (with Docker, using Ollama + Phi-3 and Qdrant) or in the cloud (using Azure, with Azure OpenAI and Azure AI Search).
+Those demos either run locally (with Docker, using Ollama + Phi-3.5 and Qdrant) or in the cloud (using Azure, with Azure OpenAI and Azure AI Search).
 
 ## Slides
 
@@ -23,7 +23,7 @@ Slides explaining this demo are available here: [LangChain4J intro.pdf](LangChai
 
 ### Running locally with Docker
 
-This configuration uses Ollama and Qdrant, running in Docker containers. Image generation with Dalles-3 is not available in this configuration.
+This configuration uses Ollama and Qdrant, running in Docker containers. Image generation with Dalle-3 is not available in this configuration.
 
 Local execution is enabled by using the `local` Spring Boot profile.
 One way to do this is to set `spring.profiles.active=local` in the `src/main/resources/application.properties` file.
@@ -32,7 +32,7 @@ To set up the necessary resources, you need to have Docker installed on your mac
 
 It will set up:
 
-- An Ollama instance, with the Phi-3 and the nomic-embed-text models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
+- An Ollama instance, with the Phi-3.5 and the nomic-embed-text models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
 - A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
 
 __Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
