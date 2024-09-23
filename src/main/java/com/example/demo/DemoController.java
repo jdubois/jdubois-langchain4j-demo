@@ -73,7 +73,7 @@ public class DemoController {
     }
 
     @GetMapping("/3")
-    String reasonning(Model model) {
+    String reasoning(Model model) {
         String question = "Maria's father has 4 daughters: Spring, Autumn, Winter. What is the name of the fourth daughter?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
         return getView(model, "3: Reasoning question", question, answer);
