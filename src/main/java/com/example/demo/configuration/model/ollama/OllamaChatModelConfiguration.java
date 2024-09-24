@@ -1,4 +1,4 @@
-package com.example.demo.configuration.local;
+package com.example.demo.configuration.model.ollama;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("local")
-public class LocalChatModelConfiguration {
+@Profile("ollama")
+public class OllamaChatModelConfiguration {
 
     @Bean
     ChatLanguageModel ollamaAIChatLanguageModel() {

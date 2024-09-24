@@ -1,4 +1,4 @@
-package com.example.demo.configuration.azure;
+package com.example.demo.configuration.model.azure;
 
 import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;

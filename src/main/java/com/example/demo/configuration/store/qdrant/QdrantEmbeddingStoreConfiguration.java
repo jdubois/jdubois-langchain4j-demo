@@ -1,4 +1,4 @@
-package com.example.demo.configuration.local;
+package com.example.demo.configuration.store.qdrant;
 
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Profile;
 import java.util.concurrent.ExecutionException;
 
 @Configuration
-@Profile("local")
-public class LocalEmbeddingStoreConfiguration {
+@Profile("qdrant")
+public class QdrantEmbeddingStoreConfiguration {
 
     private static final String COLLECTION_NAME = "kbindex";
 
@@ -27,7 +27,7 @@ public class LocalEmbeddingStoreConfiguration {
             client.createCollectionAsync(COLLECTION_NAME,
                             Collections.VectorParams.newBuilder()
                                     .setDistance(Collections.Distance.Cosine)
-                                    .setSize(768)
+                                    .setSize(1536)
                                     .build())
                     .get();
         }

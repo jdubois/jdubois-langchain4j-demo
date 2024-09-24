@@ -1,4 +1,4 @@
-package com.example.demo.configuration.local;
+package com.example.demo.configuration.model.ollama;
 
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaEmbeddingModel;
@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-public class LocalEmbeddingModelConfiguration {
+@Profile("ollama")
+public class OllamaEmbeddingModelConfiguration {
 
     @Bean
-    @Profile("local")
     EmbeddingModel ollamaEmbeddingModel() {
         return OllamaEmbeddingModel.builder()
                 .baseUrl("http://localhost:11434/")

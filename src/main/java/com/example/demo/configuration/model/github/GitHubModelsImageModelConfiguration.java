@@ -1,4 +1,4 @@
-package com.example.demo.configuration.local;
+package com.example.demo.configuration.model.github;
 
 import dev.langchain4j.model.image.DisabledImageModel;
 import dev.langchain4j.model.image.ImageModel;
@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("local")
-public class LocalImageModelConfiguration {
+@Profile("github")
+public class GitHubModelsImageModelConfiguration {
 
     @Bean
     ImageModel imageModel() {

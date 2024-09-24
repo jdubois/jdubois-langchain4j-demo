@@ -1,4 +1,4 @@
-package com.example.demo.configuration.azure;
+package com.example.demo.configuration.store.azure;
 
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.store.embedding.EmbeddingStore;
