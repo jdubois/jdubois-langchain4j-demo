@@ -9,7 +9,7 @@
   // Features to add to the dev container. More info: https://containers.dev/features.
   "features": {
     "ghcr.io/devcontainers/features/java:1": {
-			"version": "23",
+			"version": "23-tem",
 			"installMaven": "true",
 			"installGradle": "false"
 		},
