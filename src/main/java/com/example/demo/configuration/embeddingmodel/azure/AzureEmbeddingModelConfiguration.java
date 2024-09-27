@@ -1,7 +1,7 @@
-package com.example.demo.configuration.model.azure;
+package com.example.demo.configuration.embeddingmodel.azure;
 
-import dev.langchain4j.model.azure.AzureOpenAiChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("azure")
-public class AzureChatModelConfiguration {
+public class AzureEmbeddingModelConfiguration {
 
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
@@ -18,11 +18,11 @@ public class AzureChatModelConfiguration {
     private String azureOpenAiKey;
 
     @Bean
-    ChatLanguageModel azureOpenAIChatLanguageModel() {
-        return AzureOpenAiChatModel.builder()
+    EmbeddingModel azureOpenAiEmbeddingModel() {
+        return AzureOpenAiEmbeddingModel.builder()
                 .endpoint(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
-                .deploymentName("gpt-4o")
+                .deploymentName("text-embedding-ada")
                 .logRequestsAndResponses(true)
                 .build();
     }

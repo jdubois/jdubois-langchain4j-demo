@@ -4,7 +4,7 @@ import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
 import dev.langchain4j.data.document.parser.TextDocumentParser;
-import dev.langchain4j.data.document.transformer.HtmlTextExtractor;
+import dev.langchain4j.data.document.transformer.jsoup.HtmlToTextDocumentTransformer;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
@@ -175,7 +175,7 @@ public class DemoController {
         Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar23/index.html", new TextDocumentParser());
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
-                .documentTransformer(new HtmlTextExtractor())
+                .documentTransformer(new HtmlToTextDocumentTransformer())
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();

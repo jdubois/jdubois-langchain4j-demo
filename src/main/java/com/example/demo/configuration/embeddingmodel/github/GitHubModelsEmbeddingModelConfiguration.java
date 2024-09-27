@@ -1,4 +1,4 @@
-package com.example.demo.configuration.model.github;
+package com.example.demo.configuration.embeddingmodel.github;
 
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.github.GitHubModelsEmbeddingModel;
