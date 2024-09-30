@@ -4,6 +4,7 @@ import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
 import dev.langchain4j.data.document.parser.TextDocumentParser;
+import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.document.transformer.jsoup.HtmlToTextDocumentTransformer;
 import dev.langchain4j.data.embedding.Embedding;
 import dev.langchain4j.data.message.SystemMessage;
@@ -176,6 +177,7 @@ public class DemoController {
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentTransformer(new HtmlToTextDocumentTransformer())
+                .documentSplitter(DocumentSplitters.recursive(300, 30))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();

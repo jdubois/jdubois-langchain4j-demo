@@ -52,10 +52,6 @@
 		</dependency>
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-easy-rag</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-document-transformer-jsoup</artifactId>
 		</dependency>
 		<dependency>
@@ -87,6 +83,18 @@
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-github-models</artifactId>
+		</dependency>
+
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>
