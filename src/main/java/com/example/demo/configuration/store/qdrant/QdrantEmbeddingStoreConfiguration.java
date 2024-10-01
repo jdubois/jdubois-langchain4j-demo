@@ -49,8 +49,7 @@ public class QdrantEmbeddingStoreConfiguration {
 
         return QdrantEmbeddingStore.builder()
                 .collectionName(COLLECTION_NAME)
-                .host("localhost")
-                .port(6334)
+                .client(client)
                 .build();
     }
 }
