@@ -12,6 +12,7 @@ It contains the following demos:
 - How to generate a text using GPT-4o, GPT-4o-mini, Phi-3.5 and tinyllama.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
+- How LangChain4J's "Easy RAG" works, and a complete example using it.
 
 Those demos either run locally (with Docker, using Ollama and Qdrant) or in the cloud (using Azure OpenAI or GitHub Models, and Azure AI Search).
 
