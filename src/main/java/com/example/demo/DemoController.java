@@ -176,7 +176,7 @@ public class DemoController {
         Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar23/index.html", new TextDocumentParser());
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
-                .documentTransformer(new HtmlToTextDocumentTransformer())
+                .documentTransformer(new HtmlToTextDocumentTransformer(".annual-report"))
                 .documentSplitter(DocumentSplitters.recursive(300, 30))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
