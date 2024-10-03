@@ -59,11 +59,11 @@ This configuration uses:
 It is enabled by using the `small` Spring Boot profile.
 One way to do this is to set `spring.profiles.active=small` in the `src/main/resources/application.properties` file.
 
-To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose.yml` file.
+To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-small.yml` file.
 
 It will set up:
 
-- An Ollama instance, with the tinyllama models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
+- An Ollama instance, with the tinyllama model.
 - A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
 
 ### _Option 3_ : Fully local, not very fast, but with good quality
@@ -78,10 +78,13 @@ This configuration uses:
 It is enabled by using the `good` Spring Boot profile.
 One way to do this is to set `spring.profiles.active=good` in the `src/main/resources/application.properties` file.
 
-__Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
-models like in the `src/main/docker/install-ollama-models.sh` script.
+This configuration, especially when running inside Docker, requires a good amount of resources (CPU and RAM).
+If you run into timeouts, that's because your machine is not powerful enough to run it.
 
-To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose.yml` file.
+__Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
+models like in the `src/main/docker/install-ollama-models-good.sh` script.
+
+To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-good.yml` file.
 
 It will set up:
 

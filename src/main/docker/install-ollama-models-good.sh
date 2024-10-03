@@ -10,7 +10,6 @@ sleep 5
 
 echo "🔴 Retrieve Ollama models..."
 ollama pull phi3.5
-ollama pull tinyllama
 ollama pull nomic-embed-text
 echo "🟢 Done!"
 
