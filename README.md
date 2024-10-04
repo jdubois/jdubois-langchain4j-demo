@@ -105,6 +105,14 @@ This configuration uses:
 It is enabled by using the `github` Spring Boot profile.
 One way to do this is to set `spring.profiles.active=github` in the `src/main/resources/application.properties` file.
 
+To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-github.yml` file.
+
+It will set up:
+
+- A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
+
+For accessing GitHub Models, you'll need an environment variable named `GITHUB_TOKEN` with a GitHub token that grants permission to access the models.
+
 ## Running the demos
 
 Once the resources (Azure or local) are configured, you can run the demos using the following command:
