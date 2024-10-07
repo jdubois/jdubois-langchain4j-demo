@@ -18,7 +18,10 @@ Those demos either run locally (with Docker, using Ollama and Qdrant) or in the 
 
 ## Slides
 
-Slides explaining this demo are available here: [LangChain4J intro.pdf](LangChain4J%20intro.pdf).
+2 slide decks are available to detail this demo:
+
+- [An introduction to LangChain4J](LangChain4J%20intro.pdf): a quick overview of LangChain4J
+- [EasyRAG with LangChain4J](LangChain4J%20EasyRAG%20demo.pdf): a focus on demos 10 and 11, detailing the RAG pattern with LangChain4J
 
 ## Configuration
 
