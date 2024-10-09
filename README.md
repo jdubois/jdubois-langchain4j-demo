@@ -25,7 +25,7 @@ Those demos either run locally (with Docker, using Ollama and Qdrant) or in the 
 
 ## Configuration
 
-There are 4 Spring Boot profiles, so you can test the demos with different configurations, tools and models.
+There are several Spring Boot profiles, so you can test the demos with different configurations, tools and models.
 
 ### _Option 1_ : Running in the cloud with Azure
 
@@ -115,6 +115,31 @@ It will set up:
 - A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
 
 For accessing GitHub Models, you'll need an environment variable named `GITHUB_TOKEN` with a GitHub token that grants permission to access the models.
+
+### _Option 5_ : Same as option 3 ("good"), but using Elasticsearch instead of Qdrant as an embedding store
+
+This configuration uses:
+
+- __Chat Model__: Ollama with Phi 3.5
+- __Image Model__: Not available
+- __Embedding model__: Ollama with nomic-embed-text
+- __Embedding store__: Elasticsearch
+
+It is enabled by using the `elasticsearch` Spring Boot profile.
+One way to do this is to set `spring.profiles.active=elasticsearch` in the `src/main/resources/application.properties` file.
+
+This configuration, especially when running inside Docker, requires a good amount of resources (CPU and RAM).
+If you run into timeouts, that's because your machine is not powerful enough to run it.
+
+__Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
+models like in the `src/main/docker/install-ollama-models-good.sh` script.
+
+To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-elasticsearch.yml` file.
+
+It will set up:
+
+- An Ollama instance, with the phi3.5 and the nomic-embed-text models.
+- An Elasticsearch instance. Its Web UI is available at [http://localhost:8081](http://localhost:8081).
 
 ## Running the demos
 

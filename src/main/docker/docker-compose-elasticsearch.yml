@@ -1,0 +1,42 @@
+services:
+  ollama:
+    image: ollama/ollama:0.3.12
+    ports:
+      - 11434:11434
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    volumes:
+      - ./install-ollama-models-good.sh:/install-ollama-models-good.sh
+    entrypoint: ["/usr/bin/bash", "/install-ollama-models-good.sh"]
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ollama-docker
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - http.cors.enabled=true
+      - http.cors.allow-origin="http://localhost:8081"
+
+  elasticvue:
+    container_name: elasticvue
+    image: cars10/elasticvue
+    ports:
+      - 8081:8080
+    depends_on:
+      - elasticsearch
+
+networks:
+  ollama-docker:
+    external: false

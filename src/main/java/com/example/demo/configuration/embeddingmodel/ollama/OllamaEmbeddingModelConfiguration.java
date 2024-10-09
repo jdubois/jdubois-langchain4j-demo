@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("good")
+@Profile({"good", "elasticsearch"})
 public class OllamaEmbeddingModelConfiguration {
 
     @Bean
