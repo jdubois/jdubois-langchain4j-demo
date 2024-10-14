@@ -141,6 +141,31 @@ It will set up:
 - An Ollama instance, with the phi3.5 and the nomic-embed-text models.
 - An Elasticsearch instance. Its Web UI is available at [http://localhost:8081](http://localhost:8081).
 
+### _Option 6_ : Same as option 3 ("good"), but using Cassandra instead of Qdrant as an embedding store
+
+This configuration uses:
+
+- __Chat Model__: Ollama with Phi 3.5
+- __Image Model__: Not available
+- __Embedding model__: Ollama with nomic-embed-text
+- __Embedding store__: Cassandra
+
+It is enabled by using the `cassandra` Spring Boot profile.
+One way to do this is to set `spring.profiles.active=cassandra` in the `src/main/resources/application.properties` file.
+
+This configuration, especially when running inside Docker, requires a good amount of resources (CPU and RAM).
+If you run into timeouts, that's because your machine is not powerful enough to run it.
+
+__Improving performance__: if you have GPUs on your machine, Ollama performance can be greatly improved by using them. The easiest way is to install Ollama locally on your machine, and install the
+models like in the `src/main/docker/install-ollama-models-good.sh` script.
+
+To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-cassandra.yml` file.
+
+It will set up:
+
+- An Ollama instance, with the phi3.5 and the nomic-embed-text models.
+- A Cassandra instance.
+
 ## Running the demos
 
 Once the resources (Azure or local) are configured, you can run the demos using the following command:

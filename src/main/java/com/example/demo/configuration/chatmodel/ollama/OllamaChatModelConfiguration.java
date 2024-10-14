@@ -21,7 +21,7 @@ public class OllamaChatModelConfiguration {
                 .build();
     }
 
-    @Profile({"good", "elasticsearch"})
+    @Profile({"good", "elasticsearch", "cassandra"})
     @Bean
     ChatLanguageModel phiChatLanguageModel() {
         return OllamaChatModel.builder()

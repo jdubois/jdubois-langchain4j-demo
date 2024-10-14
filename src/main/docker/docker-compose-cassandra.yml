@@ -1,0 +1,31 @@
+services:
+  ollama:
+    image: ollama/ollama:0.3.12
+    ports:
+      - 11434:11434
+    container_name: ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    volumes:
+      - ./install-ollama-models-good.sh:/install-ollama-models-good.sh
+    entrypoint: ["/usr/bin/bash", "/install-ollama-models-good.sh"]
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - ollama-docker
+
+  cassandra:
+    image: cassandra:5
+    container_name: cassandra
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_CLUSTER_NAME=langchain4j
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=DC1
+
+networks:
+  ollama-docker:
+    external: false

@@ -96,6 +96,12 @@
 			<artifactId>langchain4j-elasticsearch</artifactId>
 		</dependency>
 
+		<!-- Using Cassandra as a vector store -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-cassandra</artifactId>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
