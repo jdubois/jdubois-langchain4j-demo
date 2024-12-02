@@ -96,6 +96,18 @@
 			<artifactId>langchain4j-elasticsearch</artifactId>
 		</dependency>
 
+		<!-- Using Oracle as a vector store -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-oracle</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ucp</artifactId>
+			<version>23.5.0.24.07</version>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
