@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import dev.langchain4j.agent.tool.P;
+import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
@@ -23,11 +25,14 @@ import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -43,11 +48,14 @@ public class DemoController {
 
     private final EmbeddingStore<TextSegment> embeddingStore;
 
-    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore) {
+    private final StockPriceService stockPriceService;
+
+    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, StockPriceService stockPriceService) {
         this.imageModel = imageModel;
         this.chatLanguageModel = chatLanguageModel;
         this.embeddingModel = embeddingModel;
         this.embeddingStore = embeddingStore;
+        this.stockPriceService = stockPriceService;
     }
 
     @GetMapping("/")
@@ -201,6 +209,20 @@ public class DemoController {
         return getView(model, "11: Retrieval-Augmented Generation (RAG)", question, answer);
     }
 
+    @GetMapping("/12")
+    String functionCalling(Model model) {
+        String question = "Is the current Microsoft stock higher than $450?";
+
+        Assistant assistant = AiServices.builder(Assistant.class)
+                .chatLanguageModel(chatLanguageModel)
+                .tools(stockPriceService)
+                .build();
+
+        String answer = assistant.chat(question);
+
+        return getView(model, "12: Function calling", question, answer);
+    }
+
     private static String getView(Model model, String demoName, String question, String answer) {
         model.addAttribute("demo", demoName);
         model.addAttribute("question", question);
@@ -211,4 +233,20 @@ public class DemoController {
 
 interface Assistant {
     String chat(String userMessage);
+}
+
+@Service
+class StockPriceService {
+
+    private Logger log = Logger.getLogger(StockPriceService.class.getName());
+
+    @Tool("Get the stock price of a company by its ticker")
+    public double getStockPrice(@P("Company ticker") String ticker) {
+        log.info("Getting stock price for " + ticker);
+        if (Objects.equals(ticker, "MSFT")) {
+            return 400.0;
+        } else {
+            return 0.0;
+        }
+    }
 }
