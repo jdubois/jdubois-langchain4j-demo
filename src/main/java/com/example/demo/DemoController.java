@@ -9,13 +9,16 @@ import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.document.transformer.jsoup.HtmlToTextDocumentTransformer;
 import dev.langchain4j.data.embedding.Embedding;
+import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
+import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import dev.langchain4j.model.chat.request.ChatRequest;
 import dev.langchain4j.model.chat.request.ResponseFormat;
 import dev.langchain4j.model.chat.request.json.JsonArraySchema;
@@ -24,6 +27,7 @@ import dev.langchain4j.model.chat.request.json.JsonSchema;
 import dev.langchain4j.model.chat.request.json.JsonStringSchema;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.output.Response;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
@@ -53,14 +57,17 @@ public class DemoController {
 
     private final ChatLanguageModel chatLanguageModel;
 
+    private final StreamingChatLanguageModel streamingChatLanguageModel;
+
     private final EmbeddingModel embeddingModel;
 
     private final EmbeddingStore<TextSegment> embeddingStore;
 
     private final StockPriceService stockPriceService;
 
-    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, StockPriceService stockPriceService) {
+    public DemoController(ImageModel imageModel, StreamingChatLanguageModel streamingChatLanguageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, StockPriceService stockPriceService) {
         this.imageModel = imageModel;
+        this.streamingChatLanguageModel = streamingChatLanguageModel;
         this.chatLanguageModel = chatLanguageModel;
         this.embeddingModel = embeddingModel;
         this.embeddingStore = embeddingStore;
@@ -88,6 +95,30 @@ public class DemoController {
         String question = "Who painted the Mona Lisa?";
         String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
         return getView(model, "2: simple question", question, answer);
+    }
+
+    @GetMapping("/2b")
+    String getStreamingAnswer(Model model) {
+        String question = "Who painted the Mona Lisa?";
+        streamingChatLanguageModel.generate(question, new StreamingResponseHandler<AiMessage>() {
+
+            @Override
+            public void onNext(String token) {
+                System.out.println("Token: " + token);
+            }
+
+            @Override
+            public void onComplete(Response<AiMessage> response) {
+                System.out.println("Response: " + response.content().text());
+                StreamingResponseHandler.super.onComplete(response);
+            }
+
+            @Override
+            public void onError(Throwable error) {
+
+            }
+        });
+        return getView(model, "2: simple question", question, "Streaming test in the logs");
     }
 
     @GetMapping("/3")

@@ -1,7 +1,9 @@
 package com.example.demo.configuration.chatmodel.azure;
 
 import dev.langchain4j.model.azure.AzureOpenAiChatModel;
+import dev.langchain4j.model.azure.AzureOpenAiStreamingChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.StreamingChatLanguageModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +32,16 @@ public class AzureChatModelConfiguration {
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .logRequestsAndResponses(true)
                 .strictJsonSchema(true)
+                .build();
+    }
+
+    @Bean
+    StreamingChatLanguageModel azureOpenAIStreamingChatLanguageModel() {
+        return AzureOpenAiStreamingChatModel.builder()
+                .endpoint(azureOpenAiEndpoint)
+                .apiKey(azureOpenAiKey)
+                .deploymentName("gpt-4o")
+                .logRequestsAndResponses(true)
                 .build();
     }
 }
