@@ -16,6 +16,12 @@ import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.request.ChatRequest;
+import dev.langchain4j.model.chat.request.ResponseFormat;
+import dev.langchain4j.model.chat.request.json.JsonArraySchema;
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
+import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.model.chat.request.json.JsonStringSchema;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
@@ -35,7 +41,10 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static dev.langchain4j.data.message.UserMessage.userMessage;
+import static dev.langchain4j.model.chat.request.ResponseFormatType.JSON;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 @Controller
 public class DemoController {
@@ -221,6 +230,32 @@ public class DemoController {
         String answer = assistant.chat(question);
 
         return getView(model, "12: Function calling", question, answer);
+    }
+
+    @GetMapping("/13")
+    String structuredOutputs(Model model) {
+        String question = "Julien likes the colors blue, white and red";
+
+        ChatRequest chatRequest = ChatRequest.builder()
+                .messages(singletonList(userMessage(question)))
+                .responseFormat(ResponseFormat.builder()
+                        .type(JSON)
+                        .jsonSchema(JsonSchema.builder()
+                                .name("Person")
+                                .rootElement(JsonObjectSchema.builder()
+                                        .addStringProperty("name")
+                                        .addProperty("favouriteColors", JsonArraySchema.builder()
+                                                .items(new JsonStringSchema())
+                                                .build())
+                                        .required("name", "favouriteColors")
+                                        .build())
+                                .build())
+                        .build())
+                .build();
+
+        String answer = chatLanguageModel.chat(chatRequest).aiMessage().text();
+
+        return getView(model, "13: Structured Outputs", question, answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {

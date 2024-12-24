@@ -65,7 +65,7 @@ az cognitiveservices account deployment create \
   --resource-group "$AZURE_RESOURCE_GROUP" \
   --deployment-name "gpt-4o" \
   --model-name "gpt-4o" \
-  --model-version "2024-05-13"  \
+  --model-version "2024-08-06"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
   --sku-name "Standard"

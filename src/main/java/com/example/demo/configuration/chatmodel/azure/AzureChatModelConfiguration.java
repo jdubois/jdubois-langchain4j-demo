@@ -7,6 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.Set;
+
+import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
+
 @Configuration
 @Profile("azure")
 public class AzureChatModelConfiguration {
@@ -23,7 +27,9 @@ public class AzureChatModelConfiguration {
                 .endpoint(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
                 .deploymentName("gpt-4o")
+                .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .logRequestsAndResponses(true)
+                .strictJsonSchema(true)
                 .build();
     }
 }
