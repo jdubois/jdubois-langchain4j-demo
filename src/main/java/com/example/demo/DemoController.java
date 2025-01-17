@@ -1,7 +1,10 @@
 package com.example.demo;
 
-import dev.langchain4j.agent.tool.P;
-import dev.langchain4j.agent.tool.Tool;
+import com.example.demo.assistant.json.Person;
+import com.example.demo.assistant.json.PersonAssistant;
+import com.example.demo.assistant.rag.RagAssistant;
+import com.example.demo.assistant.tool.StockPriceService;
+import com.example.demo.assistant.tool.ToolAssistant;
 import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
@@ -16,12 +19,6 @@ import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.request.ResponseFormat;
-import dev.langchain4j.model.chat.request.json.JsonArraySchema;
-import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
-import dev.langchain4j.model.chat.request.json.JsonSchema;
-import dev.langchain4j.model.chat.request.json.JsonStringSchema;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
@@ -31,20 +28,14 @@ import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static dev.langchain4j.data.message.UserMessage.userMessage;
-import static dev.langchain4j.model.chat.request.ResponseFormatType.JSON;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 
 @Controller
 public class DemoController {
@@ -208,12 +199,12 @@ public class DemoController {
     String rag(Model model) {
         String question = "How many people are employed by Microsoft in the US?";
 
-        Assistant assistant = AiServices.builder(Assistant.class)
+        RagAssistant ragAssistant = AiServices.builder(RagAssistant.class)
                 .chatLanguageModel(chatLanguageModel)
                 .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 3))
                 .build();
 
-        String answer = assistant.chat(question);
+        String answer = ragAssistant.augmentedChat(question);
 
         return getView(model, "11: Retrieval-Augmented Generation (RAG)", question, answer);
     }
@@ -222,12 +213,12 @@ public class DemoController {
     String functionCalling(Model model) {
         String question = "Is the current Microsoft stock higher than $450?";
 
-        Assistant assistant = AiServices.builder(Assistant.class)
+        ToolAssistant toolAssistant = AiServices.builder(ToolAssistant.class)
                 .chatLanguageModel(chatLanguageModel)
                 .tools(stockPriceService)
                 .build();
 
-        String answer = assistant.chat(question);
+        String answer = toolAssistant.toolCallingChat(question);
 
         return getView(model, "12: Function calling", question, answer);
     }
@@ -236,26 +227,13 @@ public class DemoController {
     String structuredOutputs(Model model) {
         String question = "Julien likes the colors blue, white and red";
 
-        ChatRequest chatRequest = ChatRequest.builder()
-                .messages(singletonList(userMessage(question)))
-                .responseFormat(ResponseFormat.builder()
-                        .type(JSON)
-                        .jsonSchema(JsonSchema.builder()
-                                .name("Person")
-                                .rootElement(JsonObjectSchema.builder()
-                                        .addStringProperty("name")
-                                        .addProperty("favouriteColors", JsonArraySchema.builder()
-                                                .items(new JsonStringSchema())
-                                                .build())
-                                        .required("name", "favouriteColors")
-                                        .build())
-                                .build())
-                        .build())
+        PersonAssistant assistant = AiServices.builder(PersonAssistant.class)
+                .chatLanguageModel(chatLanguageModel)
                 .build();
 
-        String answer = chatLanguageModel.chat(chatRequest).aiMessage().text();
+        Person person = assistant.favoriteColor(question);
 
-        return getView(model, "13: Structured Outputs", question, answer);
+        return getView(model, "13: Structured Outputs", question, person.getFavouriteColors().toString());
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
@@ -263,25 +241,5 @@ public class DemoController {
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
-    }
-}
-
-interface Assistant {
-    String chat(String userMessage);
-}
-
-@Service
-class StockPriceService {
-
-    private Logger log = Logger.getLogger(StockPriceService.class.getName());
-
-    @Tool("Get the stock price of a company by its ticker")
-    public double getStockPrice(@P("Company ticker") String ticker) {
-        log.info("Getting stock price for " + ticker);
-        if (Objects.equals(ticker, "MSFT")) {
-            return 400.0;
-        } else {
-            return 0.0;
-        }
     }
 }

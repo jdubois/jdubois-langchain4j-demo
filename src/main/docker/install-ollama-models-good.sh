@@ -9,7 +9,7 @@ pid=$!
 sleep 5
 
 echo "🔴 Retrieve Ollama models..."
-ollama pull phi3.5
+ollama pull phi4
 ollama pull nomic-embed-text
 echo "🟢 Done!"
 
