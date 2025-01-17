@@ -1,10 +1,10 @@
-# LangChain4J demo
+# LangChain4j demo
 
 _Author: [Julien Dubois](https://www.julien-dubois.com)_
 
 ## Goal
 
-This is a Spring Boot project that demonstrates how to use LangChain4J to create Java applications using LLMs.
+This is a Spring Boot project that demonstrates how to use LangChain4j to create Java applications using LLMs.
 
 It contains the following demos:
 
@@ -12,7 +12,7 @@ It contains the following demos:
 - How to generate a text using GPT-4o, GPT-4o-mini, Phi-4 and tinyllama.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
-- How LangChain4J's "Easy RAG" works, and a complete example using it.
+- How LangChain4j's "Easy RAG" works, and a complete example using it.
 - How to use function calling
 - How to use structured outputs (JSON Schemas)
 
@@ -22,8 +22,8 @@ Those demos either run locally (with Docker, using Ollama and Qdrant) or in the 
 
 2 slide decks are available to detail this demo:
 
-- [An introduction to LangChain4J](LangChain4J%20intro.pdf): a quick overview of LangChain4J
-- [EasyRAG with LangChain4J](LangChain4J%20EasyRAG%20demo.pdf): a focus on demos 10 and 11, detailing the RAG pattern with LangChain4J
+- [An introduction to LangChain4j](LangChain4J%20intro.pdf): a quick overview of LangChain4j
+- [EasyRAG with LangChain4j](LangChain4J%20EasyRAG%20demo.pdf): a focus on demos 10 and 11, detailing the RAG pattern with LangChain4j
 
 ## Configuration
 

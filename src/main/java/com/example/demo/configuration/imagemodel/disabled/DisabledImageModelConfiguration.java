@@ -12,7 +12,7 @@ public class DisabledImageModelConfiguration {
 
     @Bean
     ImageModel imageModel() {
-        // There is no support in LangChain4J for local image models at the moment.
+        // There is no support in LangChain4j for local image models at the moment.
         return new DisabledImageModel();
     }
 }
