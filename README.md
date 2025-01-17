@@ -9,10 +9,12 @@ This is a Spring Boot project that demonstrates how to use LangChain4J to create
 It contains the following demos:
 
 - How to generate an image using Dalle-3.
-- How to generate a text using GPT-4o, GPT-4o-mini, Phi-3.5 and tinyllama.
+- How to generate a text using GPT-4o, GPT-4o-mini, Phi-4 and tinyllama.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 - How LangChain4J's "Easy RAG" works, and a complete example using it.
+- How to use function calling
+- How to use structured outputs (JSON Schemas)
 
 Those demos either run locally (with Docker, using Ollama and Qdrant) or in the cloud (using Azure OpenAI or GitHub Models, and Azure AI Search).
 
@@ -73,7 +75,7 @@ It will set up:
 
 This configuration uses:
 
-- __Chat Model__: Ollama with Phi 3.5
+- __Chat Model__: Ollama with Phi 4
 - __Image Model__: Not available
 - __Embedding model__: Ollama with nomic-embed-text
 - __Embedding store__: Qdrant
@@ -91,7 +93,7 @@ To set up the necessary resources, you need to have Docker installed on your mac
 
 It will set up:
 
-- An Ollama instance, with the phi3.5 and the nomic-embed-text models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
+- An Ollama instance, with the phi4 and the nomic-embed-text models. Its Web UI is available at [http://localhost:8081/](http://localhost:8081/).
 - A Qdrant instance. Its Web UI is available at [http://localhost:6333/dashboard](http://localhost:6333/dashboard).
 
 ### _Option 4_ : GitHub Models
@@ -120,7 +122,7 @@ For accessing GitHub Models, you'll need an environment variable named `GITHUB_T
 
 This configuration uses:
 
-- __Chat Model__: Ollama with Phi 3.5
+- __Chat Model__: Ollama with Phi 4
 - __Image Model__: Not available
 - __Embedding model__: Ollama with nomic-embed-text
 - __Embedding store__: Elasticsearch
@@ -138,7 +140,7 @@ To set up the necessary resources, you need to have Docker installed on your mac
 
 It will set up:
 
-- An Ollama instance, with the phi3.5 and the nomic-embed-text models.
+- An Ollama instance, with the phi4 and the nomic-embed-text models.
 - An Elasticsearch instance. Its Web UI is available at [http://localhost:8081](http://localhost:8081).
 
 ## Running the demos
