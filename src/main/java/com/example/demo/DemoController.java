@@ -34,7 +34,7 @@ public class DemoController {
                 .tools(stockPriceService)
                 .build();
 
-        String answer = stockAiAssistant.toolCallingChat(question);
+        String answer = stockAiAssistant.whatToDoWithMyStocks(question);
 
         return getView(model, "Microsoft stock ", question, answer);
     }

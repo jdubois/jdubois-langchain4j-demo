@@ -8,5 +8,5 @@ public interface StockAiAssistant {
     If the closing price is 2% higher than the opening price, then it is a good moment to sell stocks.
     If the closing price is 3% lower than the opening price, then it is a good moment to buy stocks.
     """)
-    String toolCallingChat(String userMessage);
+    String whatToDoWithMyStocks(String userMessage);
 }
