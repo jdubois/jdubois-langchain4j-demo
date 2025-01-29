@@ -1,7 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.assistant.tool.StockPriceService;
-import com.example.demo.assistant.tool.ToolAssistant;
+import com.example.demo.assistant.tool.StockAiAssistant;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import org.springframework.stereotype.Controller;
@@ -29,12 +29,12 @@ public class DemoController {
     String functionCalling(Model model) {
         String question = "Should I sell my Microsoft stocks today?";
 
-        ToolAssistant toolAssistant = AiServices.builder(ToolAssistant.class)
+        StockAiAssistant stockAiAssistant = AiServices.builder(StockAiAssistant.class)
                 .chatLanguageModel(chatLanguageModel)
                 .tools(stockPriceService)
                 .build();
 
-        String answer = toolAssistant.toolCallingChat(question);
+        String answer = stockAiAssistant.toolCallingChat(question);
 
         return getView(model, "Microsoft stock ", question, answer);
     }

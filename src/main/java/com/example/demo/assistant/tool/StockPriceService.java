@@ -33,5 +33,3 @@ public class StockPriceService {
         return stocks[0];
     }
 }
-
-record Stock(double open, double close) {}
