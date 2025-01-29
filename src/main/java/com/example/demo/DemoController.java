@@ -211,7 +211,7 @@ public class DemoController {
 
     @GetMapping("/12")
     String functionCalling(Model model) {
-        String question = "Is the current Microsoft stock higher than $450?";
+        String question = "Should I sell my Microsoft stocks today?";
 
         ToolAssistant toolAssistant = AiServices.builder(ToolAssistant.class)
                 .chatLanguageModel(chatLanguageModel)
