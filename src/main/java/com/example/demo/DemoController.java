@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.assistant.tool.StockPriceService;
 import com.example.demo.assistant.tool.StockAiAssistant;
+import com.example.demo.assistant.tool.StockPriceService;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import org.springframework.stereotype.Controller;
