@@ -1,7 +1,7 @@
 package com.example.demo.configuration.imagemodel.azure;
 
-import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +19,10 @@ public class AzureImageModelConfiguration {
 
     @Bean
     ImageModel imageModel() {
-        return AzureOpenAiImageModel.builder()
-                .endpoint(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
-                .deploymentName("dall-e-3")
-                .logRequestsAndResponses(true)
+        return OpenAiOfficialImageModel.builder()
+                .baseUrl(azureOpenAiEndpoint)
+                .azureApiKey(azureOpenAiKey)
+                .modelName("dall-e-3")
                 .build();
     }
 }

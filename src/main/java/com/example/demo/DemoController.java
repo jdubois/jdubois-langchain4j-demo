@@ -17,10 +17,10 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
@@ -66,7 +66,7 @@ public class DemoController {
     @GetMapping("/1")
     String createImage(Model model) {
         String question = "A coffee mug in Paris, France";
-        if (imageModel instanceof AzureOpenAiImageModel) {
+        if (imageModel instanceof OpenAiOfficialImageModel) {
             String answer = imageModel.generate(question).content().url().toString();
             return getView(model, "1: image generation", question, answer);
         } else {

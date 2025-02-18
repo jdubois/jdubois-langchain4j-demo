@@ -62,8 +62,16 @@
 		<!-- Using AI services on Azure -->
 		<dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-azure-open-ai</artifactId>
+            <artifactId>langchain4j-open-ai-official</artifactId>
+			<version>1.0.0-beta2-SNAPSHOT</version>
         </dependency>
+
+		<dependency>
+			<groupId>com.openai</groupId>
+			<artifactId>openai-java</artifactId>
+			<version>0.23.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-azure-ai-search</artifactId>

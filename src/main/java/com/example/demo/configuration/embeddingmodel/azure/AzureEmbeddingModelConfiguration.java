@@ -1,7 +1,7 @@
 package com.example.demo.configuration.embeddingmodel.azure;
 
-import dev.langchain4j.model.azure.AzureOpenAiEmbeddingModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialEmbeddingModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +19,10 @@ public class AzureEmbeddingModelConfiguration {
 
     @Bean
     EmbeddingModel azureOpenAiEmbeddingModel() {
-        return AzureOpenAiEmbeddingModel.builder()
-                .endpoint(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
-                .deploymentName("text-embedding-ada")
-                .logRequestsAndResponses(true)
+        return OpenAiOfficialEmbeddingModel.builder()
+                .baseUrl(azureOpenAiEndpoint)
+                .azureApiKey(azureOpenAiKey)
+                .modelName("text-embedding-ada")
                 .build();
     }
 }
