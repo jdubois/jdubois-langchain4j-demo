@@ -8,8 +8,8 @@ services:
     depends_on:
       - qdrant
     environment:
-        - AZURE_OPENAI_ENDPOINT=https://ai-langchain4j-open-ai-official.openai.azure.com
-        - AZURE_OPENAI_KEY=4666b0bd22d44a3c90eec0432e5eaa4e
+        - AZURE_OPENAI_ENDPOINT=https://xxxxxxx.openai.azure.com/
+        - AZURE_OPENAI_KEY=xxxxxxxxxxxx
 
   qdrant:
     container_name: qdrant

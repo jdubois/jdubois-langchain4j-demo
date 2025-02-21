@@ -54,6 +54,10 @@
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-document-transformer-jsoup</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-azure-ai-search</artifactId>
+		</dependency>
 
 		<!-- Using AI services on Azure -->
 		<dependency>
@@ -69,10 +73,7 @@
 		</dependency>
 
 		<!-- Using AI services locally -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-qdrant</artifactId>
-		</dependency>
+
 
 		<!-- Testing -->
 		<dependency>
@@ -100,7 +101,7 @@
 				<configuration>
 					<image>
 						<env>
-							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder,org.slf4j.LoggerFactory,ch.qos.logback.classic.Logger,ch.qos.logback.core.spi.AppenderAttachableImpl,ch.qos.logback.core.status.StatusBase,ch.qos.logback.classic.Level,ch.qos.logback.core.status.InfoStatus,ch.qos.logback.classic.PatternLayout,ch.qos.logback.core.CoreConstants,org.slf4j.helpers.SubstituteServiceProvider,org.slf4j.helpers.NOP_FallbackServiceProvider,org.slf4j.helpers.NOPLoggerFactory,org.slf4j.helpers.SubstituteLoggerFactory,ch.qos.logback.classic.LoggerContext,ch.qos.logback.classic.spi.TurboFilterList,org.slf4j.helpers.SubstituteServiceProvider,ch.qos.logback.core.BasicStatusManager,ch.qos.logback.classic.spi.LoggerContextVO</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-build-time=com.fasterxml.jackson.core.Base64Variant</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
 						</env>
 					</image>
 				</configuration>

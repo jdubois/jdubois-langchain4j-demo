@@ -70,13 +70,13 @@ az cognitiveservices account deployment create \
   --sku-capacity 1 \
   --sku-name "Standard"
 
-echo "Deploying a text-embedding-ada model..."
+echo "Deploying a text-embedding-3-small model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
   --name "$AZURE_AI_SERVICE" \
   --resource-group "$AZURE_RESOURCE_GROUP" \
-  --deployment-name "text-embedding-ada" \
-  --model-name "text-embedding-ada-002" \
+  --deployment-name "text-embedding-3-small" \
+  --model-name "text-embedding-3-small" \
   --model-version "2"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
