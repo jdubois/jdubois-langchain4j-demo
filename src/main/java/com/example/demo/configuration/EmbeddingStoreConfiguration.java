@@ -1,4 +1,4 @@
-package com.example.demo.configuration.store.azure;
+package com.example.demo.configuration;
 
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.store.embedding.EmbeddingStore;
@@ -6,11 +6,9 @@ import dev.langchain4j.store.embedding.azure.search.AzureAiSearchEmbeddingStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("azure")
-public class AzureEmbeddingStoreConfiguration {
+public class EmbeddingStoreConfiguration {
 
     @Value("${AZURE_SEARCH_ENDPOINT}")
     private String azureSearchEndpoint;
