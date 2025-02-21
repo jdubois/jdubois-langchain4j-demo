@@ -1,15 +1,13 @@
-package com.example.demo.configuration.imagemodel.azure;
+package com.example.demo.configuration.embeddingmodel;
 
-import dev.langchain4j.model.image.ImageModel;
-import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
+import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialEmbeddingModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("azure")
-public class AzureImageModelConfiguration {
+public class EmbeddingModelConfiguration {
 
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
@@ -18,11 +16,11 @@ public class AzureImageModelConfiguration {
     private String azureOpenAiKey;
 
     @Bean
-    ImageModel imageModel() {
-        return OpenAiOfficialImageModel.builder()
+    EmbeddingModel azureOpenAiEmbeddingModel() {
+        return OpenAiOfficialEmbeddingModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
                 .azureApiKey(azureOpenAiKey)
-                .modelName("dall-e-3")
+                .modelName("text-embedding-3-small")
                 .build();
     }
 }

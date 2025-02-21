@@ -54,10 +54,6 @@
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-document-transformer-jsoup</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-		</dependency>
 
 		<!-- Using AI services on Azure -->
 		<dependency>
@@ -72,36 +68,10 @@
 			<version>0.23.1</version>
 		</dependency>
 
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-azure-ai-search</artifactId>
-		</dependency>
-
 		<!-- Using AI services locally -->
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-ollama</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-qdrant</artifactId>
-		</dependency>
-
-		<!-- Using AI services on GitHub Models -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-github-models</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-ai-inference</artifactId>
-			<version>1.0.0-beta.2</version>
-		</dependency>
-
-		<!-- Using ElasticSearch as a vector store -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-elasticsearch</artifactId>
 		</dependency>
 
 		<!-- Testing -->
@@ -127,6 +97,13 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<image>
+						<env>
+							<BP_NATIVE_IMAGE_BUILD_ARGUMENTS>--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder,org.slf4j.LoggerFactory,ch.qos.logback.classic.Logger,ch.qos.logback.core.spi.AppenderAttachableImpl,ch.qos.logback.core.status.StatusBase,ch.qos.logback.classic.Level,ch.qos.logback.core.status.InfoStatus,ch.qos.logback.classic.PatternLayout,ch.qos.logback.core.CoreConstants,org.slf4j.helpers.SubstituteServiceProvider,org.slf4j.helpers.NOP_FallbackServiceProvider,org.slf4j.helpers.NOPLoggerFactory,org.slf4j.helpers.SubstituteLoggerFactory,ch.qos.logback.classic.LoggerContext,ch.qos.logback.classic.spi.TurboFilterList,org.slf4j.helpers.SubstituteServiceProvider,ch.qos.logback.core.BasicStatusManager,ch.qos.logback.classic.spi.LoggerContextVO</BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
+						</env>
+					</image>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

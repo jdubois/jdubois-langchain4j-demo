@@ -1,4 +1,4 @@
-package com.example.demo.configuration.store.qdrant;
+package com.example.demo.configuration.store;
 
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.DimensionAwareEmbeddingModel;
@@ -10,19 +10,17 @@ import io.qdrant.client.QdrantGrpcClient;
 import io.qdrant.client.grpc.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.util.concurrent.ExecutionException;
 
 @Configuration
-@Profile({"small", "good", "github"})
-public class QdrantEmbeddingStoreConfiguration {
+public class EmbeddingStoreConfiguration {
 
     private static final String COLLECTION_NAME = "kbindex";
 
     private EmbeddingModel embeddingModel;
 
-    public QdrantEmbeddingStoreConfiguration(EmbeddingModel embeddingModel) {
+    public EmbeddingStoreConfiguration(EmbeddingModel embeddingModel) {
         this.embeddingModel = embeddingModel;
     }
 
@@ -36,7 +34,7 @@ public class QdrantEmbeddingStoreConfiguration {
         }
 
         QdrantClient client =
-                new QdrantClient(QdrantGrpcClient.newBuilder("localhost", 6334, false).build());
+                new QdrantClient(QdrantGrpcClient.newBuilder("qdrant", 6334, false).build());
 
         if (!client.listCollectionsAsync().get().contains(COLLECTION_NAME)) {
             client.createCollectionAsync(COLLECTION_NAME,

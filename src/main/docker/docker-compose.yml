@@ -1,0 +1,19 @@
+services:
+
+  demo:
+    container_name: demo
+    image: demo:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    depends_on:
+      - qdrant
+    environment:
+        - AZURE_OPENAI_ENDPOINT=https://ai-langchain4j-open-ai-official.openai.azure.com
+        - AZURE_OPENAI_KEY=4666b0bd22d44a3c90eec0432e5eaa4e
+
+  qdrant:
+    container_name: qdrant
+    image: qdrant/qdrant:v1.13.0
+    ports:
+      - "6333:6333"
+      - "6334:6334"

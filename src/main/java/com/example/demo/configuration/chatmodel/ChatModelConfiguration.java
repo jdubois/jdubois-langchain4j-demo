@@ -1,19 +1,17 @@
-package com.example.demo.configuration.chatmodel.azure;
+package com.example.demo.configuration.chatmodel;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import java.util.Set;
 
 import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 
 @Configuration
-@Profile("azure")
-public class AzureChatModelConfiguration {
+public class ChatModelConfiguration {
 
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
