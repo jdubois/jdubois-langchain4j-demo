@@ -19,7 +19,7 @@ public class ImageModelConfiguration {
     ImageModel imageModel() {
         return OpenAiOfficialImageModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
-                .azureApiKey(azureOpenAiKey)
+                .apiKey(azureOpenAiKey)
                 .modelName("dall-e-3")
                 .build();
     }

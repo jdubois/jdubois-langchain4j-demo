@@ -19,7 +19,7 @@ public class EmbeddingModelConfiguration {
     EmbeddingModel azureOpenAiEmbeddingModel() {
         return OpenAiOfficialEmbeddingModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
-                .azureApiKey(azureOpenAiKey)
+                .apiKey(azureOpenAiKey)
                 .modelName("text-embedding-ada")
                 .build();
     }
