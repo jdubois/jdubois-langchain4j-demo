@@ -7,7 +7,7 @@ echo "Setting up environment variables..."
 echo "----------------------------------"
 PROJECT="langchain4j-$RANDOM-$RANDOM-$RANDOM"
 AZURE_RESOURCE_GROUP="rg-$PROJECT"
-AZURE_LOCATION="swedencentral"
+AZURE_LOCATION="eastus2"
 AZURE_AI_SERVICE="ai-$PROJECT"
 SEARCH_SERVICE="search-$PROJECT"
 TAG="$PROJECT"
@@ -58,27 +58,27 @@ AZURE_OPENAI_KEY=$(
 # If you want to know the available models, run the following Azure CLI command:
 # az cognitiveservices account list-models --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_AI_SERVICE" -o table  
 
-echo "Deploying a gpt-4o model..."
+echo "Deploying a gpt-4o-mini model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
   --name "$AZURE_AI_SERVICE" \
   --resource-group "$AZURE_RESOURCE_GROUP" \
-  --deployment-name "gpt-4o" \
-  --model-name "gpt-4o" \
-  --model-version "2024-08-06"  \
+  --deployment-name "gpt-4o-mini" \
+  --model-name "gpt-4o-mini" \
+  --model-version "2024-07-18"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
   --sku-name "Standard"
 
-echo "Deploying a text-embedding-ada model..."
+echo "Deploying a text-embedding-3-small..."
 echo "----------------------"
 az cognitiveservices account deployment create \
   --name "$AZURE_AI_SERVICE" \
   --resource-group "$AZURE_RESOURCE_GROUP" \
-  --deployment-name "text-embedding-ada" \
-  --model-name "text-embedding-ada-002" \
-  --model-version "2"  \
+  --deployment-name "text-embedding-3-small" \
+  --model-name "text-embedding-3-small" \
   --model-format "OpenAI" \
+  --model-version "1"  \
   --sku-capacity 1 \
   --sku-name "Standard"
 

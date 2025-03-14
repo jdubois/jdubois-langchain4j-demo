@@ -1,7 +1,7 @@
 package com.example.demo.configuration.chatmodel.azure;
 
-import dev.langchain4j.model.azure.AzureOpenAiChatModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.Set;
 
+import static com.openai.models.ChatModel.GPT_4O_MINI;
 import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 
 @Configuration
@@ -23,12 +24,11 @@ public class AzureChatModelConfiguration {
 
     @Bean
     ChatLanguageModel azureOpenAIChatLanguageModel() {
-        return AzureOpenAiChatModel.builder()
-                .endpoint(azureOpenAiEndpoint)
+        return OpenAiOfficialChatModel.builder()
+                .baseUrl(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
-                .deploymentName("gpt-4o")
+                .modelName(GPT_4O_MINI)
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
-                .logRequestsAndResponses(true)
                 .strictJsonSchema(true)
                 .build();
     }

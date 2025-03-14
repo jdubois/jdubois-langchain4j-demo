@@ -1,27 +1,22 @@
 package com.example.demo.configuration.chatmodel.github;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.github.GitHubModelsChatModel;
-import org.springframework.beans.factory.annotation.Value;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import static dev.langchain4j.model.github.GitHubModelsChatModelName.GPT_4_O_MINI;
+import static com.openai.models.ChatModel.GPT_4O_MINI;
 
 @Configuration
 @Profile("github")
 public class GitHubModelsChatModelConfiguration {
 
-    @Value("${GITHUB_TOKEN}")
-    private String gitHubToken;
-
     @Bean
     ChatLanguageModel gitHubModelsChatLanguageModel() {
-        return GitHubModelsChatModel.builder()
-                .gitHubToken(gitHubToken)
-                .modelName(GPT_4_O_MINI)
-                .logRequestsAndResponses(true)
+        return OpenAiOfficialChatModel.builder()
+                .isGitHubModels(true)
+                .modelName(GPT_4O_MINI)
                 .build();
     }
 }

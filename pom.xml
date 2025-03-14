@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
-		<langchain4j.version>1.0.0-beta1</langchain4j.version>
+		<langchain4j.version>1.0.0-beta2</langchain4j.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -39,11 +39,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mustache</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- LangChain4j dependencies -->
 		<dependency>
@@ -62,7 +57,8 @@
 		<!-- Using AI services on Azure -->
 		<dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-azure-open-ai</artifactId>
+            <artifactId>langchain4j-open-ai-official</artifactId>
+			<version>1.0.0-beta2</version>
         </dependency>
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
@@ -77,17 +73,6 @@
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-qdrant</artifactId>
-		</dependency>
-
-		<!-- Using AI services on GitHub Models -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-github-models</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.azure</groupId>
-			<artifactId>azure-ai-inference</artifactId>
-			<version>1.0.0-beta.4</version>
 		</dependency>
 
 		<!-- Using ElasticSearch as a vector store -->

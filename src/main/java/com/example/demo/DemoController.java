@@ -17,10 +17,10 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.azure.AzureOpenAiImageModel;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
+import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
@@ -66,7 +66,7 @@ public class DemoController {
     @GetMapping("/1")
     String createImage(Model model) {
         String question = "A coffee mug in Paris, France";
-        if (imageModel instanceof AzureOpenAiImageModel) {
+        if (imageModel instanceof OpenAiOfficialImageModel) {
             String answer = imageModel.generate(question).content().url().toString();
             return getView(model, "1: image generation", question, answer);
         } else {
@@ -77,14 +77,14 @@ public class DemoController {
     @GetMapping("/2")
     String getAnswer(Model model) {
         String question = "Who painted the Mona Lisa?";
-        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
+        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "2: simple question", question, answer);
     }
 
     @GetMapping("/3")
     String reasoning(Model model) {
         String question = "Maria's father has 4 daughters: Spring, Autumn, Winter. What is the name of the fourth daughter?";
-        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
+        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "3: Reasoning question", question, answer);
     }
 
@@ -93,14 +93,14 @@ public class DemoController {
         SystemMessage systemMessage = SystemMessage.from("I answer questions in French, in 100 words or less.");
 
         String question = "Give an explanation on how the Mona Lisa was painted.";
-        String answer = chatLanguageModel.generate(systemMessage, UserMessage.from(question)).content().text();
+        String answer = chatLanguageModel.chat(systemMessage, UserMessage.from(question)).aiMessage().text();
         return getView(model, "4: advanced question", question, answer);
     }
 
     @GetMapping("/5")
     String getAnswerWithLocation(Model model) {
         String question = "Where can you see this painting?";
-        String answer = chatLanguageModel.generate(UserMessage.from(question)).content().text();
+        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "5: A question without memory", question, answer);
     }
 
