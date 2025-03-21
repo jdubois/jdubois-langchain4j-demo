@@ -1,10 +1,10 @@
 package com.example.demo;
 
-import com.example.demo.assistant.json.Person;
-import com.example.demo.assistant.json.PersonAssistant;
 import com.example.demo.assistant.rag.RagAssistant;
-import com.example.demo.assistant.tool.StockPriceService;
-import com.example.demo.assistant.tool.ToolAssistant;
+import com.example.demo.assistant.tool.GistService;
+import com.example.demo.assistant.tool.MarkdownService;
+import com.example.demo.assistant.tool.ApplePieAgent;
+import com.example.demo.assistant.json.Recipe;
 import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
@@ -48,14 +48,17 @@ public class DemoController {
 
     private final EmbeddingStore<TextSegment> embeddingStore;
 
-    private final StockPriceService stockPriceService;
+    private final GistService gistService;
 
-    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, StockPriceService stockPriceService) {
+    private final MarkdownService markdownService;
+
+    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, GistService gistService, MarkdownService markdownService) {
         this.imageModel = imageModel;
         this.chatLanguageModel = chatLanguageModel;
         this.embeddingModel = embeddingModel;
         this.embeddingStore = embeddingStore;
-        this.stockPriceService = stockPriceService;
+        this.gistService = gistService;
+        this.markdownService = markdownService;
     }
 
     @GetMapping("/")
@@ -210,30 +213,44 @@ public class DemoController {
     }
 
     @GetMapping("/12")
-    String functionCalling(Model model) {
-        String question = "Is the current Microsoft stock higher than $450?";
+    String structuredOutputs(Model model) {
+        String question = "I'm doing an apple pie, give me the list of ingredients.";
 
-        ToolAssistant toolAssistant = AiServices.builder(ToolAssistant.class)
+        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
                 .chatLanguageModel(chatLanguageModel)
-                .tools(stockPriceService)
                 .build();
 
-        String answer = toolAssistant.toolCallingChat(question);
+        Recipe recipe = applePieAgent.getRecipe(question);
 
-        return getView(model, "12: Function calling", question, answer);
+        return getView(model, "12: Structured Outputs", question, recipe.toString());
     }
 
     @GetMapping("/13")
-    String structuredOutputs(Model model) {
-        String question = "Julien likes the colors blue, white and red";
+    String functionCalling(Model model) {
+        String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
 
-        PersonAssistant assistant = AiServices.builder(PersonAssistant.class)
+        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
                 .chatLanguageModel(chatLanguageModel)
+                .tools(gistService)
                 .build();
 
-        Person person = assistant.favoriteColor(question);
+        Recipe recipe = applePieAgent.getRecipe(question);
 
-        return getView(model, "13: Structured Outputs", question, person.getFavouriteColors().toString());
+        return getView(model, "13: Function calling", question, recipe.toString());
+    }
+
+    @GetMapping("/14")
+    String completeAgent(Model model) {
+        String question = "I'm doing an apple pie, give me the list of ingredients that I need, transform it to Markdown and write it down in a GitHub gist";
+
+        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
+                .chatLanguageModel(chatLanguageModel)
+                .tools(gistService, markdownService)
+                .build();
+
+        Recipe recipe = applePieAgent.getRecipe(question);
+
+        return getView(model, "14: Agent with multiple tools and structured outputs", question, recipe.toString());
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
