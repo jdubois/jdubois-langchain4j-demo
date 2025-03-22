@@ -30,6 +30,7 @@ public class AzureChatModelConfiguration {
                 .modelName(GPT_4O_MINI)
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .strictJsonSchema(true)
+                .strictTools(true)
                 .build();
     }
 }
