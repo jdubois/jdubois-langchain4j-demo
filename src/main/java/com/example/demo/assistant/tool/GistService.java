@@ -33,7 +33,7 @@ public class GistService {
         try {
             formattedText = objectMapper.writeValueAsString(text);
         } catch (JsonProcessingException e) {
-            log.severe("Failed to transfrom text to JSON value: " + e.getMessage());
+            log.severe("Failed to transform text to JSON value: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

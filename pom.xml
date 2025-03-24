@@ -81,6 +81,12 @@
 			<artifactId>langchain4j-elasticsearch</artifactId>
 		</dependency>
 
+		<!-- MCP Client -->
+		<dependency>
+			<groupId>dev.langchain4j</groupId>
+			<artifactId>langchain4j-mcp</artifactId>
+		</dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

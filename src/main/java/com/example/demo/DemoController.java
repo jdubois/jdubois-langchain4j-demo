@@ -1,10 +1,12 @@
 package com.example.demo;
 
+import com.example.demo.assistant.json.Recipe;
+import com.example.demo.assistant.json.TopAuthors;
+import com.example.demo.assistant.mcp.McpAgent;
 import com.example.demo.assistant.rag.RagAssistant;
+import com.example.demo.assistant.tool.ApplePieAgent;
 import com.example.demo.assistant.tool.GistService;
 import com.example.demo.assistant.tool.MarkdownService;
-import com.example.demo.assistant.tool.ApplePieAgent;
-import com.example.demo.assistant.json.Recipe;
 import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
@@ -23,10 +25,14 @@ import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.tool.ToolProvider;
 import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
 import dev.langchain4j.store.embedding.EmbeddingSearchResult;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +44,7 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 
 @Controller
-public class DemoController {
+public class DemoController implements BeanFactoryAware {
 
     private final ImageModel imageModel;
 
@@ -51,6 +57,8 @@ public class DemoController {
     private final GistService gistService;
 
     private final MarkdownService markdownService;
+
+    private BeanFactory beanFactory;
 
     public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, GistService gistService, MarkdownService markdownService) {
         this.imageModel = imageModel;
@@ -253,10 +261,31 @@ public class DemoController {
         return getView(model, "14: Agent with multiple tools and structured outputs", question, recipe.toString());
     }
 
+    @GetMapping("/15")
+    String mcpServer(Model model) {
+        String question = "Who are the authors of the last 10 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
+
+        ToolProvider mcpToolProvider = beanFactory.getBean(ToolProvider.class);
+
+        McpAgent mcpAgent = AiServices.builder(McpAgent.class)
+                .chatLanguageModel(chatLanguageModel)
+                .toolProvider(mcpToolProvider)
+                .build();
+
+        TopAuthors topAuthors = mcpAgent.findAzureTickets(question);
+
+        return getView(model, "15: Agent using an MCP Server", question, topAuthors.toString());
+    }
+
     private static String getView(Model model, String demoName, String question, String answer) {
         model.addAttribute("demo", demoName);
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 }
