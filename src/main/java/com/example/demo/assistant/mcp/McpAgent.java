@@ -4,5 +4,5 @@ import com.example.demo.assistant.json.TopAuthors;
 
 public interface McpAgent {
 
-    TopAuthors findTopAuthors(String userMessage);
+    TopAuthors askGitHub(String userMessage);
 }
