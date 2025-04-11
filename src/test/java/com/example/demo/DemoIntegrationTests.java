@@ -25,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 public class DemoIntegrationTests {
 
+    @SuppressWarnings("resource")
     @Container
     public static ComposeContainer environment =
             new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
