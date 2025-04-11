@@ -4,5 +4,5 @@ import com.example.demo.assistant.json.TopAuthors;
 
 public interface McpAgent {
 
-    TopAuthors findAzureTickets(String userMessage);
+    TopAuthors findTopAuthors(String userMessage);
 }

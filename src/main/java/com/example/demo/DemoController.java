@@ -272,7 +272,7 @@ public class DemoController implements BeanFactoryAware {
                 .toolProvider(mcpToolProvider)
                 .build();
 
-        TopAuthors topAuthors = mcpAgent.findAzureTickets(question);
+        TopAuthors topAuthors = mcpAgent.findTopAuthors(question);
 
         return getView(model, "15: Agent using an MCP Server", question, topAuthors.toString());
     }
