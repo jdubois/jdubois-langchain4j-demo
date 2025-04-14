@@ -46,6 +46,10 @@
 			<artifactId>langchain4j</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-identity</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-document-transformer-jsoup</artifactId>
 		</dependency>

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.Set;
 
+import static com.openai.models.ChatModel.GPT_4O;
 import static com.openai.models.ChatModel.GPT_4O_MINI;
 import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 
