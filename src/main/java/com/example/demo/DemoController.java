@@ -36,7 +36,7 @@ public class DemoController {
     String getAnswer(Model model) {
         String question = "Who painted the Mona Lisa?";
         String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
-        return getView(model, "2: simple question", question, answer);
+        return getView(model, "1: simple question", question, answer);
     }
 
     @GetMapping("/2")
@@ -49,7 +49,7 @@ public class DemoController {
 
         Recipe recipe = applePieAgent.getRecipe(question);
 
-        return getView(model, "12: Structured Outputs", question, recipe.toString());
+        return getView(model, "2: Structured Outputs", question, recipe.toString());
     }
 
     @GetMapping("/3")
@@ -66,7 +66,7 @@ public class DemoController {
 
         Recipe recipe = applePieAgent.getRecipe(question);
 
-        return getView(model, "13: Function calling", question, recipe.toString());
+        return getView(model, "3: Function calling", question, recipe.toString());
     }
 
     @GetMapping("/4")
@@ -76,9 +76,9 @@ public class DemoController {
           and store the result in a file stored in an Azure Blob Storage.
           
           - As you can't create a local file, use an in-memory stream to pass the data to the Azure Blob Storage.
-          - This Azure File Share is called  called "judubois-ingredients", create it if it doesn't exist yet.
+          - This Azure Blob Storage is called  called "judubois-ingredients", create it if it doesn't exist yet.
           - It is stored in an Azure Blob Storage account named "juduboisapplepie", create it if it doesn't exist yet.
-          - Those resources are located in the Azure Resource Group tagged 'env=demo'
+          - Those resources are located in the Azure Resource Group tagged "env=demo"
           """;
 
         McpAgent mcpAgent = AiServices.builder(McpAgent.class)
@@ -88,7 +88,7 @@ public class DemoController {
 
         String answer = mcpAgent.talkToAzure(question);
 
-        return getView(model, "15: Agent using an MCP Server", question, answer);
+        return getView(model, "4: Agent using an MCP Server", question, answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
