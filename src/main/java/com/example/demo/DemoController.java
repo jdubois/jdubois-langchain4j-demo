@@ -8,25 +8,23 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.tool.ToolProvider;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class DemoController implements BeanFactoryAware {
+public class DemoController {
 
     private final ChatLanguageModel chatLanguageModel;
 
     private final GistService gistService;
 
-    private BeanFactory beanFactory;
+    private ToolProvider mcpToolProvider;
 
-    public DemoController(ChatLanguageModel chatLanguageModel, GistService gistService) {
+    public DemoController(ChatLanguageModel chatLanguageModel, GistService gistService, ToolProvider mcpToolProvider) {
         this.chatLanguageModel = chatLanguageModel;
         this.gistService = gistService;
+        this.mcpToolProvider = mcpToolProvider;
     }
 
     @GetMapping("/")
@@ -56,7 +54,10 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/3")
     String functionCalling(Model model) {
-        String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
+        String question = """
+        I'm doing an apple pie, give me the list of ingredients, 
+        written in a GitHub gist.
+        """;
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
                 .chatLanguageModel(chatLanguageModel)
@@ -71,15 +72,14 @@ public class DemoController implements BeanFactoryAware {
     @GetMapping("/4")
     String mcpServer(Model model) {
         String question = """
-          I'm doing an apple pie, give me the list of ingredients that I need in a MarkDown format, and store the result in a file stored in an Azure Blob Storage.
+          I'm doing an apple pie, give me the list of ingredients in a MarkDown format, 
+          and store the result in a file stored in an Azure Blob Storage.
           
           - As you can't create a local file, use an in-memory stream to pass the data to the Azure Blob Storage.
           - This Azure File Share is called  called "judubois-ingredients", create it if it doesn't exist yet.
           - It is stored in an Azure Blob Storage account named "juduboisapplepie", create it if it doesn't exist yet.
           - Those resources are located in the Azure Resource Group tagged 'env=demo'
           """;
-
-        ToolProvider mcpToolProvider = beanFactory.getBean(ToolProvider.class);
 
         McpAgent mcpAgent = AiServices.builder(McpAgent.class)
                 .chatLanguageModel(chatLanguageModel)
@@ -96,10 +96,5 @@ public class DemoController implements BeanFactoryAware {
         model.addAttribute("question", question);
         model.addAttribute("answer", answer);
         return "demo";
-    }
-
-    @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
     }
 }
