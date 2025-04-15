@@ -17,13 +17,13 @@ import java.util.List;
 @Lazy
 public class McpService {
 
-    @Value("${GITHUB_TOKEN:}")
-    private String githubToken;
+    @Value("${AZURE_CREDENTIALS:}")
+    private String azureCredentials;
 
     @Bean
     public ToolProvider mcpToolProvider() {
         McpTransport transport = new StdioMcpTransport.Builder()
-                .command(List.of("docker", "run", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN=" + githubToken, "-i", "mcp/github"))
+                .command(List.of("docker", "run", "-e", "AZURE_CREDENTIALS=" + azureCredentials, "-i", "ghcr.io/jdubois/azure-cli-mcp:latest"))
                 .logEvents(true)
                 .build();
 

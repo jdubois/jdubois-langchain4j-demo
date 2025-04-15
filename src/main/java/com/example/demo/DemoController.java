@@ -1,5 +1,13 @@
 package com.example.demo;
 
+import com.example.demo.assistant.json.Recipe;
+import com.example.demo.assistant.mcp.McpAgent;
+import com.example.demo.assistant.tool.ApplePieAgent;
+import com.example.demo.assistant.tool.GistService;
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.tool.ToolProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -7,46 +15,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.demo.assistant.json.Recipe;
-import com.example.demo.assistant.json.TopAuthors;
-import com.example.demo.assistant.mcp.McpAgent;
-import com.example.demo.assistant.tool.ApplePieAgent;
-import com.example.demo.assistant.tool.GistService;
-import com.example.demo.assistant.tool.MarkdownService;
-
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.chat.ChatLanguageModel;
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.image.ImageModel;
-import dev.langchain4j.service.AiServices;
-import dev.langchain4j.service.tool.ToolProvider;
-import dev.langchain4j.store.embedding.EmbeddingStore;
-
 @Controller
 public class DemoController implements BeanFactoryAware {
 
-    private final ImageModel imageModel;
-
     private final ChatLanguageModel chatLanguageModel;
-
-    private final EmbeddingModel embeddingModel;
-
-    private final EmbeddingStore<TextSegment> embeddingStore;
 
     private final GistService gistService;
 
-    private final MarkdownService markdownService;
-
     private BeanFactory beanFactory;
 
-    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, GistService gistService, MarkdownService markdownService) {
-        this.imageModel = imageModel;
+    public DemoController(ChatLanguageModel chatLanguageModel, GistService gistService) {
         this.chatLanguageModel = chatLanguageModel;
-        this.embeddingModel = embeddingModel;
-        this.embeddingStore = embeddingStore;
         this.gistService = gistService;
-        this.markdownService = markdownService;
     }
 
     @GetMapping("/")
@@ -89,22 +69,15 @@ public class DemoController implements BeanFactoryAware {
     }
 
     @GetMapping("/4")
-    String completeAgent(Model model) {
-        String question = "I'm doing an apple pie, give me the list of ingredients that I need, transform it to Markdown and write it down in a GitHub gist";
-
-        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
-                .tools(gistService, markdownService)
-                .build();
-
-        Recipe recipe = applePieAgent.getRecipe(question);
-
-        return getView(model, "14: Agent with multiple tools and structured outputs", question, recipe.toString());
-    }
-
-    @GetMapping("/5")
     String mcpServer(Model model) {
-        String question = "Who are the authors of the last 10 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
+        String question = """
+          I'm doing an apple pie, give me the list of ingredients that I need in a MarkDown format, and store the result in a file stored in an Azure Blob Storage.
+          
+          - As you can't create a local file, use an in-memory stream to pass the data to the Azure Blob Storage.
+          - This Azure File Share is called  called "judubois-ingredients", create it if it doesn't exist yet.
+          - It is stored in an Azure Blob Storage account named "juduboisapplepie", create it if it doesn't exist yet.
+          - Those resources are located in the Azure Resource Group tagged 'env=demo'
+          """;
 
         ToolProvider mcpToolProvider = beanFactory.getBean(ToolProvider.class);
 
@@ -113,9 +86,9 @@ public class DemoController implements BeanFactoryAware {
                 .toolProvider(mcpToolProvider)
                 .build();
 
-        TopAuthors topAuthors = mcpAgent.askGitHub(question);
+        String answer = mcpAgent.talkToAzure(question);
 
-        return getView(model, "15: Agent using an MCP Server", question, topAuthors.toString());
+        return getView(model, "15: Agent using an MCP Server", question, answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
