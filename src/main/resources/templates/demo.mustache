@@ -34,24 +34,27 @@
 
     <div class="container my-5">
 {{^demo}}
-    <h1>Welcome to the LangChain4j demos!</h1>
-<p>
-    This is our main page, use the navigation bar above to access the demos.
-</p>
+    <div class="text-center">
+        <h1>Welcome to the LangChain4j demos!</h1>
+        <p class="mt-3">
+            This is our main page, use the navigation bar above to access the demos.
+        </p>
+        <img src="chief.png" alt="AI Chef" class="img-fluid mt-4" style="max-height: 500px;">
+    </div>
 {{/demo}}
 {{#demo}}
         <h1>This is demo {{demo}}</h1>
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-8">
                 <h3>Question</h3>
                 <p>{{question}}</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h3>Answer</h3>
+                
+                <h3 class="mt-4">Answer</h3>
                 <p>{{answer}}</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="chief.png" alt="AI Chef" class="img-fluid" style="max-height: 500px; position: sticky; top: 20px;">
             </div>
         </div>
 {{/demo}}
