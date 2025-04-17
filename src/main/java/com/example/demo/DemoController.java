@@ -34,7 +34,7 @@ public class DemoController {
 
     @GetMapping("/1")
     String getAnswer(Model model) {
-        String question = "Who painted the Mona Lisa?";
+        String question = "I'm doing an apple pie, give me the list of ingredients.";
         String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "1: simple question", question, answer);
     }
