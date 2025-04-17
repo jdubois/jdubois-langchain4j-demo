@@ -26,7 +26,7 @@ public class AzureChatModelConfiguration {
     ChatLanguageModel azureOpenAIChatLanguageModel() {
         return OpenAiOfficialChatModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
-                //.apiKey(azureOpenAiKey)
+                .apiKey(azureOpenAiKey)
                 .modelName(ChatModel.GPT_4_1)
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .strictJsonSchema(true)

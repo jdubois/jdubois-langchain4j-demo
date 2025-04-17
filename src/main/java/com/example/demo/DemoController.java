@@ -76,8 +76,8 @@ public class DemoController {
           and store the result in a file stored in an Azure Blob Storage.
           
           - As you can't create a local file, use an in-memory stream to pass the data to the Azure Blob Storage.
-          - This Azure Blob Storage is called  called "judubois-ingredients", create it if it doesn't exist yet.
-          - It is stored in an Azure Blob Storage account named "juduboisapplepie", create it if it doesn't exist yet.
+          - This Azure Blob Storage is called  called "judubois-applepie", create it if it doesn't exist yet.
+          - It is stored in an Azure Blob Storage account named "juduboisingredients", create it if it doesn't exist yet.
           - Those resources are located in the Azure Resource Group tagged "env=demo"
           """;
 
