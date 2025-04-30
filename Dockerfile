@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk as build
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /workspace/app
 
 COPY mvnw .
@@ -15,4 +15,9 @@ ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+COPY azure-cli-mcp.jar .
+
+# Default port - can be overridden
+ENV SERVER_PORT=80
+
 ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.demo.DemoApplication"]
