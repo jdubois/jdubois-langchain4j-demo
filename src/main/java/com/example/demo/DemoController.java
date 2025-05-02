@@ -27,8 +27,14 @@ public class DemoController {
 
     @GetMapping("/1")
     String getAnswer(Model model) {
-        String question = "I'm doing an apple pie, give me the list of ingredients, formatted as an HTML list.";
-        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
+        String question = """
+            I'm doing an apple pie, give me the list of ingredients, 
+            formatted as an HTML list.
+            """;
+        String answer = chatLanguageModel
+            .chat(UserMessage.from(question))
+            .aiMessage()
+            .text();
         return getView(model, "1: simple question", question, answer);
     }
 
