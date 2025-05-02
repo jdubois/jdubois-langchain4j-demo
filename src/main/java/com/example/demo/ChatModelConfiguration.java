@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.openai.models.ChatModel.GPT_4O_MINI;
-
 @Configuration
 public class ChatModelConfiguration {
 
@@ -20,17 +18,10 @@ public class ChatModelConfiguration {
 
     @Bean
     ChatLanguageModel azureOpenAIChatLanguageModel() {
-        if (azureOpenAiKey != null) {
-            return OpenAiOfficialChatModel.builder()
-                    .baseUrl(azureOpenAiEndpoint)
-                    .apiKey(azureOpenAiKey)
-                    .modelName(ChatModel.GPT_4_1)
-                    .build();
-        } else {
-            return OpenAiOfficialChatModel.builder()
-                    .isGitHubModels(true)
-                    .modelName(GPT_4O_MINI)
-                    .build();
-        }
+        return OpenAiOfficialChatModel.builder()
+                .baseUrl(azureOpenAiEndpoint)
+                .apiKey(azureOpenAiKey)
+                .modelName(ChatModel.GPT_4_1)
+                .build();
     }
 }

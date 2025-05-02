@@ -49,9 +49,9 @@ public class DemoController {
                 .toolProvider(mcpToolProvider)
                 .build();
 
-        mcpAgent.talkToAzure(question);
+        String answer = mcpAgent.talkToAzure(question);
 
-        return getView(model, "4: Agent using an MCP Server", question, "Done");
+        return getView(model, "4: Agent using an MCP Server", question, answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
