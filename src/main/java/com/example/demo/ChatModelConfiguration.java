@@ -1,11 +1,12 @@
 package com.example.demo;
 
-import com.openai.models.ChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static com.openai.models.ChatModel.GPT_4_1;
 
 @Configuration
 public class ChatModelConfiguration {
@@ -17,11 +18,11 @@ public class ChatModelConfiguration {
     private String azureOpenAiKey;
 
     @Bean
-    ChatLanguageModel azureOpenAIChatLanguageModel() {
+    ChatModel azureOpenAIChatLanguageModel() {
         return OpenAiOfficialChatModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
-                .modelName(ChatModel.GPT_4_1)
+                .modelName(GPT_4_1)
                 .build();
     }
 }
