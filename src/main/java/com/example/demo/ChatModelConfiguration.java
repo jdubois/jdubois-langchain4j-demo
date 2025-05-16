@@ -18,7 +18,7 @@ public class ChatModelConfiguration {
     private String azureOpenAiKey;
 
     @Bean
-    ChatModel azureOpenAIChatLanguageModel() {
+    ChatModel azureOpenAIChatModel() {
         return OpenAiOfficialChatModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
