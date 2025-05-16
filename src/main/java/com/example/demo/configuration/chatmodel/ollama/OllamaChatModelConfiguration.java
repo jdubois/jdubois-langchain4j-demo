@@ -1,6 +1,6 @@
 package com.example.demo.configuration.chatmodel.ollama;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +11,7 @@ public class OllamaChatModelConfiguration {
 
     @Profile({"small"})
     @Bean
-    ChatLanguageModel tinyllamaChatLanguageModel() {
+    ChatModel tinyllamaChatModel() {
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434/")
                 .modelName("tinyllama")
@@ -22,7 +22,7 @@ public class OllamaChatModelConfiguration {
 
     @Profile({"good", "elasticsearch"})
     @Bean
-    ChatLanguageModel phiChatLanguageModel() {
+    ChatModel phiChatModel() {
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434/")
                 .modelName("phi4")

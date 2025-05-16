@@ -1,6 +1,6 @@
 package com.example.demo.configuration.chatmodel.github;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ import static com.openai.models.ChatModel.GPT_4O_MINI;
 public class GitHubModelsChatModelConfiguration {
 
     @Bean
-    ChatLanguageModel gitHubModelsChatLanguageModel() {
+    ChatModel gitHubModelsChatModel() {
         return OpenAiOfficialChatModel.builder()
                 .isGitHubModels(true)
                 .modelName(GPT_4O_MINI)

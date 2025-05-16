@@ -19,7 +19,7 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
@@ -48,7 +48,7 @@ public class DemoController implements BeanFactoryAware {
 
     private final ImageModel imageModel;
 
-    private final ChatLanguageModel chatLanguageModel;
+    private final ChatModel chatModel;
 
     private final EmbeddingModel embeddingModel;
 
@@ -60,9 +60,9 @@ public class DemoController implements BeanFactoryAware {
 
     private BeanFactory beanFactory;
 
-    public DemoController(ImageModel imageModel, ChatLanguageModel chatLanguageModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, GistService gistService, MarkdownService markdownService) {
+    public DemoController(ImageModel imageModel, ChatModel chatModel, EmbeddingModel embeddingModel, EmbeddingStore<TextSegment> embeddingStore, GistService gistService, MarkdownService markdownService) {
         this.imageModel = imageModel;
-        this.chatLanguageModel = chatLanguageModel;
+        this.chatModel = chatModel;
         this.embeddingModel = embeddingModel;
         this.embeddingStore = embeddingStore;
         this.gistService = gistService;
@@ -88,14 +88,14 @@ public class DemoController implements BeanFactoryAware {
     @GetMapping("/2")
     String getAnswer(Model model) {
         String question = "Who painted the Mona Lisa?";
-        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
+        String answer = chatModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "2: simple question", question, answer);
     }
 
     @GetMapping("/3")
     String reasoning(Model model) {
         String question = "Maria's father has 4 daughters: Spring, Autumn, Winter. What is the name of the fourth daughter?";
-        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
+        String answer = chatModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "3: Reasoning question", question, answer);
     }
 
@@ -104,14 +104,14 @@ public class DemoController implements BeanFactoryAware {
         SystemMessage systemMessage = SystemMessage.from("I answer questions in French, in 100 words or less.");
 
         String question = "Give an explanation on how the Mona Lisa was painted.";
-        String answer = chatLanguageModel.chat(systemMessage, UserMessage.from(question)).aiMessage().text();
+        String answer = chatModel.chat(systemMessage, UserMessage.from(question)).aiMessage().text();
         return getView(model, "4: advanced question", question, answer);
     }
 
     @GetMapping("/5")
     String getAnswerWithLocation(Model model) {
         String question = "Where can you see this painting?";
-        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
+        String answer = chatModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "5: A question without memory", question, answer);
     }
 
@@ -122,7 +122,7 @@ public class DemoController implements BeanFactoryAware {
 
         ChatMemory chatMemory = MessageWindowChatMemory.withMaxMessages(20);
         ConversationalChain chain = ConversationalChain.builder()
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .chatMemory(chatMemory)
                 .build();
 
@@ -211,7 +211,7 @@ public class DemoController implements BeanFactoryAware {
         String question = "How many people are employed by Microsoft in the US?";
 
         RagAssistant ragAssistant = AiServices.builder(RagAssistant.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 3))
                 .build();
 
@@ -225,7 +225,7 @@ public class DemoController implements BeanFactoryAware {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .build();
 
         Recipe recipe = applePieAgent.getRecipe(question);
@@ -238,7 +238,7 @@ public class DemoController implements BeanFactoryAware {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .tools(gistService)
                 .build();
 
@@ -252,7 +252,7 @@ public class DemoController implements BeanFactoryAware {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, transform it to Markdown and write it down in a GitHub gist";
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .tools(gistService, markdownService)
                 .build();
 
@@ -268,7 +268,7 @@ public class DemoController implements BeanFactoryAware {
         ToolProvider mcpToolProvider = beanFactory.getBean(ToolProvider.class);
 
         McpAgent mcpAgent = AiServices.builder(McpAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .toolProvider(mcpToolProvider)
                 .build();
 

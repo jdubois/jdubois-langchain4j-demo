@@ -1,6 +1,6 @@
 package com.example.demo.configuration.chatmodel.azure;
 
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialChatModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +23,7 @@ public class AzureChatModelConfiguration {
     private String azureOpenAiKey;
 
     @Bean
-    ChatLanguageModel azureOpenAIChatLanguageModel() {
+    ChatModel azureOpenAIChatModel() {
         return OpenAiOfficialChatModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
