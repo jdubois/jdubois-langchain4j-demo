@@ -20,9 +20,9 @@ public class ChatModelConfiguration {
     @Bean
     ChatModel azureOpenAIChatModel() {
         return OpenAiOfficialChatModel.builder()
-                .baseUrl(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
-                .modelName(GPT_4_1)
+                .baseUrl("http://localhost:5273/v1")
+                .apiKey("xxx")
+                .modelName("Phi-4-generic-gpu")
                 .build();
     }
 }
