@@ -39,7 +39,7 @@ public class DemoController {
     }
 
     @GetMapping("/3")
-    String placeOrder(Model model) {
+    String listOrders(Model model) {
         String answer = pizzaAgent.listOrders();
         return getView(model, "1: simple question", "List pizza orders", answer);
     }
