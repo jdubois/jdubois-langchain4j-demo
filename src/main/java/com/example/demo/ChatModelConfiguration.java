@@ -14,15 +14,15 @@ public class ChatModelConfiguration {
     @Value("${AZURE_OPENAI_ENDPOINT}")
     private String azureOpenAiEndpoint;
 
-    @Value("${AZURE_OPENAI_KEY:}")
+    @Value("${AZURE_OPENAI_KEY:xxx}")
     private String azureOpenAiKey;
 
     @Bean
-    ChatModel azureOpenAIChatModel() {
+    ChatModel chatModel() {
         return OpenAiOfficialChatModel.builder()
-                .baseUrl("http://localhost:5273/v1")
+                .baseUrl("http://localhost:11434/v1")
                 .apiKey("xxx")
-                .modelName("Phi-4-generic-gpu")
+                .modelName("phi4")
                 .build();
     }
 }
