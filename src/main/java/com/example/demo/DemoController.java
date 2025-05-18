@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DemoController {
 
-    private final ChatModel chatModel;
-
-    private PizzaService pizzaService;
+    PizzaAgent pizzaAgent;
 
     public DemoController(ChatModel chatModel, PizzaService pizzaService) {
-        this.chatModel = chatModel;
-        this.pizzaService = pizzaService;
+        pizzaAgent = AiServices.builder(PizzaAgent.class)
+                .chatModel(chatModel)
+                .tools(pizzaService)
+                .build();
     }
 
     @GetMapping("/")
@@ -27,14 +27,8 @@ public class DemoController {
 
     @GetMapping("/1")
     String getAnswer(Model model) {
-        String question = """
-            I want to order a pizza, what is available?
-            """;
-        String answer = chatModel
-            .chat(UserMessage.from(question))
-            .aiMessage()
-            .text();
-        return getView(model, "1: simple question", question, answer);
+        String answer = pizzaAgent.availablePizza();
+        return getView(model, "1: simple question", "Available pizzas", answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {

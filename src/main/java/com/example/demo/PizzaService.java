@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PizzaService {
 
-    @Tool
+    @Tool("List of available pizzas")
     String listPizza() {
         return "Margarita, Regina, Calzone";
     }
