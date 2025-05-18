@@ -11,4 +11,9 @@ public class OrderService {
     String orderPizza(@P("Name of the pizza") String name) {
         return "";
     }
+
+    @Tool("List current pizza orders")
+    String listPizzaOrders() {
+        return "";
+    }
 }

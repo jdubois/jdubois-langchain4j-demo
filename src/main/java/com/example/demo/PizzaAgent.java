@@ -11,4 +11,7 @@ public interface PizzaAgent {
 
     @UserMessage("Place a pizza order")
     String placeOrder();
+
+    @UserMessage("List the current pizza orders")
+    String listOrders();
 }

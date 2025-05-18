@@ -38,6 +38,12 @@ public class DemoController {
         return getView(model, "1: simple question", "Place order", answer);
     }
 
+    @GetMapping("/3")
+    String placeOrder(Model model) {
+        String answer = pizzaAgent.listOrders();
+        return getView(model, "1: simple question", "List pizza orders", answer);
+    }
+
     private static String getView(Model model, String demoName, String question, String answer) {
         model.addAttribute("demo", demoName);
         model.addAttribute("question", question);
