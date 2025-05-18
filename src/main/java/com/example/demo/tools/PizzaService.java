@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.tools;
 
 import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 public class PizzaService {
 
     @Tool("List of available pizzas")
-    String listPizza() {
+    String listPizzas() {
         return "Margarita, Regina, Calzone";
     }
 }
