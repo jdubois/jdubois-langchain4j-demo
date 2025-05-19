@@ -14,7 +14,7 @@ public class PizzaService {
 
     public PizzaService() {
         this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL + "/pizzas")
+                .baseUrl(BASE_URL)
                 .build();
     }
 

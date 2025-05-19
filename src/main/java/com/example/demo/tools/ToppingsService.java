@@ -14,7 +14,7 @@ public class ToppingsService {
 
     public ToppingsService() {
         this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL + "/toppings")
+                .baseUrl(BASE_URL)
                 .build();
     }
 

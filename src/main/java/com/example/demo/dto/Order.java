@@ -1,6 +1,14 @@
 package com.example.demo.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-public record Order(Integer id, List<OrderItems> items) {
+public record Order(
+        Long id,
+        String userId,
+        LocalDateTime orderDate,
+        String status,
+        List<OrderItem> orderItems,
+        double totalPrice
+) {
 }
