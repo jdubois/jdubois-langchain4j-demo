@@ -29,7 +29,7 @@ public class DemoController {
     @GetMapping("/1")
     String getMenu(Model model) {
         String answer = pizzaAgent.getMenu();
-        return getView(model, "1: simple question", "Available pizzas", answer);
+        return getView(model, "1: simple question", "Here's the menu", answer);
     }
 
     @GetMapping("/2")

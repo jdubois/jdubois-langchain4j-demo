@@ -5,16 +5,16 @@ import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import static com.example.demo.tools.PizzaService.BASE_URL;
+
 @Service
 public class ToppingsService {
-
-    private static final String BASE_URL = "https://www.julien-dubois.com";
 
     private final RestClient restClient;
 
     public ToppingsService() {
         this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL + "/toppings")
                 .build();
     }
 
