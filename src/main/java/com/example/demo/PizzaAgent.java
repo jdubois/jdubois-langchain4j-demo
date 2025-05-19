@@ -9,7 +9,7 @@ public interface PizzaAgent {
     @UserMessage("Get the getMenu")
     String getMenu();
 
-    @UserMessage("Place a pizza order")
+    @UserMessage("Order one pizza with random toppings")
     String placeOrder();
 
     @UserMessage("List the current pizza orders")

@@ -12,16 +12,14 @@ public class PizzaService {
 
     private final RestClient restClient;
 
-    public PizzaService() {
-        this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL)
-                .build();
+    public PizzaService(RestClient restClient) {
+        this.restClient = restClient;
     }
 
     @Tool("List of available pizzas")
     Pizza[] listPizzas() {
         return restClient.get()
-                .uri("/pizzas")
+                .uri(BASE_URL + "/pizzas")
                 .retrieve()
                 .body(Pizza[].class);
     }

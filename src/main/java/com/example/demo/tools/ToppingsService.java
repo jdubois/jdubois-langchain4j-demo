@@ -12,16 +12,14 @@ public class ToppingsService {
 
     private final RestClient restClient;
 
-    public ToppingsService() {
-        this.restClient = RestClient.builder()
-                .baseUrl(BASE_URL)
-                .build();
+    public ToppingsService(RestClient restClient) {
+        this.restClient = restClient;
     }
 
     @Tool("List of available pizza toppings")
     Toppings[] listToppings() {
         return restClient.get()
-                .uri("/toppings")
+                .uri(BASE_URL + "/toppings")
                 .retrieve()
                 .body(Toppings[].class);
     }
