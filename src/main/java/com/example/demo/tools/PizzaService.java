@@ -8,7 +8,7 @@ import org.springframework.web.client.RestClient;
 @Service
 public class PizzaService {
 
-    static final String BASE_URL = "https://func-pizza-api-vqqlxwmln5lf4.azurewebsites.net/api";
+    public static final String BASE_URL = "https://func-pizza-api-vqqlxwmln5lf4.azurewebsites.net/api";
 
     private final RestClient restClient;
 

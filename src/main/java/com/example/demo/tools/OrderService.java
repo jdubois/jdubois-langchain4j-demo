@@ -22,8 +22,13 @@ public class OrderService {
         this.restClient = restClient;
     }
 
-    @Tool("Order a pizza")
-    Order orderPizza(@P("Order containing the Pizza Id and its quantity") Order order) {
+    @Tool("Get the current user id")
+    String getUserId() {
+        return pizzaUserId;
+    }
+
+    @Tool("Order a pizza that needs the current user id")
+    Order orderPizza(@P("Order containing the user id, the Pizza Id and its quantity") Order order) {
         return restClient.post()
                 .uri(BASE_URL + "/orders")
                 .body(order)

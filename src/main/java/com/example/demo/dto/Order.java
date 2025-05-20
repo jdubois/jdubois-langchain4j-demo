@@ -1,14 +1,15 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record Order(
         Long id,
         String userId,
         LocalDateTime orderDate,
         String status,
-        List<OrderItem> orderItems,
+        @JsonProperty("items") OrderItem[] items,
         double totalPrice
 ) {
 }
