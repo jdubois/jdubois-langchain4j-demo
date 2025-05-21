@@ -13,7 +13,7 @@ public interface PizzaAgent {
         This is a code snippet that will be inserted into a Bootstrap page. 
         Make it extra fancy. 
         We need all the available pizzas and all the available toppings.
-               Do not put HTML headers tags, or instructions on how to use the code, it will be inserted in a Boostrap page that already has the headers.
+        Do not put HTML headers tags, or instructions on how to use the code, it will be inserted in a Boostrap page that already has the headers.
         """ +
         "The images have a base URL of \"" + BASE_URL + "\\images\" that you need to append before each image URL.\n"
     )
@@ -22,6 +22,13 @@ public interface PizzaAgent {
     @UserMessage("Order one random pizza from the menu, with one random toppings from the menu")
     String placeOrder();
 
-    @UserMessage("List the current pizza orders in HTML format")
+    @UserMessage("""
+        List the current pizza orders in HTML format.
+        This is a code snippet that will be inserted into a Bootstrap page. 
+        Make a nice looking table. 
+        We need all the available orders for the current user.
+        Do not put HTML headers tags, or instructions on how to use the code, it will be inserted in a Boostrap page that already has the headers.
+        """
+    )
     String listOrders();
 }

@@ -13,18 +13,10 @@ import static com.example.demo.tools.PizzaService.BASE_URL;
 @Service
 public class OrderService {
 
-    @Value("${PIZZA_USER_ID:}")
-    private String pizzaUserId;
-
     private final RestClient restClient;
 
     public OrderService(RestClient restClient) {
         this.restClient = restClient;
-    }
-
-    @Tool("Get the current user id")
-    String getUserId() {
-        return pizzaUserId;
     }
 
     @Tool("Order a pizza that needs the current user id")
@@ -37,8 +29,8 @@ public class OrderService {
                 .getBody();
     }
 
-    @Tool("List current pizza orders")
-    Order[] listOrders() {
+    @Tool("List current pizza orders for the user id")
+    Order[] listOrders(@P("User id") String pizzaUserId) {
         return restClient.get()
                 .uri(BASE_URL+ "/orders?userId=" + pizzaUserId)
                 .retrieve()
