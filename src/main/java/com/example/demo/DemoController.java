@@ -5,6 +5,7 @@ import com.example.demo.tools.PizzaService;
 import com.example.demo.tools.ToppingsService;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.tool.ToolProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,22 @@ public class DemoController {
 
     PizzaAgent pizzaAgent;
 
-    public DemoController(ChatModel chatModel, PizzaService pizzaService, ToppingsService toppingsService, OrderService orderService) {
+    PizzaAgent mcpPizzaAgent;
+
+    public DemoController(ChatModel chatModel,
+                          PizzaService pizzaService,
+                          ToppingsService toppingsService,
+                          OrderService orderService,
+                          ToolProvider mcpToolProvider) {
+
         pizzaAgent = AiServices.builder(PizzaAgent.class)
                 .chatModel(chatModel)
                 .tools(pizzaService, toppingsService, orderService)
+                .build();
+
+        mcpPizzaAgent= AiServices.builder(PizzaAgent.class)
+                .chatModel(chatModel)
+                .toolProvider(mcpToolProvider)
                 .build();
     }
 
@@ -42,6 +55,12 @@ public class DemoController {
     String listOrders(Model model) {
         String answer = pizzaAgent.listOrders();
         return getView(model, "1: get the orders", "List pizza orders", answer);
+    }
+
+    @GetMapping("/4")
+    String getMenuWithMcp(Model model) {
+        String answer = mcpPizzaAgent.getMenu();
+        return getView(model, "1: get the menu", "Here's the menu", answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
