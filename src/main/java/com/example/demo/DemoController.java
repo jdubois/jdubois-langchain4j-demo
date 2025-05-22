@@ -5,7 +5,7 @@ import com.example.demo.assistant.mcp.McpAgent;
 import com.example.demo.assistant.tool.ApplePieAgent;
 import com.example.demo.assistant.tool.GistService;
 import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.tool.ToolProvider;
 import org.springframework.stereotype.Controller;
@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DemoController {
 
-    private final ChatLanguageModel chatLanguageModel;
+    private final ChatModel chatModel;
 
     private final GistService gistService;
 
     private ToolProvider mcpToolProvider;
 
-    public DemoController(ChatLanguageModel chatLanguageModel, GistService gistService, ToolProvider mcpToolProvider) {
-        this.chatLanguageModel = chatLanguageModel;
+    public DemoController(ChatModel chatModel, GistService gistService, ToolProvider mcpToolProvider) {
+        this.chatModel = chatModel;
         this.gistService = gistService;
         this.mcpToolProvider = mcpToolProvider;
     }
@@ -35,7 +35,7 @@ public class DemoController {
     @GetMapping("/1")
     String getAnswer(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
-        String answer = chatLanguageModel.chat(UserMessage.from(question)).aiMessage().text();
+        String answer = chatModel.chat(UserMessage.from(question)).aiMessage().text();
         return getView(model, "1: simple question", question, answer);
     }
 
@@ -44,7 +44,7 @@ public class DemoController {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .build();
 
         Recipe recipe = applePieAgent.getRecipe(question);
@@ -60,7 +60,7 @@ public class DemoController {
         """;
 
         ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .tools(gistService)
                 .build();
 
@@ -82,7 +82,7 @@ public class DemoController {
           """;
 
         McpAgent mcpAgent = AiServices.builder(McpAgent.class)
-                .chatLanguageModel(chatLanguageModel)
+                .chatModel(chatModel)
                 .toolProvider(mcpToolProvider)
                 .build();
 
