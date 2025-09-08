@@ -1,6 +1,6 @@
-package com.example.demo.assistant.tool;
+package com.example.demo.service.tool;
 
-import com.example.demo.assistant.json.Item;
+import com.example.demo.model.Item;
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import org.springframework.stereotype.Service;

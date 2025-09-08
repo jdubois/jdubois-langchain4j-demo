@@ -1,4 +1,4 @@
-package com.example.demo.assistant.rag;
+package com.example.demo.service.rag;
 
 public interface RagAssistant {
 

@@ -1,12 +1,19 @@
 package com.example.demo;
 
-import com.example.demo.assistant.json.Recipe;
-import com.example.demo.assistant.json.TopAuthors;
-import com.example.demo.assistant.mcp.McpAgent;
-import com.example.demo.assistant.rag.RagAssistant;
-import com.example.demo.assistant.tool.ApplePieAgent;
-import com.example.demo.assistant.tool.GistService;
-import com.example.demo.assistant.tool.MarkdownService;
+import com.example.demo.model.Recipe;
+import com.example.demo.model.TopAuthors;
+import com.example.demo.service.agent.GistAgent;
+import com.example.demo.service.agent.GitHubAuthorsAgent;
+import com.example.demo.service.agent.ListCreationAgent;
+import com.example.demo.service.agent.ListCreationTool;
+import com.example.demo.service.agent.RecipeAgent;
+import com.example.demo.service.mcp.GitHubMcpService;
+import com.example.demo.service.rag.RagAssistant;
+import com.example.demo.service.tool.ApplePieService;
+import com.example.demo.service.tool.GistService;
+import com.example.demo.service.tool.MarkdownService;
+import dev.langchain4j.agentic.AgenticServices;
+import dev.langchain4j.agentic.UntypedAgent;
 import dev.langchain4j.chain.ConversationalChain;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
@@ -39,6 +46,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
@@ -224,7 +232,7 @@ public class DemoController implements BeanFactoryAware {
     String structuredOutputs(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
 
-        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
+        ApplePieService applePieAgent = AiServices.builder(ApplePieService.class)
                 .chatModel(chatModel)
                 .build();
 
@@ -237,44 +245,95 @@ public class DemoController implements BeanFactoryAware {
     String functionCalling(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
 
-        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
+        ApplePieService applePieService = AiServices.builder(ApplePieService.class)
                 .chatModel(chatModel)
                 .tools(gistService)
                 .build();
 
-        Recipe recipe = applePieAgent.getRecipe(question);
+        Recipe recipe = applePieService.getRecipe(question);
 
         return getView(model, "13: Function calling", question, recipe.toString());
     }
 
     @GetMapping("/14")
-    String completeAgent(Model model) {
+    String multipleToolsAndStructuredOutput(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, transform it to Markdown and write it down in a GitHub gist";
 
-        ApplePieAgent applePieAgent = AiServices.builder(ApplePieAgent.class)
+        ApplePieService applePieService = AiServices.builder(ApplePieService.class)
                 .chatModel(chatModel)
                 .tools(gistService, markdownService)
                 .build();
 
-        Recipe recipe = applePieAgent.getRecipe(question);
+        Recipe recipe = applePieService.getRecipe(question);
 
-        return getView(model, "14: Agent with multiple tools and structured outputs", question, recipe.toString());
+        return getView(model, "14: Multiple tools and structured outputs", question, recipe.toString());
     }
 
     @GetMapping("/15")
     String mcpServer(Model model) {
         String question = "Who are the authors of the last 10 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
 
-        ToolProvider mcpToolProvider = beanFactory.getBean(ToolProvider.class);
+        ToolProvider gitHubMcpServer = beanFactory.getBean(ToolProvider.class);
 
-        McpAgent mcpAgent = AiServices.builder(McpAgent.class)
+        GitHubMcpService gitHubMcpService = AiServices.builder(GitHubMcpService.class)
                 .chatModel(chatModel)
-                .toolProvider(mcpToolProvider)
+                .toolProvider(gitHubMcpServer)
                 .build();
 
-        TopAuthors topAuthors = mcpAgent.askGitHub(question);
+        TopAuthors topAuthors = gitHubMcpService.askGitHub(question);
 
-        return getView(model, "15: Agent using an MCP Server", question, topAuthors.toString());
+        return getView(model, "15: Using an MCP Server", question, topAuthors.toString());
+    }
+
+    @GetMapping("/16")
+    String agentic(Model model) {
+
+        // The agent to get the recipe is a standard agent
+        RecipeAgent recipeAgent = AgenticServices
+                .agentBuilder(RecipeAgent.class)
+                .chatModel(chatModel)
+                .outputName("recipe")
+                .build();
+
+        // The agent to get the GitHub authors uses the GitHub MCP server
+        GitHubAuthorsAgent gitHubAuthorsAgent = AgenticServices
+                .agentBuilder(GitHubAuthorsAgent.class)
+                .chatModel(chatModel)
+                .toolProvider(beanFactory.getBean(ToolProvider.class))
+                .outputName("authors")
+                .build();
+
+        // The agent which creates the markdown list uses a tool to calculate the final list
+        ListCreationAgent listCreationTool = AgenticServices
+                .agentBuilder(ListCreationAgent.class)
+                .chatModel(chatModel)
+                .tools(new ListCreationTool())
+                .outputName("content")
+                .build();
+
+        // The agent storing the final result in a GitHub gist uses a tool to call a Spring Bean
+        GistAgent gistAgent = AgenticServices
+                .agentBuilder(GistAgent.class)
+                .chatModel(chatModel)
+                .tools(gistService)
+                .outputName("gistUrl")
+                .build();;
+
+        // The supervisor agent coordinates the previous agents
+        UntypedAgent supervisorAgent = AgenticServices
+                .sequenceBuilder()
+                .subAgents(recipeAgent, gitHubAuthorsAgent, listCreationTool, gistAgent)
+                .outputName("gistUrl")
+                .build();
+
+        Map<String, Object> input = Map.of(
+                "repository", "langchain4j/langchain4j",
+                "recipeName", "apple pie"
+        );
+
+        String answer = (String) supervisorAgent.invoke(input);
+
+        return getView(model, "16: Agents working together", "Agentic AI with 4 agents working together", answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {

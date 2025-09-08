@@ -23,7 +23,7 @@ public class McpService {
     @Bean
     public ToolProvider mcpToolProvider() {
         McpTransport transport = new StdioMcpTransport.Builder()
-                .command(List.of("docker", "run", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN=" + githubToken, "-i", "mcp/github"))
+                .command(List.of("docker", "run", "-e", "GITHUB_PERSONAL_ACCESS_TOKEN=" + githubToken, "-i", "ghcr.io/github/github-mcp-server"))
                 .logEvents(true)
                 .build();
 

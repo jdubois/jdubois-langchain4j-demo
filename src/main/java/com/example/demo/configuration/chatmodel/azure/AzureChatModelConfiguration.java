@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.util.Set;
 
-import static com.openai.models.ChatModel.GPT_4O_MINI;
+import static com.openai.models.ChatModel.GPT_5_MINI;
 import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 
 @Configuration
@@ -27,7 +27,7 @@ public class AzureChatModelConfiguration {
         return OpenAiOfficialChatModel.builder()
                 .baseUrl(azureOpenAiEndpoint)
                 .apiKey(azureOpenAiKey)
-                .modelName(GPT_4O_MINI)
+                .modelName(GPT_5_MINI)
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .strictJsonSchema(true)
                 .strictTools(true)

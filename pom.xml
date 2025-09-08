@@ -86,6 +86,12 @@
 			<artifactId>langchain4j-mcp</artifactId>
 		</dependency>
 
+        <!-- Agents -->
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-agentic</artifactId>
+        </dependency>
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
