@@ -15,6 +15,7 @@ It contains the following demos:
 - How LangChain4j's "Easy RAG" works, and a complete example using it.
 - How to use function calling
 - How to use structured outputs (JSON Schemas)
+- How to use AI agents with LangChain4j's agentic module
 
 Those demos either run locally (with Docker, using Ollama and Qdrant) or in the cloud (using Azure OpenAI or GitHub Models, and Azure AI Search).
 
