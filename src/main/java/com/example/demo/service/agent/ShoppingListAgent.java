@@ -6,7 +6,7 @@ import dev.langchain4j.agentic.Agent;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.V;
 
-public interface ListCreationAgent {
+public interface ShoppingListAgent {
 
     @UserMessage("""
             You are creating a shopping list for the recipe, formatted in MarkDown. For each item in the recipe, you need to assign an author from the list of authors.

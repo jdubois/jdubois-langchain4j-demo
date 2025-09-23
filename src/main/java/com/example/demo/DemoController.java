@@ -4,7 +4,7 @@ import com.example.demo.model.Recipe;
 import com.example.demo.model.TopAuthors;
 import com.example.demo.service.agent.GistAgent;
 import com.example.demo.service.agent.GitHubAuthorsAgent;
-import com.example.demo.service.agent.ListCreationAgent;
+import com.example.demo.service.agent.ShoppingListAgent;
 import com.example.demo.service.agent.ListCreationTool;
 import com.example.demo.service.agent.RecipeAgent;
 import com.example.demo.service.mcp.GitHubMcpService;
@@ -310,8 +310,8 @@ public class DemoController implements BeanFactoryAware {
                 .build();
 
         // The agent which creates the markdown list uses a tool to calculate the final list
-        ListCreationAgent listCreationTool = AgenticServices
-                .agentBuilder(ListCreationAgent.class)
+        ShoppingListAgent shoppingListAgent = AgenticServices
+                .agentBuilder(ShoppingListAgent.class)
                 .chatModel(chatModel)
                 .tools(new ListCreationTool())
                 .outputName("content")
@@ -328,7 +328,7 @@ public class DemoController implements BeanFactoryAware {
         // The supervisor agent coordinates the previous agents
         UntypedAgent supervisorAgent = AgenticServices
                 .sequenceBuilder()
-                .subAgents(dataBrokerAgent, listCreationTool, gistAgent)
+                .subAgents(dataBrokerAgent, shoppingListAgent, gistAgent)
                 .outputName("gistUrl")
                 .build();
 
