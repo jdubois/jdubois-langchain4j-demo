@@ -304,7 +304,7 @@ public class DemoController implements BeanFactoryAware {
                 .build();
 
         // The data agent runs the previous two agents in parallel
-        UntypedAgent dataAgent = AgenticServices
+        UntypedAgent dataBrokerAgent = AgenticServices
                 .parallelBuilder()
                 .subAgents(recipeAgent, gitHubAuthorsAgent)
                 .build();
@@ -328,7 +328,7 @@ public class DemoController implements BeanFactoryAware {
         // The supervisor agent coordinates the previous agents
         UntypedAgent supervisorAgent = AgenticServices
                 .sequenceBuilder()
-                .subAgents(dataAgent, listCreationTool, gistAgent)
+                .subAgents(dataBrokerAgent, listCreationTool, gistAgent)
                 .outputName("gistUrl")
                 .build();
 
