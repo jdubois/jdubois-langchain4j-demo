@@ -303,6 +303,12 @@ public class DemoController implements BeanFactoryAware {
                 .outputName("authors")
                 .build();
 
+        // The data agent runs the previous two agents in parallel
+        UntypedAgent dataAgent = AgenticServices
+                .parallelBuilder()
+                .subAgents(recipeAgent, gitHubAuthorsAgent)
+                .build();
+
         // The agent which creates the markdown list uses a tool to calculate the final list
         ListCreationAgent listCreationTool = AgenticServices
                 .agentBuilder(ListCreationAgent.class)
@@ -322,7 +328,7 @@ public class DemoController implements BeanFactoryAware {
         // The supervisor agent coordinates the previous agents
         UntypedAgent supervisorAgent = AgenticServices
                 .sequenceBuilder()
-                .subAgents(recipeAgent, gitHubAuthorsAgent, listCreationTool, gistAgent)
+                .subAgents(dataAgent, listCreationTool, gistAgent)
                 .outputName("gistUrl")
                 .build();
 
