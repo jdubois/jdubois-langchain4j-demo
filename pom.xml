@@ -45,40 +45,12 @@
 			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-document-transformer-jsoup</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-		</dependency>
 
 		<!-- Using AI services on Azure -->
 		<dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-open-ai-official</artifactId>
         </dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-azure-ai-search</artifactId>
-		</dependency>
-
-		<!-- Using AI services locally -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-ollama</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-qdrant</artifactId>
-		</dependency>
-
-		<!-- Using ElasticSearch as a vector store -->
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-elasticsearch</artifactId>
-		</dependency>
 
 		<!-- MCP Client -->
 		<dependency>
