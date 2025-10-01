@@ -8,7 +8,7 @@ import dev.langchain4j.service.V;
 public interface GitHubAuthorsAgent {
 
     @UserMessage("""
-            Get a list of the authors of the last 10 commits in the "{{repository}}" repository, ordered by number of commits.
+            Get a list of the authors of the last 50 commits in the "{{repository}}" repository, ordered by number of commits.
             """)
     @Agent("An agent that retrieves the last GitHub authors from the provided GitHub repository.")
     TopAuthors getLastGitHubAuthors(@V("repository") String repository);

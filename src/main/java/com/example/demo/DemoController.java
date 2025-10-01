@@ -80,7 +80,7 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/4")
     String mcpServer(Model model) {
-        String question = "Who are the authors of the last 10 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
+        String question = "Who are the authors of the last 50 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
 
         ToolProvider gitHubMcpServer = beanFactory.getBean(ToolProvider.class);
 
@@ -95,6 +95,33 @@ public class DemoController implements BeanFactoryAware {
     }
 
     @GetMapping("/5")
+    String simpleAgent(Model model) {
+
+        // The agent to get the recipe is a standard agent
+        RecipeAgent recipeAgent = AgenticServices
+                .agentBuilder(RecipeAgent.class)
+                .chatModel(chatModel)
+                .outputName("recipe")
+                .build();
+
+        // The data agent runs the previous two agents in parallel
+        UntypedAgent dataBrokerAgent = AgenticServices
+                .sequenceBuilder()
+                .subAgents(recipeAgent)
+                .outputName("recipe")
+                .build();
+
+        Map<String, Object> input = Map.of(
+                "recipeName", "apple pie"
+        );
+
+        Recipe answer = (Recipe) dataBrokerAgent.invoke(input);
+
+        return getView(model, "5: One agent", "One agent fetching data", answer.toString());
+
+    }
+
+    @GetMapping("/6")
     String agentic(Model model) {
 
         // The agent to get the recipe is a standard agent
@@ -148,7 +175,7 @@ public class DemoController implements BeanFactoryAware {
 
         String answer = (String) supervisorAgent.invoke(input);
 
-        return getView(model, "5: Agents working together", "Agentic AI with 4 agents working together", answer);
+        return getView(model, "6: Agents working together", "Agentic AI with 4 agents working together", answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
