@@ -104,20 +104,9 @@ public class DemoController implements BeanFactoryAware {
                 .outputName("recipe")
                 .build();
 
-        // The data agent runs the previous two agents in parallel
-        UntypedAgent dataBrokerAgent = AgenticServices
-                .sequenceBuilder()
-                .subAgents(recipeAgent)
-                .outputName("recipe")
-                .build();
+        Recipe recipe = recipeAgent.getRecipe("apple pie");
 
-        Map<String, Object> input = Map.of(
-                "recipeName", "apple pie"
-        );
-
-        Recipe answer = (Recipe) dataBrokerAgent.invoke(input);
-
-        return getView(model, "5: One agent", "One agent fetching data", answer.toString());
+        return getView(model, "5: One agent", "One agent fetching data", recipe.toString());
 
     }
 
