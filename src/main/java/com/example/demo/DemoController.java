@@ -101,7 +101,6 @@ public class DemoController implements BeanFactoryAware {
         RecipeAgent recipeAgent = AgenticServices
                 .agentBuilder(RecipeAgent.class)
                 .chatModel(chatModel)
-                .outputName("recipe")
                 .build();
 
         Recipe recipe = recipeAgent.getRecipe("apple pie");
