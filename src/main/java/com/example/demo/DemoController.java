@@ -80,7 +80,7 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/4")
     String mcpServer(Model model) {
-        String question = "Who are the authors of the last 50 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
+        String question = "Who are the authors of the last 20 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
 
         ToolProvider gitHubMcpServer = beanFactory.getBean(ToolProvider.class);
 
