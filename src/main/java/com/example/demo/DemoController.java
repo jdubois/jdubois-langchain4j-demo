@@ -66,7 +66,7 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/3")
     String functionCalling(Model model) {
-        String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
+        String question = "I'm doing an apple pie, give me the list of ingredients that I need, and write it down in a GitHub gist.";
 
         ApplePieService applePieService = AiServices.builder(ApplePieService.class)
                 .chatModel(chatModel)
@@ -147,7 +147,7 @@ public class DemoController implements BeanFactoryAware {
                 .chatModel(chatModel)
                 .tools(gistService)
                 .outputName("gistUrl")
-                .build();;
+                .build();
 
         // The supervisor agent coordinates the previous agents
         UntypedAgent supervisorAgent = AgenticServices
