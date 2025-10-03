@@ -55,11 +55,11 @@ public class DemoController implements BeanFactoryAware {
     String structuredOutputs(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
 
-        ApplePieService applePieAgent = AiServices.builder(ApplePieService.class)
+        ApplePieService applePieService = AiServices.builder(ApplePieService.class)
                 .chatModel(chatModel)
                 .build();
 
-        Recipe recipe = applePieAgent.getRecipe(question);
+        Recipe recipe = applePieService.getRecipe(question);
 
         return getView(model, "2: Structured Outputs", question, recipe.toString());
     }
