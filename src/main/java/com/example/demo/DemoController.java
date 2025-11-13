@@ -292,7 +292,7 @@ public class DemoController implements BeanFactoryAware {
         RecipeAgent recipeAgent = AgenticServices
                 .agentBuilder(RecipeAgent.class)
                 .chatModel(chatModel)
-                .outputName("recipe")
+                .outputKey("recipe")
                 .build();
 
         // The agent to get the GitHub authors uses the GitHub MCP server
@@ -300,7 +300,7 @@ public class DemoController implements BeanFactoryAware {
                 .agentBuilder(GitHubAuthorsAgent.class)
                 .chatModel(chatModel)
                 .toolProvider(beanFactory.getBean(ToolProvider.class))
-                .outputName("authors")
+                .outputKey("authors")
                 .build();
 
         // The data agent runs the previous two agents in parallel
@@ -314,7 +314,7 @@ public class DemoController implements BeanFactoryAware {
                 .agentBuilder(ShoppingListAgent.class)
                 .chatModel(chatModel)
                 .tools(new ListCreationTool())
-                .outputName("content")
+                .outputKey("content")
                 .build();
 
         // The agent storing the final result in a GitHub gist uses a tool to call a Spring Bean
@@ -322,14 +322,14 @@ public class DemoController implements BeanFactoryAware {
                 .agentBuilder(GistAgent.class)
                 .chatModel(chatModel)
                 .tools(gistService)
-                .outputName("gistUrl")
+                .outputKey("gistUrl")
                 .build();;
 
         // The supervisor agent coordinates the previous agents
         UntypedAgent supervisorAgent = AgenticServices
                 .sequenceBuilder()
                 .subAgents(dataBrokerAgent, shoppingListAgent, gistAgent)
-                .outputName("gistUrl")
+                .outputKey("gistUrl")
                 .build();
 
         Map<String, Object> input = Map.of(

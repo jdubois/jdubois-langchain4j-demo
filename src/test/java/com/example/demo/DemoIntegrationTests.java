@@ -11,6 +11,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
+import java.time.Duration;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,7 +31,7 @@ public class DemoIntegrationTests {
     public static ComposeContainer environment =
             new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
                     .withExposedService("qdrant-1",  6334, Wait.forListeningPort())
-                    .waitingFor("ollama-1", Wait.forSuccessfulCommand("ollama pull tinyllama"));
+                    .waitingFor("ollama-1", Wait.forSuccessfulCommand("ollama pull tinyllama").withStartupTimeout(Duration.ofMinutes(5)));
 
     @Autowired
     private MockMvc mockMvc;
