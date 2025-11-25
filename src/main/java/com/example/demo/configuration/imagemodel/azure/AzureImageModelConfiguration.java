@@ -13,17 +13,17 @@ import static com.openai.models.images.ImageModel.DALL_E_3;
 @Profile("azure")
 public class AzureImageModelConfiguration {
 
-    @Value("${AZURE_OPENAI_ENDPOINT}")
-    private String azureOpenAiEndpoint;
+    @Value("${OPENAI_BASE_URL}")
+    private String microsoftFoundryEndpoint;
 
-    @Value("${AZURE_OPENAI_KEY}")
-    private String azureOpenAiKey;
+    @Value("${OPENAI_API_KEY}")
+    private String microsoftFoundryApiKey;
 
     @Bean
     ImageModel imageModel() {
         return OpenAiOfficialImageModel.builder()
-                .baseUrl(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
+                .baseUrl(microsoftFoundryEndpoint)
+                .apiKey(microsoftFoundryApiKey)
                 .modelName(DALL_E_3)
                 .build();
     }

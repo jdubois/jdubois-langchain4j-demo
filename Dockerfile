@@ -1,6 +1,6 @@
 # You need to set the envionment variables for the application to start correctly:
-# AZURE_OPENAI_ENDPOINT
- # AZURE_OPENAI_KEY
+# OPENAI_BASE_URL
+ # OPENAI_API_KEY
  # AZURE_SEARCH_ENDPOINT
  # AZURE_SEARCH_KEY
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Execute this script to deploy the needed Azure OpenAI models to execute the integration tests.
+# Execute this script to deploy the needed Microsoft Foundry models to execute the integration tests.
 # For this, you need Azure CLI installed: https://learn.microsoft.com/cli/azure/install-azure-cli
 
 echo "Setting up environment variables..."
@@ -39,16 +39,16 @@ COGNITIVE_SERVICE_ID=$(az cognitiveservices account create \
   --sku "S0" \
    | jq -r ".id")
 
-echo "Storing Azure OpenAI endpoint and key in an environment variable..."
+echo "Storing Microsoft Foundry endpoint and key in an environment variable..."
 echo "--------------------------------------------------------"
-AZURE_OPENAI_ENDPOINT=$(
+OPENAI_BASE_URL=$(
   az cognitiveservices account show \
     --name "$AZURE_AI_SERVICE" \
     --resource-group "$AZURE_RESOURCE_GROUP" \
     | jq -r .properties.endpoint
   )
 
-AZURE_OPENAI_KEY=$(
+OPENAI_API_KEY=$(
   az cognitiveservices account keys list \
     --name "$AZURE_AI_SERVICE" \
     --resource-group "$AZURE_RESOURCE_GROUP" \
@@ -58,14 +58,14 @@ AZURE_OPENAI_KEY=$(
 # If you want to know the available models, run the following Azure CLI command:
 # az cognitiveservices account list-models --resource-group "$AZURE_RESOURCE_GROUP" --name "$AZURE_AI_SERVICE" -o table  
 
-echo "Deploying a gpt-4o-mini model..."
+echo "Deploying a gpt-5-mini model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
   --name "$AZURE_AI_SERVICE" \
   --resource-group "$AZURE_RESOURCE_GROUP" \
-  --deployment-name "gpt-4o-mini" \
-  --model-name "gpt-4o-mini" \
-  --model-version "2024-07-18"  \
+  --deployment-name "gpt-5-mini" \
+  --model-name "gpt-5-mini" \
+  --model-version "2025-08-07"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
   --sku-name "Standard"
@@ -108,8 +108,8 @@ echo "--------------------------------------------------------"
 AZURE_SEARCH_ENDPOINT="https://$SEARCH_SERVICE.search.windows.net"
 AZURE_SEARCH_KEY=$(az search admin-key show --service-name "$SEARCH_SERVICE" --resource-group "$AZURE_RESOURCE_GROUP" | jq -r .primaryKey)
 
-echo "AZURE_OPENAI_ENDPOINT=$AZURE_OPENAI_ENDPOINT" >> $SCRIPTPATH/../../../.env
-echo "AZURE_OPENAI_KEY=$AZURE_OPENAI_KEY" >> $SCRIPTPATH/../../../.env
+echo "OPENAI_BASE_URL=$OPENAI_BASE_URL" >> $SCRIPTPATH/../../../.env
+echo "OPENAI_API_KEY=$OPENAI_API_KEY" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_ENDPOINT=$AZURE_SEARCH_ENDPOINT" >> $SCRIPTPATH/../../../.env
 echo "AZURE_SEARCH_KEY=$AZURE_SEARCH_KEY" >> $SCRIPTPATH/../../../.env
 

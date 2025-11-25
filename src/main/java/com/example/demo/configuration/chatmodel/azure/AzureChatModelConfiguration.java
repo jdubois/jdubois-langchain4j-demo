@@ -16,17 +16,17 @@ import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 @Profile("azure")
 public class AzureChatModelConfiguration {
 
-    @Value("${AZURE_OPENAI_ENDPOINT}")
-    private String azureOpenAiEndpoint;
+    @Value("${OPENAI_BASE_URL}")
+    private String microsoftFoundryEndpoint;
 
-    @Value("${AZURE_OPENAI_KEY}")
-    private String azureOpenAiKey;
+    @Value("${OPENAI_API_KEY}")
+    private String microsoftFoundryApiKey;
 
     @Bean
     ChatModel azureOpenAIChatModel() {
         return OpenAiOfficialChatModel.builder()
-                .baseUrl(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
+                .baseUrl(microsoftFoundryEndpoint)
+                .apiKey(microsoftFoundryApiKey)
                 .modelName(GPT_5_MINI)
                 .supportedCapabilities(Set.of(RESPONSE_FORMAT_JSON_SCHEMA))
                 .strictJsonSchema(true)

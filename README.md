@@ -9,7 +9,7 @@ This is a Spring Boot project that demonstrates how to use LangChain4j to create
 It contains the following demos:
 
 - How to generate an image using Dalle-3.
-- How to generate a text using GPT-4o, GPT-4o-mini, Phi-4 and tinyllama.
+- How to generate a text using GPT-5-mini, Phi-4 and tinyllama.
 - How to use a chat conversation with memory of the context.
 - How to ingest data into a vector database, and use it.
 - How LangChain4j's "Easy RAG" works, and a complete example using it.
@@ -17,7 +17,7 @@ It contains the following demos:
 - How to use structured outputs (JSON Schemas)
 - How to use AI agents with LangChain4j's agentic module
 
-Those demos either run locally (with Docker, using Ollama and Qdrant) or in the cloud (using Azure OpenAI or GitHub Models, and Azure AI Search).
+Those demos either run locally (with Docker, using Ollama and Qdrant) or in the cloud (using Microsoft Foundry or GitHub Models, and Azure AI Search).
 
 ## Slides
 
@@ -34,9 +34,9 @@ There are several Spring Boot profiles, so you can test the demos with different
 
 This configuration uses:
 
-- __Chat Model__: Azure OpenAI with gpt-4o
-- __Image Model__: Azure OpenAI with dalle-3
-- __Embedding model__: Azure OpenAI with text-embedding-ada
+- __Chat Model__: Microsoft Foundry with gpt-4o
+- __Image Model__: Microsoft Foundry with dalle-3
+- __Embedding model__: Microsoft Foundry with text-embedding-ada
 - __Embedding store__: Azure AI Search
 
 It is enabled by using the `azure` Spring Boot profile.
@@ -44,12 +44,12 @@ One way to do this is to set `spring.profiles.active=azure` in the `src/main/res
 
 To provision the Azure resources, you need to run the `src/main/script/deploy-azure-openai-models.sh` script. It will create the following resources:
 
-- An Azure OpenAI instance, with the necessary OpenAI models for this demo.
+- An Microsoft Foundry instance, with the necessary OpenAI models for this demo.
 - An Azure AI Search instance.
 
 At the end of this script, the following environment variables will be displayed (and stored in the `.env` file), and you will need them to run the application:
-- `AZURE_OPENAI_ENDPOINT`: your Azure OpenAI URL endpoint.
-- `AZURE_OPENAI_KEY`: your Azure OpenAI API key.
+- `OPENAI_BASE_URL`: your Microsoft Foundry URL endpoint.
+- `OPENAI_API_KEY`: your Microsoft Foundry API key.
 - `AZURE_SEARCH_ENDPOINT`: your Azure AI Search URL endpoint.
 - `AZURE_SEARCH_KEY`: your Azure AI Search API key.
 
@@ -103,7 +103,7 @@ GitHub Models are available [here](https://github.com/marketplace/models).
 
 This configuration uses:
 
-- __Chat Model__: GitHub Models with gpt-4o-mini
+- __Chat Model__: GitHub Models with gpt-5-mini
 - __Image Model__: Not available
 - __Embedding model__: GitHub Models with text-embedding-3-small
 - __Embedding store__: Qdrant

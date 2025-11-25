@@ -89,7 +89,7 @@ public class DemoController implements BeanFactoryAware {
             String answer = imageModel.generate(question).content().url().toString();
             return getView(model, "1: image generation", question, answer);
         } else {
-            return getView(model, "1: image generation", question, "Image generation is only supported by Azure OpenAI");
+            return getView(model, "1: image generation", question, "Image generation is only supported by Microsoft Foundry");
         }
     }
 

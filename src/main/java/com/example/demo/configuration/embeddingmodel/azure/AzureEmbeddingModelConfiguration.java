@@ -13,17 +13,17 @@ import static com.openai.models.embeddings.EmbeddingModel.TEXT_EMBEDDING_3_SMALL
 @Profile("azure")
 public class AzureEmbeddingModelConfiguration {
 
-    @Value("${AZURE_OPENAI_ENDPOINT}")
-    private String azureOpenAiEndpoint;
+    @Value("${OPENAI_BASE_URL}")
+    private String microsoftFoundryEndpoint;
 
-    @Value("${AZURE_OPENAI_KEY}")
-    private String azureOpenAiKey;
+    @Value("${OPENAI_API_KEY}")
+    private String microsoftFoundryApiKey;
 
     @Bean
     EmbeddingModel azureOpenAiEmbeddingModel() {
         return OpenAiOfficialEmbeddingModel.builder()
-                .baseUrl(azureOpenAiEndpoint)
-                .apiKey(azureOpenAiKey)
+                .baseUrl(microsoftFoundryEndpoint)
+                .apiKey(microsoftFoundryApiKey)
                 .modelName(TEXT_EMBEDDING_3_SMALL)
                 .build();
     }
