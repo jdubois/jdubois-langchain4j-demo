@@ -200,7 +200,7 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/10")
     String ingestNews(Model model) {
-        Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar23/index.html", new TextDocumentParser());
+        Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar25/index.html", new TextDocumentParser());
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentTransformer(new HtmlToTextDocumentTransformer(".annual-report"))
@@ -216,7 +216,7 @@ public class DemoController implements BeanFactoryAware {
 
     @GetMapping("/11")
     String rag(Model model) {
-        String question = "How many people are employed by Microsoft in the US?";
+        String question = "How many people are employed by Microsoft in the U.S. as of June 30, 2025?";
 
         RagAssistant ragAssistant = AiServices.builder(RagAssistant.class)
                 .chatModel(chatModel)

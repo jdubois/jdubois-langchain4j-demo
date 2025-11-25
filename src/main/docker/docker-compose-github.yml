@@ -1,7 +1,0 @@
-services:
-  qdrant:
-    container_name: qdrant
-    image: qdrant/qdrant:v1.13.4
-    ports:
-      - "6333:6333"
-      - "6334:6334"

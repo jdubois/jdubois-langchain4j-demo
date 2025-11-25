@@ -9,23 +9,12 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class OllamaChatModelConfiguration {
 
-    @Profile({"small"})
+    @Profile({"local"})
     @Bean
     ChatModel tinyllamaChatModel() {
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434/")
-                .modelName("tinyllama")
-                .logRequests(true)
-                .logResponses(true)
-                .build();
-    }
-
-    @Profile({"good", "elasticsearch"})
-    @Bean
-    ChatModel phiChatModel() {
-        return OllamaChatModel.builder()
-                .baseUrl("http://localhost:11434/")
-                .modelName("phi4")
+                .modelName("llama3.2:1b")
                 .logRequests(true)
                 .logResponses(true)
                 .build();

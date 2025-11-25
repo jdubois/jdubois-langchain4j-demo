@@ -10,17 +10,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("elasticsearch")
+@Profile("local")
 public class ElasticsearchEmbeddingStoreConfiguration {
 
     @Bean
-    EmbeddingStore<TextSegment> embeddingStore() {
-        RestClient client = RestClient.builder(new HttpHost("localhost", 9200))
-                .build();
+    RestClient restClient() {
+        return RestClient.builder(
+                new HttpHost("localhost", 9200, "http")
+        ).build();
+    }
 
+    @Bean
+    EmbeddingStore<TextSegment> embeddingStore(RestClient restClient) {
         return ElasticsearchEmbeddingStore.builder()
-                .indexName("kbindex")
-                .restClient(client)
+                .restClient(restClient)
                 .build();
     }
 }

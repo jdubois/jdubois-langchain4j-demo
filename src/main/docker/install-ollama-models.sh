@@ -9,8 +9,8 @@ pid=$!
 sleep 5
 
 echo "🔴 Retrieve Ollama models..."
-ollama pull phi4
 ollama pull nomic-embed-text
+ollama pull llama3.2:1b
 echo "🟢 Done!"
 
 # Wait for Ollama process to finish.

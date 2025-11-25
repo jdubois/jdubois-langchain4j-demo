@@ -1,6 +1,6 @@
 services:
   ollama:
-    image: ollama/ollama:0.12.10
+    image: ollama/ollama:0.13.0
     ports:
       - 11434:11434
     pull_policy: always
@@ -9,8 +9,12 @@ services:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
 
-  qdrant:
-    image: qdrant/qdrant:v1.15
+  elasticsearch:
+    image: elastic/elasticsearch:9.1.7
     ports:
-      - "6333:6333"
-      - "6334:6334"
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
