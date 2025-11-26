@@ -4,9 +4,9 @@ import com.example.demo.model.Recipe;
 import com.example.demo.model.TopAuthors;
 import com.example.demo.service.agent.GistAgent;
 import com.example.demo.service.agent.GitHubAuthorsAgent;
-import com.example.demo.service.agent.ShoppingListAgent;
 import com.example.demo.service.agent.ListCreationTool;
 import com.example.demo.service.agent.RecipeAgent;
+import com.example.demo.service.agent.ShoppingListAgent;
 import com.example.demo.service.mcp.GitHubMcpService;
 import com.example.demo.service.rag.RagAssistant;
 import com.example.demo.service.tool.ApplePieService;
@@ -44,7 +44,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
