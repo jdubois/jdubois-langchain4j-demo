@@ -147,7 +147,6 @@
 					<argLine>
 						-XX:TieredStopAtLevel=1
 						-XX:+UseParallelGC
-						-Xverify:none
 						-XX:+DisableExplicitGC
 						--enable-native-access=ALL-UNNAMED
 						--add-opens=java.base/java.lang=ALL-UNNAMED

@@ -24,7 +24,6 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
 ENTRYPOINT ["java", \
     "-XX:TieredStopAtLevel=1", \
     "-XX:+UseParallelGC", \
-    "-Xverify:none", \
     "-XX:+DisableExplicitGC", \
     "--enable-native-access=ALL-UNNAMED", \
     "--add-opens=java.base/java.lang=ALL-UNNAMED", \
