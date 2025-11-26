@@ -7,6 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.util.Set;
+
+import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
+
 @Configuration
 public class OllamaChatModelConfiguration {
 
@@ -15,7 +19,7 @@ public class OllamaChatModelConfiguration {
 
     @Profile({"local"})
     @Bean
-    ChatModel tinyllamaChatModel() {
+    ChatModel ollamaChatModel() {
         return OllamaChatModel.builder()
                 .baseUrl("http://localhost:" + ollamaPort)
                 .modelName("llama3.2:1b")
