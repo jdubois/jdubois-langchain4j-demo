@@ -6,6 +6,16 @@
   --bs-body-bg: var(--bs-gray-100);
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 .bg-darkblue {
   background-color: #00008b !important; /* This is a dark blue color */
 }
@@ -15,15 +25,35 @@
   color: #ffffff !important; /* This is white color */
 }
 
+/* Main content should grow to push footer down */
+.container.my-5 {
+  flex: 1 0 auto;
+}
+
 /* Footer styles */
 footer.navbar-dark {
-  margin-top: 3rem;
-  padding: 1.5rem 0;
+  margin-top: auto;
+  padding: 0.25rem 0;
+  flex-shrink: 0;
+  min-height: auto;
+}
+
+footer .container {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+footer .navbar-text {
+  font-size: 0.75rem;
+  line-height: 1.2;
+  margin-bottom: 0;
+  padding: 0;
 }
 
 footer .navbar-text a {
   text-decoration: underline;
   color: #ffffff !important;
+  font-size: 0.75rem;
 }
 
 footer .navbar-text a:hover {

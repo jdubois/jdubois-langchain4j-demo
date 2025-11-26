@@ -6,8 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class DemoApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+    static void main(String[] args) {
+		SpringApplication app = new SpringApplication(DemoApplication.class);
+		// Startup performance optimizations
+		app.setLazyInitialization(true);
+		app.setRegisterShutdownHook(false);
+		app.run(args);
 	}
 
 }
