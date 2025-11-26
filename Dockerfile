@@ -21,6 +21,16 @@ ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.demo.DemoApplication"]
+ENTRYPOINT ["java", \
+    "-XX:TieredStopAtLevel=1", \
+    "-XX:+UseParallelGC", \
+    "-Xverify:none", \
+    "-XX:+DisableExplicitGC", \
+    "--enable-native-access=ALL-UNNAMED", \
+    "--add-opens=java.base/java.lang=ALL-UNNAMED", \
+    "--add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED", \
+    "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED", \
+    "-cp", "app:app/lib/*", \
+    "com.example.demo.DemoApplication"]
 
 EXPOSE 8080
