@@ -26,7 +26,7 @@ public class McpService {
                 .command(List.of("docker", "run",
                         "-e", "GITHUB_PERSONAL_ACCESS_TOKEN=" + githubToken + " ",
                         "-e", "GITHUB_TOOLSETS=repos ",
-                        "-i", "ghcr.io/github/github-mcp-server:0.20.2"))
+                        "-i", "ghcr.io/github/github-mcp-server:0.22.0"))
                 .logEvents(true)
                 .build();
 
