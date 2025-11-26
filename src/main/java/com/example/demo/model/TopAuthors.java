@@ -1,20 +1,15 @@
 package com.example.demo.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record TopAuthors(List<Author> authors) {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        authors
-                .forEach(author -> result
-                        .append(author.firstName())
-                        .append(" ")
-                        .append(author.lastName())
-                        .append(" ")
-                        .append(author.NumberOfCommits())
-                        .append(" | "));
-        return result.toString();
+        String authorsJson = authors.stream()
+                .map(Author::toString)
+                .collect(Collectors.joining(",", "[", "]"));
+        return "{\"authors\":" + authorsJson + "}";
     }
 }
