@@ -16,7 +16,7 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
     },
     "ghcr.io/prulloac/devcontainer-features/ollama:1": {
-      "pull": "nomic-embed-text llama3.2:1b"
+      "pull": "nomic-embed-text,llama3.2:1b"
     }
   },
 
