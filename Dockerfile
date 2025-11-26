@@ -29,6 +29,7 @@ ENTRYPOINT ["java", \
     "--add-opens=java.base/java.lang=ALL-UNNAMED", \
     "--add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED", \
     "--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED", \
+    "-Dserver.address=0.0.0.0", \
     "-cp", "app:app/lib/*", \
     "com.example.demo.DemoApplication"]
 
