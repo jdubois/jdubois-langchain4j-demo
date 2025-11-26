@@ -25,7 +25,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = "spring.profiles.active=local")
+        properties = {
+                "spring.profiles.active=local",
+                "ollama.port=11435",
+                "elasticsearch.port=9201"
+        })
 @Testcontainers
 public class DemoIntegrationTests {
 

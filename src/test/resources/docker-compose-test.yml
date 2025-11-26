@@ -2,7 +2,7 @@ services:
   ollama:
     image: ollama/ollama:0.13.0
     ports:
-      - 11434:11434
+      - 11435:11434
     pull_policy: always
     tty: true
     environment:
@@ -12,8 +12,7 @@ services:
   elasticsearch:
     image: elastic/elasticsearch:9.1.7
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "9201:9200"
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false

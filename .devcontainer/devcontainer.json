@@ -31,7 +31,7 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [6333, 8080, 11434],
+  "forwardPorts": [8080],
 
   // Set minimal host requirements for the container.
   "hostRequirements": {
