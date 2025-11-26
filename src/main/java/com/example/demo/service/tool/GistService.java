@@ -19,9 +19,9 @@ import java.util.logging.Logger;
 @Service
 public class GistService {
 
-    private Logger log = Logger.getLogger(GistService.class.getName());
+    private final Logger log = Logger.getLogger(GistService.class.getName());
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Value("${GITHUB_TOKEN:}")
     private String githubToken;

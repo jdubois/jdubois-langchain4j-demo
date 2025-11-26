@@ -102,6 +102,13 @@
 			<artifactId>langchain4j-mcp</artifactId>
 		</dependency>
 
+		<!-- Dotenv for loading .env files -->
+		<dependency>
+			<groupId>io.github.cdimascio</groupId>
+			<artifactId>dotenv-java</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
         <!-- Agents -->
         <dependency>
             <groupId>dev.langchain4j</groupId>

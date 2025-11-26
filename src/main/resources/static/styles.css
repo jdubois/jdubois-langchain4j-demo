@@ -25,39 +25,51 @@ body {
   color: #ffffff !important; /* This is white color */
 }
 
+/* Header navbar - explicit height control */
+nav.navbar {
+  min-height: 56px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 /* Main content should grow to push footer down */
 .container.my-5 {
   flex: 1 0 auto;
 }
 
-/* Footer styles */
-footer.navbar-dark {
-  margin-top: auto;
-  padding: 0.25rem 0;
-  flex-shrink: 0;
-  min-height: auto;
-}
-
-footer .container {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-}
-
-footer .navbar-text {
-  font-size: 0.75rem;
-  line-height: 1.2;
-  margin-bottom: 0;
+/* Custom footer - exactly half the height of header (28px vs 56px) */
+footer.custom-footer {
+  height: 28px;
+  line-height: 28px;
   padding: 0;
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
-footer .navbar-text a {
+footer.custom-footer .container {
+  height: 28px;
+  line-height: 28px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+footer.custom-footer .footer-text {
+  font-size: 0.7rem;
+  line-height: 1.2;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+}
+
+footer.custom-footer .footer-text a {
+  color: #ffffff;
   text-decoration: underline;
-  color: #ffffff !important;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 
-footer .navbar-text a:hover {
-  color: #e0e0e0 !important;
+footer.custom-footer .footer-text a:hover {
+  color: #e0e0e0;
   text-decoration: underline;
 }
 
