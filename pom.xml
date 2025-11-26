@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>25</java.version>
 		<langchain4j.version>1.8.0</langchain4j.version>
-        <elasticsearch.version>8.17.0</elasticsearch.version>
+        <elasticsearch.version>9.2.1</elasticsearch.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
