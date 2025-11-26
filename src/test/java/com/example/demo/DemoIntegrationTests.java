@@ -63,14 +63,14 @@ public class DemoIntegrationTests {
     @Test
     void easyRag() throws Exception {
         // Ingest data
-        this.mockMvc.perform(get("/10")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/9")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("OK")));
 
         // Refresh the index so the data is visible
         restClient.performRequest(new Request("POST", "/default/_refresh"));
 
         // Query data
-        this.mockMvc.perform(get("/11")).andDo(print()).andExpect(status().isOk())
+        this.mockMvc.perform(get("/10")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("125,000")));
     }
 }

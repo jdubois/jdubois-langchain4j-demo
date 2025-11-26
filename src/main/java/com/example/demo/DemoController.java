@@ -179,26 +179,6 @@ public class DemoController implements BeanFactoryAware {
     }
 
     @GetMapping("/9")
-    String queryVectorDatabaseWithDetails(Model model) {
-        String question = "fruit";
-
-        Embedding relevantEmbedding = embeddingModel.embed(question).content();
-        EmbeddingSearchRequest relevantEmbeddingSearchRequest = EmbeddingSearchRequest.builder()
-                .queryEmbedding(relevantEmbedding)
-                .maxResults(3)
-                .build();
-
-        EmbeddingSearchResult<TextSegment> relevant = embeddingStore.search(relevantEmbeddingSearchRequest);
-
-        String answer = relevant.matches().stream()
-                .limit(3)
-                .map(match -> match.embedded().text() + " | " + Arrays.toString(match.embedding().vector()))
-                .collect(Collectors.joining("\n"));
-
-        return getView(model, "9: Getting the vectors from the vector database", question, answer);
-    }
-
-    @GetMapping("/10")
     String ingestNews(Model model) {
         Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar25/index.html", new TextDocumentParser());
 
@@ -211,10 +191,10 @@ public class DemoController implements BeanFactoryAware {
 
         ingestor.ingest(document);
 
-        return getView(model, "10: Advanced data ingestion", "Ingesting news into the vector database", "OK");
+        return getView(model, "9: Advanced data ingestion", "Ingesting news into the vector database", "OK");
     }
 
-    @GetMapping("/11")
+    @GetMapping("/10")
     String rag(Model model) {
         String question = "How many people are employed by Microsoft in the U.S. as of June 30, 2025?";
 
@@ -225,10 +205,10 @@ public class DemoController implements BeanFactoryAware {
 
         String answer = ragAssistant.augmentedChat(question);
 
-        return getView(model, "11: Retrieval-Augmented Generation (RAG)", question, answer);
+        return getView(model, "10: Retrieval-Augmented Generation (RAG)", question, answer);
     }
 
-    @GetMapping("/12")
+    @GetMapping("/11")
     String structuredOutputs(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients.";
 
@@ -238,10 +218,10 @@ public class DemoController implements BeanFactoryAware {
 
         Recipe recipe = applePieAgent.getRecipe(question);
 
-        return getView(model, "12: Structured Outputs", question, recipe.toString());
+        return getView(model, "11: Structured Outputs", question, recipe.toString());
     }
 
-    @GetMapping("/13")
+    @GetMapping("/12")
     String functionCalling(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, write it down in a GitHub gist.";
 
@@ -252,10 +232,10 @@ public class DemoController implements BeanFactoryAware {
 
         Recipe recipe = applePieService.getRecipe(question);
 
-        return getView(model, "13: Function calling", question, recipe.toString());
+        return getView(model, "12: Function calling", question, recipe.toString());
     }
 
-    @GetMapping("/14")
+    @GetMapping("/13")
     String multipleToolsAndStructuredOutput(Model model) {
         String question = "I'm doing an apple pie, give me the list of ingredients that I need, transform it to Markdown and write it down in a GitHub gist";
 
@@ -266,10 +246,10 @@ public class DemoController implements BeanFactoryAware {
 
         Recipe recipe = applePieService.getRecipe(question);
 
-        return getView(model, "14: Multiple tools and structured outputs", question, recipe.toString());
+        return getView(model, "13: Multiple tools and structured outputs", question, recipe.toString());
     }
 
-    @GetMapping("/15")
+    @GetMapping("/14")
     String mcpServer(Model model) {
         String question = "Who are the authors of the last 10 commits in the langchain4j/langchain4j repository, ordered by number of commits.";
 
@@ -282,10 +262,10 @@ public class DemoController implements BeanFactoryAware {
 
         TopAuthors topAuthors = gitHubMcpService.askGitHub(question);
 
-        return getView(model, "15: Using an MCP Server", question, topAuthors.toString());
+        return getView(model, "14: Using an MCP Server", question, topAuthors.toString());
     }
 
-    @GetMapping("/16")
+    @GetMapping("/15")
     String agentic(Model model) {
 
         // The agent to get the recipe is a standard agent
@@ -339,7 +319,7 @@ public class DemoController implements BeanFactoryAware {
 
         String answer = (String) supervisorAgent.invoke(input);
 
-        return getView(model, "16: Agents working together", "Agentic AI with 4 agents working together", answer);
+        return getView(model, "15: Agents working together", "Agentic AI with 4 agents working together", answer);
     }
 
     private static String getView(Model model, String demoName, String question, String answer) {
