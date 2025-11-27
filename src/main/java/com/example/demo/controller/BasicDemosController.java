@@ -24,11 +24,10 @@ import org.springframework.web.bind.annotation.GetMapping;
  *   <li>Conversation chains with and without memory</li>
  * </ul>
  * <p>
- * The demos can run either in the cloud (using Microsoft Foundry) or locally (using Ollama),
- * depending on the active Spring Boot profile:
+ * The demos can run either in the cloud (using Microsoft Foundry) or locally (using Ollama).
  * <ul>
- *   <li><b>Cloud (azure profile)</b>: Microsoft Foundry with gpt-5-mini and dalle-3</li>
- *   <li><b>Local (local profile)</b>: Ollama with mistral:7b (note: image generation not available locally)</li>
+ *   <li><b>Cloud</b>: Microsoft Foundry with gpt-5-mini and dalle-3</li>
+ *   <li><b>Local</b>: Ollama with mistral:7b (note: image generation not available locally)</li>
  * </ul>
  * <p>
  * Configuration requirements:

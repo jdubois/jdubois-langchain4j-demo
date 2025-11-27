@@ -36,19 +36,12 @@ import static java.util.Arrays.asList;
  *   <li>Complete RAG implementation using LangChain4j's "Easy RAG" feature</li>
  * </ul>
  * <p>
- * The demos can run either in the cloud or locally, depending on the active Spring Boot profile:
- * <ul>
- *   <li><b>Cloud (azure profile)</b>: Azure AI Search as embedding store, Microsoft Foundry text-embedding-ada model</li>
- *   <li><b>Local (local profile)</b>: Elasticsearch as embedding store, Ollama nomic-embed-text model</li>
- * </ul>
+ * The demos can run either in the cloud or locally.
  * <p>
  * Configuration requirements:
  * <ul>
  *   <li>For cloud: Azure AI Search endpoint and API key</li>
  *   <li>For local: Elasticsearch running via Docker Compose (Web UI available at http://localhost:8081/)</li>
- *   <li>An {@link EmbeddingModel} to generate embeddings from text</li>
- *   <li>An {@link EmbeddingStore} to store and retrieve vector embeddings</li>
- *   <li>A {@link ChatModel} for generating responses in RAG scenarios</li>
  * </ul>
  */
 @Controller
