@@ -41,7 +41,7 @@ public class HomeController {
         if (microsoftFoundryEndpoint == null || microsoftFoundryEndpoint.isBlank()) {
             openaiBaseUrl = "http://localhost:" + ollamaPort + "/v1";
             chatModelName = ChatModelConfiguration.OLLAMA_MODEL_NAME;
-            String warning = "Warning: you are using Ollama, so the following demos will not work as expected: Image Generation, Structured Outputs, and Agentic";
+            String warning = "Warning: you are using Ollama, so the following demos will not work as expected: Image Generation, Function Calling, MCP, and Agentic";
             model.addAttribute("warning", warning);
             imageModelName = ImageModelConfiguration.OLLAMA_MODEL_NAME;
             embeddingModelName = EmbeddingModelConfiguration.OLLAMA_MODEL_NAME;
