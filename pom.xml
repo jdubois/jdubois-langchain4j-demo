@@ -142,6 +142,10 @@
 						--add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED
 						--add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED
 					</argLine>
+					<systemPropertyVariables>
+						<junit.platform.listeners.uid.tracking.enabled>true</junit.platform.listeners.uid.tracking.enabled>
+						<junit.platform.listeners.uid.tracking.output.dir>${project.build.directory}/test-ids</junit.platform.listeners.uid.tracking.output.dir>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 		</plugins>
