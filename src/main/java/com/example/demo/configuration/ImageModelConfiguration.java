@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StopWatch;
 
-import static com.openai.models.ChatModel.GPT_5_MINI;
 import static com.openai.models.images.ImageModel.DALL_E_3;
 
 @Configuration
