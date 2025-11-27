@@ -5,8 +5,7 @@ import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.web.context.WebApplicationContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.ComposeContainer;
@@ -17,11 +16,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.time.Duration;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,36 +35,44 @@ public class DemoIntegrationTests {
     @Autowired
     private RestClient restClient;
 
-    private MockMvc mockMvc;
+    private MockMvcTester mockMvc;
 
     @BeforeEach
     void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+        this.mockMvc = MockMvcTester.from(this.webApplicationContext);
     }
 
     @Test
     void shouldReturnDefaultMessage() throws Exception {
-        this.mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("demo")));
+        mockMvc.get().uri("/")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("demo");
     }
 
     @Test
     void leonardoPaintedTheMonaLisa() throws Exception {
-        this.mockMvc.perform(get("/2")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Leonardo da Vinci")));
+        mockMvc.get().uri("/2")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("Leonardo da Vinci");
     }
 
     @Test
     void easyRag() throws Exception {
         // Ingest data
-        this.mockMvc.perform(get("/9")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("OK")));
+        mockMvc.get().uri("/9")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("OK");
 
         // Refresh the index so the data is visible
         restClient.performRequest(new Request("POST", "/default/_refresh"));
 
         // Query data
-        this.mockMvc.perform(get("/10")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("125,000")));
+        mockMvc.get().uri("/10")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("125,000");
     }
 }

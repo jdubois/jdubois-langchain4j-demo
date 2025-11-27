@@ -26,11 +26,9 @@ Those demos either run locally (using Ollama and Elasticsearch) or in the cloud 
 
 ## Configuration
 
-There are 2 Spring Boot profiles, so you can test the demos either in the cloud or locally.
+Demos can either run in the cloud (using Microsoft Foundry and Azure AI Search) or locally (using Ollama and Elasticsearch).
 
 ### _Option 1_ : Running in the cloud with Microsoft Foundry and Azure AI Search
-
-__This is the default configuration.__
 
 This configuration uses:
 
@@ -38,9 +36,6 @@ This configuration uses:
 - __Image Model__: Microsoft Foundry with dalle-3
 - __Embedding model__: Microsoft Foundry with text-embedding-ada
 - __Embedding store__: Azure AI Search
-
-It is enabled by using the `azure` Spring Boot profile.
-One way to do this is to set `spring.profiles.active=azure` in the `src/main/resources/application.properties` file.
 
 To provision the Azure resources, you need to run the `src/main/script/deploy-microsoft-foundry-models.sh` script. It will create the following resources:
 
@@ -70,9 +65,6 @@ This configuration uses:
 - __Embedding model__: Ollama with `nomic-embed-text` (see [https://ollama.com/library/nomic-embed-text](https://ollama.com/library/nomic-embed-text))
 - __Embedding store__: Elasticsearch
 
-It is enabled by using the `local` Spring Boot profile.
-One way to do this is to set `spring.profiles.active=local` in the `src/main/resources/application.properties` file.
-
 To set up the necessary resources, you need to have Docker installed on your machine, and run with Docker Compose the `src/main/docker/docker-compose-small.yml` file.
 
 It will set up:
@@ -80,13 +72,7 @@ It will set up:
 - An Ollama instance, with the `llama3.2:1b` and `nomic-embed-text` models
 - An Elasticsearch instance. Its Web UI, using [elasticvue](https://github.com/cars10/elasticvue), is available at [http://localhost:8081/](http://localhost:8081/)
 
-__For demos using tools calling and MCP__, we will need an additional environment variable to connect to GitHub:
-
-- `GITHUB_TOKEN` is a GitHub personal access token
-- It needs to be created following the instructions at [https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
-- This token will need the following fine-grained permissions:
-    - Read and Write access to Gists
-    - _Optional_ Read access to Models: this will allow use to use GitHub Models as an alternative to Microsoft Foundry.
+__Demos using tools calling and MCP will not work correctly__, as this is not correctly supported with Ollama yet.
 
 __For faster inference__, you can also use Ollama natively on your machine. This will be noticeably faster if you have a GPU, as Ollama can leverage it.
 
@@ -96,7 +82,7 @@ __For faster inference__, you can also use Ollama natively on your machine. This
 
 ## Running the demos
 
-Environment variables need to be set up, or you can store them in a `.env` file at the root of the project.
+Environment variables need to be set up for running in the cloud (Microsoft Foundry and Azure AI Search), otherwise it will default to the local configuration (Ollama + Elasticsearch).
 
 Once the resources are configured, you can run the demos using the following command:
 
@@ -106,4 +92,6 @@ Once the resources are configured, you can run the demos using the following com
 
 Then you can access the base URL, where you find the Web UI: [http://localhost:8080/](http://localhost:8080/).
 
-The demos are available in the top menu.
+That main page will also describe the current configuration: this will help you to know if you have configured the application correctly.
+
+The demos are available in the menus at the top.

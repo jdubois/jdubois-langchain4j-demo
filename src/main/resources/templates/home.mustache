@@ -1,0 +1,47 @@
+{{> partials/header}}
+{{> partials/nav}}
+    <div class="container my-5">
+        <h1>Welcome to the LangChain4j demos!</h1>
+        <p>
+            <i>Use the navigation bar above to access the demos.</i>
+        </p>
+        <h2>Configuration</h2>
+
+        <div class="table-responsive mt-4">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" style="width: 40%;">Configuration</th>
+                        <th scope="col" style="width: 60%;">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">OPENAI_BASE_URL</th>
+                        <td>{{openaiBaseUrl}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">OPENAI_API_KEY</th>
+                        <td>{{openaiApiKeyMasked}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Chat Model name</th>
+                        <td>{{chatModelName}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Image Model name</th>
+                        <td>{{imageModelName}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Embedding Model name</th>
+                        <td>{{embeddingModelName}}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Vector store</th>
+                        <td>{{vectorStore}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+{{> partials/footer}}

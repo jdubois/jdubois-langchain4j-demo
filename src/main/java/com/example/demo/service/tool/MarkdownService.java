@@ -12,7 +12,7 @@ import java.util.Objects;
 public class MarkdownService {
 
     @Tool("Transform a list of items into Markdown")
-    public String transformItemsToMarkdown(@P("List of items")List<Item> items) {
+    public String transformItemsToMarkdown(@P("List of items") List<Item> items) {
         String result = "";
         for (Item item : items) {
             if (item.completed()) {

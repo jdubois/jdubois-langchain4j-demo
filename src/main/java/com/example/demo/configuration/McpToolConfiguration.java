@@ -1,4 +1,4 @@
-package com.example.demo.configuration.mcp;
+package com.example.demo.configuration;
 
 import dev.langchain4j.mcp.McpToolProvider;
 import dev.langchain4j.mcp.client.DefaultMcpClient;
@@ -9,13 +9,11 @@ import dev.langchain4j.service.tool.ToolProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 
 @Configuration
-@Lazy
-public class McpService {
+public class McpToolConfiguration {
 
     @Value("${GITHUB_TOKEN:}")
     private String githubToken;
