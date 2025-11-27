@@ -10,7 +10,7 @@ sleep 5
 
 echo "🔴 Retrieve Ollama models..."
 ollama pull nomic-embed-text
-ollama pull llama3.2:1b
+ollama pull mistral:7b
 echo "🟢 Done!"
 
 # Wait for Ollama process to finish.

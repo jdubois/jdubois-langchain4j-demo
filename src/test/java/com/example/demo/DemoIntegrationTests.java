@@ -27,7 +27,7 @@ public class DemoIntegrationTests {
     public static ComposeContainer environment =
             new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
                     .withExposedService("elasticsearch-1",  9200, Wait.forListeningPort())
-                    .waitingFor("ollama-1", Wait.forSuccessfulCommand("ollama pull nomic-embed-text && ollama pull llama3.2:1b").withStartupTimeout(Duration.ofMinutes(5)));
+                    .waitingFor("ollama-1", Wait.forSuccessfulCommand("ollama pull nomic-embed-text && ollama pull mistral:7b").withStartupTimeout(Duration.ofMinutes(5)));
 
     @Autowired
     private WebApplicationContext webApplicationContext;

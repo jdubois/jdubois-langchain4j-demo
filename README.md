@@ -11,7 +11,7 @@ It contains the following demos:
 - How to generate an image using Dalle-3.
 - How to generate text
   - In the cloud using GPT-5-mini on Microsoft Foundry
-  - Locally with llama3.2 running in Ollama
+  - Locally with mistral running in Ollama
 - How to use a chat conversation with memory of the context
 - How to ingest data into a vector database, and use it
   - In the cloud using Azure AI Search
@@ -60,7 +60,7 @@ __For demos using tools calling and MCP__, we will need an additional environmen
 
 This configuration uses:
 
-- __Chat Model__: Ollama with `llama3.2:1b` (see [https://ollama.com/library/llama3.2](https://ollama.com/library/llama3.2))
+- __Chat Model__: Ollama with `mistral:7b` (see [https://ollama.com/library/mistral](https://ollama.com/library/mistral))
 - __Image Model__: Not available
 - __Embedding model__: Ollama with `nomic-embed-text` (see [https://ollama.com/library/nomic-embed-text](https://ollama.com/library/nomic-embed-text))
 - __Embedding store__: Elasticsearch
@@ -69,7 +69,7 @@ To set up the necessary resources, you need to have Docker installed on your mac
 
 It will set up:
 
-- An Ollama instance, with the `llama3.2:1b` and `nomic-embed-text` models
+- An Ollama instance, with the `mistral:7b` and `nomic-embed-text` models
 - An Elasticsearch instance. Its Web UI, using [elasticvue](https://github.com/cars10/elasticvue), is available at [http://localhost:8081/](http://localhost:8081/)
 
 __Demos using tools calling and MCP will not work correctly__, as this is not correctly supported with Ollama yet.

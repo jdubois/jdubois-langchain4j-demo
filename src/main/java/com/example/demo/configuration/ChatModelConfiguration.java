@@ -15,7 +15,7 @@ import static dev.langchain4j.model.chat.Capability.RESPONSE_FORMAT_JSON_SCHEMA;
 public class ChatModelConfiguration extends AbstractModelConfiguration {
 
     public static final String MICROSOFT_FOUNDRY_MODEL_NAME = GPT_5_MINI.asString();
-    public static final String OLLAMA_MODEL_NAME = "llama3.2:1b";
+    public static final String OLLAMA_MODEL_NAME = "mistral:7b";
 
     @Bean
     ChatModel openAIChatModel() {

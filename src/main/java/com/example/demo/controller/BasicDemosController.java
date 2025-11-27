@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * This controller provides fundamental examples of using LangChain4j, including:
  * <ul>
  *   <li>Image generation using DALL-E 3</li>
- *   <li>Simple text generation using GPT-5-mini or llama3.2</li>
+ *   <li>Simple text generation using GPT-5-mini or mistral</li>
  *   <li>Reasoning capabilities demonstration</li>
  *   <li>System message configuration for controlling AI behavior</li>
  *   <li>Conversation chains with and without memory</li>
@@ -28,13 +28,13 @@ import org.springframework.web.bind.annotation.GetMapping;
  * depending on the active Spring Boot profile:
  * <ul>
  *   <li><b>Cloud (azure profile)</b>: Microsoft Foundry with gpt-5-mini and dalle-3</li>
- *   <li><b>Local (local profile)</b>: Ollama with llama3.2:1b (note: image generation not available locally)</li>
+ *   <li><b>Local (local profile)</b>: Ollama with mistral:7b (note: image generation not available locally)</li>
  * </ul>
  * <p>
  * Configuration requirements:
  * <ul>
  *   <li>For cloud: Microsoft Foundry endpoint and API key</li>
- *   <li>For local: Ollama running with llama3.2:1b model</li>
+ *   <li>For local: Ollama running with mistral:7b model</li>
  * </ul>
  */
 @Controller

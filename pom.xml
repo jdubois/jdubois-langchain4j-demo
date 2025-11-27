@@ -79,10 +79,6 @@
 		<!-- Using AI services locally -->
 		<dependency>
 			<groupId>dev.langchain4j</groupId>
-			<artifactId>langchain4j-ollama</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dev.langchain4j</groupId>
 			<artifactId>langchain4j-elasticsearch</artifactId>
 		</dependency>
 		<dependency>
