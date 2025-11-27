@@ -33,11 +33,9 @@ public class HomeController {
     public String home(Model model) {
         String openaiBaseUrl;
         String openaiApiKeyMasked;
-        String azureSearchKeyMasked;
         String chatModelName;
         String imageModelName;
         String embeddingModelName;
-        String vectorStore;
         if (microsoftFoundryEndpoint == null || microsoftFoundryEndpoint.isBlank()) {
             openaiBaseUrl = "http://localhost:" + ollamaPort + "/v1";
             chatModelName = ChatModelConfiguration.OLLAMA_MODEL_NAME;
@@ -57,24 +55,24 @@ public class HomeController {
             openaiApiKeyMasked = "***********";
         }
         if (azureSearchEndpoint != null && !azureSearchEndpoint.isBlank()) {
-            vectorStore = "Azure AI Search";
+            model.addAttribute("vectorStore", "Azure AI Search");
+            model.addAttribute("azureSearchEndpoint", azureSearchEndpoint);
         } else {
-            vectorStore = "Elasticsearch";
-            azureSearchEndpoint = "N/A";
+            model.addAttribute("vectorStore", "Elasticsearch");
+            model.addAttribute("azureSearchEndpoint", "N/A");
+
         }
         if (azureSearchKey != null && !azureSearchKey.isBlank()) {
-            azureSearchKeyMasked = "***********";
+            model.addAttribute("azureSearchKeyMasked", "***********");
         } else {
-            azureSearchKeyMasked = "N/A";
+            model.addAttribute("azureSearchKeyMasked", "N/A");
         }
         model.addAttribute("openaiBaseUrl", openaiBaseUrl);
         model.addAttribute("openaiApiKeyMasked", openaiApiKeyMasked);
-        model.addAttribute("azureSearchEndpoint", azureSearchEndpoint);
-        model.addAttribute("azureSearchKeyMasked", azureSearchKeyMasked);
         model.addAttribute("chatModelName", chatModelName);
         model.addAttribute("imageModelName", imageModelName);
         model.addAttribute("embeddingModelName", embeddingModelName);
-        model.addAttribute("vectorStore", vectorStore);
+
         return "home";
     }
 }
