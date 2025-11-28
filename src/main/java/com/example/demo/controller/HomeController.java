@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.configuration.ChatModelConfiguration;
-import com.example.demo.configuration.EmbeddingModelConfiguration;
-import com.example.demo.configuration.ImageModelConfiguration;
+import com.example.demo.service.ModelsDiscoveryService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,43 +12,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @Value("${OPENAI_BASE_URL:}")
-    String microsoftFoundryEndpoint;
-
-    @Value("${OPENAI_API_KEY:}")
-    String microsoftFoundryApiKey;
-
-    @Value("${ollama.port:11434}")
-    String ollamaPort;
-
     @Value("${AZURE_SEARCH_ENDPOINT:}")
     private String azureSearchEndpoint;
 
     @Value("${AZURE_SEARCH_KEY:}")
     private String azureSearchKey;
 
+    private final ModelsDiscoveryService modelsDiscoveryService;
+
+    public HomeController(ModelsDiscoveryService modelsDiscoveryService) {
+        this.modelsDiscoveryService = modelsDiscoveryService;
+    }
+
     @GetMapping("/")
     public String home(Model model) {
-        String openaiBaseUrl;
-        String openaiApiKeyMasked;
-        String chatModelName;
-        String imageModelName;
-        String embeddingModelName;
-        if (microsoftFoundryEndpoint == null || microsoftFoundryEndpoint.isBlank()) {
-            openaiBaseUrl = "http://localhost:" + ollamaPort + "/v1";
-            chatModelName = ChatModelConfiguration.OLLAMA_MODEL_NAME;
-            String warning = "Warning: you are using Ollama, so the following demos will not work as expected: Image Generation, Function Calling, MCP, and Agentic";
+        String openAiBaseUrl = this.modelsDiscoveryService.getOpenAiBaseUrl();
+        String openAiApiKey = this.modelsDiscoveryService.getOpenAiApiKey();
+        if (openAiBaseUrl.toLowerCase().contains("localhost")) {
+            String warning = "Warning: you are using a local model, so the following demos will not work as expected: Image Generation, Function Calling, MCP, and Agentic";
             model.addAttribute("warning", warning);
-            imageModelName = ImageModelConfiguration.OLLAMA_MODEL_NAME;
-            embeddingModelName = EmbeddingModelConfiguration.OLLAMA_MODEL_NAME;
-        } else {
-            openaiBaseUrl = microsoftFoundryEndpoint;
-            chatModelName = ChatModelConfiguration.MICROSOFT_FOUNDRY_MODEL_NAME;
-            imageModelName = ImageModelConfiguration.MICROSOFT_FOUNDRY_MODEL_NAME;
-            embeddingModelName = EmbeddingModelConfiguration.MICROSOFT_FOUNDRY_MODEL_NAME;
         }
-        if (microsoftFoundryApiKey == null || microsoftFoundryApiKey.isBlank()) {
-            openaiApiKeyMasked = "N/A (using local Ollama instance)";
+        String openaiApiKeyMasked;
+        if (openAiApiKey == null || openAiApiKey.isBlank()) {
+            openaiApiKeyMasked = "N/A";
         } else {
             openaiApiKeyMasked = "***********";
         }
@@ -67,12 +51,11 @@ public class HomeController {
         } else {
             model.addAttribute("azureSearchKeyMasked", "N/A");
         }
-        model.addAttribute("openaiBaseUrl", openaiBaseUrl);
+        model.addAttribute("openaiBaseUrl", openAiBaseUrl);
         model.addAttribute("openaiApiKeyMasked", openaiApiKeyMasked);
-        model.addAttribute("chatModelName", chatModelName);
-        model.addAttribute("imageModelName", imageModelName);
-        model.addAttribute("embeddingModelName", embeddingModelName);
-
+        model.addAttribute("chatModelName", this.modelsDiscoveryService.getChatModelName());
+        model.addAttribute("imageModelName", this.modelsDiscoveryService.getImageModelName());
+        model.addAttribute("embeddingModelName",  this.modelsDiscoveryService.getEmbeddingModelName());
         return "home";
     }
 }

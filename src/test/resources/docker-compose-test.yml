@@ -2,7 +2,7 @@ services:
   ollama:
     image: ollama/ollama:0.13.0
     ports:
-      - 11435:11434
+      - 11434:11434
     pull_policy: always
     tty: true
     environment:

@@ -30,6 +30,8 @@ Demos can either run in the cloud (using Microsoft Foundry and Azure AI Search) 
 
 ### _Option 1_ : Running in the cloud with Microsoft Foundry and Azure AI Search
 
+_This is the recommended option for the best experience. If environnement variables are not set, it will fallback to option 2 (running locally)_
+
 This configuration uses:
 
 - __Chat Model__: Microsoft Foundry with gpt-5-mini
@@ -58,6 +60,8 @@ __For demos using tools calling and MCP__, we will need an additional environmen
 
 ### _Option 2_ : Running locally with Ollama and Elasticsearch
 
+This is the fallback option if the environment variables for option 1 are not set.
+
 This configuration uses:
 
 - __Chat Model__: Ollama with `mistral:7b` (see [https://ollama.com/library/mistral](https://ollama.com/library/mistral))
@@ -72,13 +76,57 @@ It will set up:
 - An Ollama instance, with the `mistral:7b` and `nomic-embed-text` models
 - An Elasticsearch instance. Its Web UI, using [elasticvue](https://github.com/cars10/elasticvue), is available at [http://localhost:8081/](http://localhost:8081/)
 
-__Demos using tools calling and MCP will not work correctly__, as this is not correctly supported with Ollama yet.
+__Demos using tools calling and MCP will not work correctly__, as this is not correctly supported with Ollama yet. If you still want to try it, you will need to provide a `GITHUB_TOKEN` environment variable as described in option 1.
 
 __For faster inference__, you can also use Ollama natively on your machine. This will be noticeably faster if you have a GPU, as Ollama can leverage it.
 
 - Install Ollama from [https://ollama.com/download](https://ollama.com/download)
 - Download the models as in the `src/main/docker/install-ollama-models.sh` script
 - Run Ollama locally instead of using the Docker container
+
+### Advanced Configuration
+
+We have seen in option 1 the following environment variables:
+
+- `OPENAI_BASE_URL`: your Microsoft Foundry URL endpoint
+- `OPENAI_API_KEY`: your Microsoft Foundry API key
+
+They can be configured to use others, OpenAI-compatible services, for example GitHub Models or Docker Model Runners.
+
+Here's an example using Docker Model Runners:
+
+```shell
+OPENAI_BASE_URL=http://localhost:12434/engines/llama.cpp/v1/
+# The API key can be left empty as it is not required
+OPENAI_API_KEY=
+```
+
+You can also modify the language models used by changing the following environment variables:
+
+- `CHAT_MODEL_NAME`: the chat model to use (default: `gpt-5-mini` for Foundry, `mistral:7b` for Ollama)
+- `IMAGE_MODEL_NAME`: the image model to use (default: `dalle-3` for Foundry, not available for Ollama)
+- `EMBEDDING_MODEL_NAME`: the embedding model to use (default: `text-embedding-ada` for Foundry, `nomic-embed-text` for Ollama)
+
+Here's an example with models available on Docker Model Runners:
+
+```shell
+CHAT_MODEL_NAME=ai/mistral:7B-Q4_K_M
+EMBEDDING_MODEL_NAME=ai/nomic-embed-text-v1.5:137M-F16
+# The API key can be left empty as it is not required
+IMAGE_MODEL_NAME=
+```
+
+__Tip :__ you can store those environment variables in a `.env` file at the root of the project, and load them with the following command:
+
+```shell
+source .env
+```
+
+Or when using Docker, add the `--env-file .env` option to the `docker run` command:
+
+```shell
+docker run -p 8080:8080 --env-file .env langchain4j-demo
+```
 
 ## Building and running the demos with the JVM
 
@@ -114,6 +162,13 @@ export GITHUB_TOKEN=...    # optional, for tools/MCP demos
 ./mvnw spring-boot:run
 ```
 
+Or if you followed the tip above and stored the environment variables in a `.env` file:
+
+```shell
+source .env
+./mvnw spring-boot:run
+``` 
+
 Then you can access the base URL, where you find the Web UI: [http://localhost:8080/](http://localhost:8080/).
 
 That main page will also describe the current configuration: this will help you to know if you have configured the application correctly.
@@ -122,12 +177,16 @@ The demos are available in the menus at the top.
 
 ### Building and Running with the JVM-based Docker Image
 
-If you prefer to containerize the Java binary, use the provided `Dockerfile` file:
+If you prefer to containerize the Java binary, use the provided `Dockerfile` file.
 
+To build the image, run the following commands:
 ```shell
 # Build the container image
 docker build -t langchain4j-demo .
+```
 
+To run the container, use the following command:`
+```shell
 # Run the container (pass env vars exactly like the JVM image)
 docker run -p 8080:8080 \
   -e OPENAI_BASE_URL=... \
@@ -135,6 +194,11 @@ docker run -p 8080:8080 \
   -e AZURE_SEARCH_ENDPOINT=... \
   -e AZURE_SEARCH_KEY=... \
   langchain4j-demo
+```
+
+Or if you followed the tip above and stored the environment variables in a `.env` file:
+```shell
+docker run -p 8080:8080 --env-file .env langchain4j-demo
 ```
 
 This multi-stage Dockerfile first compiles the Java executable, then copies only the resulting binary into a JVM-based image.
@@ -180,12 +244,18 @@ export AZURE_SEARCH_KEY=...
 
 ### Building and Running the Native Docker Image
 
-If you prefer to containerize the GraalVM binary, use the provided `Dockerfile-native`:
+If you prefer to containerize the GraalVM binary, use the provided `Dockerfile-native`.
+This multi-stage Dockerfile first compiles the native executable with GraalVM, 
+then copies only the resulting binary into a tiny distroless runtime image for fast startup and minimal footprint.
 
+To build the image, run the following commands:
 ```shell
 # Build the container image
 docker build -f Dockerfile-native -t langchain4j-demo-native .
+```
 
+To run the container, use the following command:
+```shell
 # Run the container (pass env vars exactly like the JVM image)
 docker run -p 8080:8080 \
   -e OPENAI_BASE_URL=... \
@@ -195,4 +265,7 @@ docker run -p 8080:8080 \
   langchain4j-demo-native
 ```
 
-This multi-stage Dockerfile first compiles the native executable with GraalVM, then copies only the resulting binary into a tiny distroless runtime image for fast startup and minimal footprint.
+Or if you followed the tip above and stored the environment variables in a `.env` file:
+```shell
+docker run -p 8080:8080 --env-file .env langchain4j-demo-native
+```

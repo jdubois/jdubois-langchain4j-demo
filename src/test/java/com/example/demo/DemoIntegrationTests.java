@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.service.ModelsDiscoveryService;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.File;
 import java.time.Duration;
 
+import static com.example.demo.service.ModelsDiscoveryService.LOCAL_CHAT_MODEL;
+import static com.example.demo.service.ModelsDiscoveryService.LOCAL_EMBEDDING_MODEL;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,11 +29,17 @@ public class DemoIntegrationTests {
     @Container
     public static ComposeContainer environment =
             new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
-                    .withExposedService("elasticsearch-1",  9200, Wait.forListeningPort())
-                    .waitingFor("ollama-1", Wait.forSuccessfulCommand("ollama pull nomic-embed-text && ollama pull mistral:7b").withStartupTimeout(Duration.ofMinutes(5)));
+                    .withExposedService("elasticsearch-1",  9200,
+                            Wait.forListeningPort())
+                    .waitingFor("ollama-1",
+                            Wait.forSuccessfulCommand("ollama pull " + LOCAL_CHAT_MODEL + " && ollama pull " + LOCAL_EMBEDDING_MODEL)
+                                    .withStartupTimeout(Duration.ofMinutes(5)));
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private ModelsDiscoveryService modelsDiscoveryService;
 
     @Autowired
     private RestClient restClient;
