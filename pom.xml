@@ -151,4 +151,45 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>native</id>
+			<properties>
+				<!-- Skip tests by default when building native image -->
+				<skipTests>true</skipTests>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.graalvm.buildtools</groupId>
+						<artifactId>native-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>build-native</id>
+								<goals>
+									<goal>compile-no-fork</goal>
+								</goals>
+								<phase>package</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<imageName>demo</imageName>
+							<mainClass>com.example.demo.DemoApplication</mainClass>
+							<buildArgs>
+								<buildArg>--no-fallback</buildArg>
+								<buildArg>-H:+ReportExceptionStackTraces</buildArg>
+								<buildArg>--enable-url-protocols=http,https</buildArg>
+								<!-- Initialize Logback classes at build time for better performance -->
+								<buildArg>--initialize-at-build-time=ch.qos.logback</buildArg>
+								<buildArg>--initialize-at-build-time=org.slf4j</buildArg>
+								<!-- Initialize entire Jackson core package at build time -->
+								<buildArg>--initialize-at-build-time=com.fasterxml.jackson.core</buildArg>
+							</buildArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>

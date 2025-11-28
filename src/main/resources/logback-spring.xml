@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+        Logback configuration optimized for GraalVM Native Image
+
+        Key considerations:
+        - Uses simple console appender (file appenders need additional native config)
+        - Minimizes reflection requirements
+        - Pre-configured patterns to avoid runtime complexity
+    -->
+
+    <!-- Console appender - works reliably in native images -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5p [%-10.10t] - %-13.13c : %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Logger configurations -->
+    <logger name="com.example.demo" level="INFO"/>
+    <logger name="dev.langchain4j" level="INFO"/>
+    <logger name="com.azure" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.elasticsearch" level="WARN"/>
+    <logger name="co.elastic.clients" level="WARN"/>
+    <logger name="org.apache.http" level="WARN"/>
+
+    <!-- Root logger -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!--
+        Conditional configuration for native image
+        This section ensures optimal performance in native mode
+    -->
+    <springProfile name="native">
+        <!-- Even more aggressive logging reduction for native mode -->
+        <logger name="org.springframework.boot" level="WARN"/>
+        <logger name="org.springframework.boot.autoconfigure" level="WARN"/>
+    </springProfile>
+
+</configuration>
+

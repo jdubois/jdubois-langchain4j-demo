@@ -95,3 +95,43 @@ Then you can access the base URL, where you find the Web UI: [http://localhost:8
 That main page will also describe the current configuration: this will help you to know if you have configured the application correctly.
 
 The demos are available in the menus at the top.
+
+## Building a GraalVM Native Image
+
+This project supports building a native image using GraalVM for instant startup and lower memory footprint.
+
+**Note:** Tests are automatically skipped during native image builds to reduce compilation time.
+
+### Prerequisites
+
+Install GraalVM (choose one method):
+
+```shell
+# Using SDKMAN (recommended)
+sdk install java 25-graal
+sdk use java 25-graal
+
+# Using Homebrew (macOS)
+brew install --cask graalvm-jdk
+```
+
+### Quick Start
+
+```shell
+./mvnw -Pnative native:compile
+
+```
+
+### Running the Native Image
+
+```shell
+# Export environment variables as needed
+export OPENAI_BASE_URL=...
+export OPENAI_API_KEY=...
+export AZURE_SEARCH_ENDPOINT=...
+export AZURE_SEARCH_KEY=...
+
+# Run the native image
+./target/demo
+```
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+        Logback configuration for tests - optimized for GraalVM Native Image testing
+
+        Key considerations:
+        - Uses simple console appender
+        - Higher log levels to reduce test noise
+        - Compatible with native test compilation
+    -->
+
+    <!-- Console appender for test output -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5p [%-10.10t] - %-20.20c : %m%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- Logger configurations for tests -->
+    <logger name="com.example.demo" level="INFO"/>
+    <logger name="dev.langchain4j" level="INFO"/>
+    <logger name="com.azure" level="WARN"/>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.boot" level="WARN"/>
+    <logger name="org.springframework.test" level="INFO"/>
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="org.elasticsearch" level="WARN"/>
+    <logger name="co.elastic.clients" level="WARN"/>
+    <logger name="org.apache.http" level="WARN"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
+
+    <!-- Root logger -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!--
+        Conditional configuration for native test image
+    -->
+    <springProfile name="nativeTest">
+        <!-- Even quieter logging for native test mode -->
+        <logger name="org.springframework.boot.test" level="WARN"/>
+        <logger name="org.springframework.test.context" level="WARN"/>
+    </springProfile>
+
+</configuration>
+
