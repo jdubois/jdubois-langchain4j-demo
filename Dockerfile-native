@@ -15,7 +15,7 @@ RUN chmod +x mvnw
 RUN ./mvnw -Pnative native:compile
 
 # Run the native executable in a minimal runtime image with zlib present
-FROM debian:12-slim AS runtime
+FROM debian:13-slim AS runtime
 WORKDIR /app
 
 RUN apt-get update \
