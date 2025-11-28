@@ -80,13 +80,37 @@ __For faster inference__, you can also use Ollama natively on your machine. This
 - Download the models as in the `src/main/docker/install-ollama-models.sh` script
 - Run Ollama locally instead of using the Docker container
 
-## Running the demos
+## Building and running the demos with the JVM
+
+This project runs with Java, and uses Maven as the build tool.
+
+### Prerequisites
+
+Install Java 25 or later, for example:
+
+```shell
+# Using SDKMAN
+sdk install java 25-tem
+sdk use java 25-tem
+
+# Using Homebrew (macOS)
+brew install openjdk@25
+
+```
+
+### Quick Start
 
 Environment variables need to be set up for running in the cloud (Microsoft Foundry and Azure AI Search), otherwise it will default to the local configuration (Ollama + Elasticsearch).
 
 Once the resources are configured, you can run the demos using the following command:
 
 ```shell
+export OPENAI_BASE_URL=...
+export OPENAI_API_KEY=...
+export AZURE_SEARCH_ENDPOINT=...
+export AZURE_SEARCH_KEY=...
+export GITHUB_TOKEN=...    # optional, for tools/MCP demos
+
 ./mvnw spring-boot:run
 ```
 
@@ -96,7 +120,26 @@ That main page will also describe the current configuration: this will help you 
 
 The demos are available in the menus at the top.
 
-## Building a GraalVM Native Image
+### Building and Running with the JVM-based Docker Image
+
+If you prefer to containerize the Java binary, use the provided `Dockerfile` file:
+
+```shell
+# Build the container image
+docker build -t langchain4j-demo .
+
+# Run the container (pass env vars exactly like the JVM image)
+docker run -p 8080:8080 \
+  -e OPENAI_BASE_URL=... \
+  -e OPENAI_API_KEY=... \
+  -e AZURE_SEARCH_ENDPOINT=... \
+  -e AZURE_SEARCH_KEY=... \
+  langchain4j-demo
+```
+
+This multi-stage Dockerfile first compiles the Java executable, then copies only the resulting binary into a JVM-based image.
+
+## Building and running the demos as a GraalVM Native Image
 
 This project supports building a native image using GraalVM for instant startup and lower memory footprint.
 
@@ -104,10 +147,10 @@ This project supports building a native image using GraalVM for instant startup 
 
 ### Prerequisites
 
-Install GraalVM (choose one method):
+Install GraalVM, for example:
 
 ```shell
-# Using SDKMAN (recommended)
+# Using SDKMAN
 sdk install java 25-graal
 sdk use java 25-graal
 
@@ -135,3 +178,21 @@ export AZURE_SEARCH_KEY=...
 ./target/demo
 ```
 
+### Building and Running the Native Docker Image
+
+If you prefer to containerize the GraalVM binary, use the provided `Dockerfile-native`:
+
+```shell
+# Build the container image
+docker build -f Dockerfile-native -t langchain4j-demo-native .
+
+# Run the container (pass env vars exactly like the JVM image)
+docker run -p 8080:8080 \
+  -e OPENAI_BASE_URL=... \
+  -e OPENAI_API_KEY=... \
+  -e AZURE_SEARCH_ENDPOINT=... \
+  -e AZURE_SEARCH_KEY=... \
+  langchain4j-demo-native
+```
+
+This multi-stage Dockerfile first compiles the native executable with GraalVM, then copies only the resulting binary into a tiny distroless runtime image for fast startup and minimal footprint.

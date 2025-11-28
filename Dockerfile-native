@@ -1,0 +1,28 @@
+# Build the GraalVM native image
+ARG GRAALVM_IMAGE=ghcr.io/graalvm/native-image-community:25
+
+FROM ${GRAALVM_IMAGE} AS build
+WORKDIR /workspace/app
+
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+
+RUN chmod +x mvnw
+RUN ./mvnw -Pnative native:compile
+
+# Run the native executable in a minimal runtime image with zlib present
+FROM debian:12-slim AS runtime
+WORKDIR /app
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends zlib1g \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=build /workspace/app/target/demo /app/demo
+
+EXPOSE 8080
+ENTRYPOINT ["/app/demo"]
