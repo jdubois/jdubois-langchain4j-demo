@@ -3,6 +3,7 @@ package com.example.demo;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -21,29 +22,14 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Fail.fail;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-@EnabledIf("hasRequiredEnvironmentVariables")
 public class DemoIntegrationTests {
 
     private static final Logger log = Logger.getLogger(DemoIntegrationTests.class.getName());
-
-    static boolean hasRequiredEnvironmentVariables() {
-        String openaiBaseUrl = System.getenv("OPENAI_BASE_URL");
-        String openaiApiKey = System.getenv("OPENAI_API_KEY");
-
-        boolean hasVariables = openaiBaseUrl != null && !openaiBaseUrl.isBlank()
-            && openaiApiKey != null && !openaiApiKey.isBlank();
-
-        if (!hasVariables) {
-            log.info("Integration tests are disabled: Required environment variables OPENAI_BASE_URL and/or OPENAI_API_KEY are not set or are blank. " +
-                    "Please configure these environment variables to run the integration tests.");
-        }
-
-        return hasVariables;
-    }
 
     @SuppressWarnings("resource")
     @Container
@@ -59,6 +45,23 @@ public class DemoIntegrationTests {
     private RestClient restClient;
 
     private MockMvcTester mockMvc;
+
+
+    @BeforeAll
+    public static void init() {
+        String openaiBaseUrl = System.getenv("OPENAI_BASE_URL");
+        String openaiApiKey = System.getenv("OPENAI_API_KEY");
+
+        boolean hasVariables = openaiBaseUrl != null && !openaiBaseUrl.isBlank()
+                && openaiApiKey != null && !openaiApiKey.isBlank();
+
+        if (!hasVariables) {
+            log.severe("Integration tests are disabled: Required environment variables OPENAI_BASE_URL and/or OPENAI_API_KEY are not set or are blank. " +
+                    "Please configure these environment variables to run the integration tests.");
+
+            fail("Required environment variables OPENAI_BASE_URL and/or OPENAI_API_KEY are not set or are blank.");
+        }
+    }
 
     @BeforeEach
     void setup() {

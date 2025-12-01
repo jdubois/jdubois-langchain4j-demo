@@ -22,4 +22,4 @@ jobs:
           cache: maven
 
       - name: Build and run tests
-        run: mvn -B verify
+        run: ./mvnw -B verify
