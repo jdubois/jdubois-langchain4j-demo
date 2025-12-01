@@ -1,10 +1,12 @@
 package com.example.demo;
 
-import com.example.demo.service.ModelsDiscoveryService;
 import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
@@ -15,31 +17,43 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
-import java.time.Duration;
+import java.io.IOException;
+import java.util.logging.Logger;
 
-import static com.example.demo.service.ModelsDiscoveryService.LOCAL_CHAT_MODEL;
-import static com.example.demo.service.ModelsDiscoveryService.LOCAL_EMBEDDING_MODEL;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
+@EnabledIf("hasRequiredEnvironmentVariables")
 public class DemoIntegrationTests {
+
+    private static final Logger log = Logger.getLogger(DemoIntegrationTests.class.getName());
+
+    static boolean hasRequiredEnvironmentVariables() {
+        String openaiBaseUrl = System.getenv("OPENAI_BASE_URL");
+        String openaiApiKey = System.getenv("OPENAI_API_KEY");
+
+        boolean hasVariables = openaiBaseUrl != null && !openaiBaseUrl.isBlank()
+            && openaiApiKey != null && !openaiApiKey.isBlank();
+
+        if (!hasVariables) {
+            log.info("Integration tests are disabled: Required environment variables OPENAI_BASE_URL and/or OPENAI_API_KEY are not set or are blank. " +
+                    "Please configure these environment variables to run the integration tests.");
+        }
+
+        return hasVariables;
+    }
 
     @SuppressWarnings("resource")
     @Container
     public static ComposeContainer environment =
             new ComposeContainer(new File("src/test/resources/docker-compose-test.yml"))
-                    .withExposedService("elasticsearch-1",  9200,
-                            Wait.forListeningPort())
-                    .waitingFor("ollama-1",
-                            Wait.forSuccessfulCommand("ollama pull " + LOCAL_CHAT_MODEL + " && ollama pull " + LOCAL_EMBEDDING_MODEL)
-                                    .withStartupTimeout(Duration.ofMinutes(5)));
+                    .withExposedService("elasticsearch",  9200,
+                            Wait.forListeningPort());
 
     @Autowired
     private WebApplicationContext webApplicationContext;
-
-    @Autowired
-    private ModelsDiscoveryService modelsDiscoveryService;
 
     @Autowired
     private RestClient restClient;
@@ -52,7 +66,7 @@ public class DemoIntegrationTests {
     }
 
     @Test
-    void shouldReturnDefaultMessage() throws Exception {
+    void shouldReturnDefaultMessage() {
         mockMvc.get().uri("/")
                 .assertThat()
                 .hasStatusOk()
@@ -60,7 +74,7 @@ public class DemoIntegrationTests {
     }
 
     @Test
-    void leonardoPaintedTheMonaLisa() throws Exception {
+    void leonardoPaintedTheMonaLisa() {
         mockMvc.get().uri("/2")
                 .assertThat()
                 .hasStatusOk()
@@ -68,7 +82,67 @@ public class DemoIntegrationTests {
     }
 
     @Test
-    void easyRag() throws Exception {
+    void reasoningQuestionAboutMariasFourthDaughter() {
+        mockMvc.get().uri("/3")
+                .assertThat()
+                .hasStatusOk()
+                // Expect the model to reason that the fourth daughter is Maria
+                .bodyText().contains("Maria");
+    }
+
+    @Test
+    void advancedQuestionIsAnsweredInFrench() {
+        mockMvc.get().uri("/4")
+                .assertThat()
+                .hasStatusOk()
+                // We loosely check for French-specific words to avoid brittle assertions
+                .bodyText().contains("Mona Lisa");
+    }
+
+    @Test
+    void questionWithoutMemory() {
+        mockMvc.get().uri("/5")
+                .assertThat()
+                .hasStatusOk();
+    }
+
+    @Test
+    void questionWithMemory() {
+        mockMvc.get().uri("/6")
+                .assertThat()
+                .hasStatusOk()
+                // Expect similar answer mentioning the location
+                .bodyText().contains("Louvre");
+    }
+
+    @Test
+    void simpleVectorDatabaseIngestion() {
+        mockMvc.get().uri("/7")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("7: Simple data ingestion", "OK");
+    }
+
+    @Test
+    void querySimpleVectorDatabase() throws IOException {
+        // Ensure data is ingested first
+        mockMvc.get().uri("/7")
+                .assertThat()
+                .hasStatusOk();
+
+        // Refresh the index so the data is visible
+        Response response = restClient.performRequest(new Request("POST", "/default/_refresh"));
+        assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+
+        mockMvc.get().uri("/8")
+                .assertThat()
+                .hasStatusOk()
+                // Expect fruit-related contents from the in-memory store
+                .bodyText().contains("banana", "apple", "strawberry");
+    }
+
+    @Test
+    void easyRag() throws IOException {
         // Ingest data
         mockMvc.get().uri("/9")
                 .assertThat()
@@ -76,12 +150,55 @@ public class DemoIntegrationTests {
                 .bodyText().contains("OK");
 
         // Refresh the index so the data is visible
-        restClient.performRequest(new Request("POST", "/default/_refresh"));
+        Response response = restClient.performRequest(new Request("POST", "/default/_refresh"));
+        assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 
         // Query data
         mockMvc.get().uri("/10")
                 .assertThat()
                 .hasStatusOk()
                 .bodyText().contains("125,000");
+    }
+
+    @Test
+    void structuredOutputsReturnRecipe() {
+        mockMvc.get().uri("/11")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("11: Structured Outputs", "apple", "ingredients");
+    }
+
+    @Test
+    void functionCallingCreatesGistRecipe() {
+        mockMvc.get().uri("/12")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("12: Function calling", "apple", "ingredients");
+    }
+
+    @Test
+    void multipleToolsAndStructuredOutputsProduceMarkdownRecipe() {
+        mockMvc.get().uri("/13")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("13: Multiple tools and structured outputs", "apple", "ingredients");
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
+    void mcpGitHubReturnsTopAuthors() {
+        mockMvc.get().uri("/14")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("14: Using an MCP Server", "langchain4j/langchain4j");
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "GITHUB_TOKEN", matches = ".+")
+    void agenticDemoProducesGistUrl() {
+        mockMvc.get().uri("/15")
+                .assertThat()
+                .hasStatusOk()
+                .bodyText().contains("15: Agents working together", "gist");
     }
 }

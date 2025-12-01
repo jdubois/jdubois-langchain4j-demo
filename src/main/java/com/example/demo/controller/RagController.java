@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.service.rag.RagAssistant;
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.loader.UrlDocumentLoader;
+import dev.langchain4j.data.document.loader.FileSystemDocumentLoader;
 import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.document.transformer.jsoup.HtmlToTextDocumentTransformer;
@@ -98,11 +98,16 @@ public class RagController {
 
     @GetMapping("/9")
     String ingestNews(Model model) {
-        Document document = UrlDocumentLoader.load("https://www.microsoft.com/investor/reports/ar25/index.html", new TextDocumentParser());
+        var resource = getClass().getClassLoader().getResource("data/microsoft-2025-annual-report.html");
+        if (resource == null) {
+            throw new IllegalStateException("Resource not found: data/microsoft-2025-annual-report.html");
+        }
+
+        Document document = FileSystemDocumentLoader.loadDocument(resource.getPath(), new TextDocumentParser());
 
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .documentTransformer(new HtmlToTextDocumentTransformer(".annual-report"))
-                .documentSplitter(DocumentSplitters.recursive(300, 30))
+                .documentSplitter(DocumentSplitters.recursive(1000, 100))
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
                 .build();
@@ -118,7 +123,7 @@ public class RagController {
 
         RagAssistant ragAssistant = AiServices.builder(RagAssistant.class)
                 .chatModel(chatModel)
-                .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 3))
+                .contentRetriever(new EmbeddingStoreContentRetriever(embeddingStore, embeddingModel, 10))
                 .build();
 
         String answer = ragAssistant.augmentedChat(question);

@@ -190,6 +190,13 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+            <id>include-github-dependent-tests</id>
+            <properties>
+                <!-- Override default to include only GitHub-dependent tests when this profile is active -->
+                <junit.jupiter.tags.include>github-dependent</junit.jupiter.tags.include>
+            </properties>
+        </profile>
 	</profiles>
 
 </project>

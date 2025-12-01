@@ -59,6 +59,11 @@ public class GistService {
 
         HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
         RestTemplate restTemplate = new RestTemplate();
+        if (githubToken == null || githubToken.isEmpty()) {
+            log.severe("GitHub token is not set. Fallbacking to writing the Gist data to the concole, for testing purposes.");
+            log.info("Gist content: " + requestBody);
+            return "Gist could not be created because GITHUB_TOKEN is empty. Its content was logged to console for testing purposes.";
+        }
         String response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
         log.info(response);
         try {
