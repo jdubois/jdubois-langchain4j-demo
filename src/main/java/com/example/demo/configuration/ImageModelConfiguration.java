@@ -1,7 +1,6 @@
 package com.example.demo.configuration;
 
 import com.example.demo.service.ModelsDiscoveryService;
-import com.openai.models.images.ImageGenerateParams;
 import dev.langchain4j.model.image.DisabledImageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
