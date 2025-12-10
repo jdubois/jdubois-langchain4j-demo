@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 import static com.openai.models.ChatModel.GPT_5_MINI;
 import static com.openai.models.embeddings.EmbeddingModel.TEXT_EMBEDDING_3_SMALL;
-import static com.openai.models.images.ImageModel.DALL_E_3;
+import static com.openai.models.images.ImageModel.GPT_IMAGE_1_MINI;
 
 @Service
 public class ModelsDiscoveryService {
@@ -79,7 +79,7 @@ public class ModelsDiscoveryService {
         } else if (getOpenAiBaseUrl().contains("localhost")) {
             resolvedImageModelName = "";
         } else {
-            resolvedImageModelName = DALL_E_3.asString();
+            resolvedImageModelName = GPT_IMAGE_1_MINI.asString();
         }
         return resolvedImageModelName;
     }

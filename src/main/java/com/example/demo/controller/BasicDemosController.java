@@ -51,8 +51,9 @@ public class BasicDemosController {
     String createImage(Model model) {
         String question = "A coffee mug in Paris, France";
         if (imageModel instanceof OpenAiOfficialImageModel) {
-            String answer = imageModel.generate(question).content().url().toString();
-            return getView(model, "1: image generation", question, answer);
+            String image = imageModel.generate(question).content().base64Data();
+            model.addAttribute("image", image);
+            return getView(model, "1: image generation", question, "Here is the generated image:");
         } else {
             return getView(model, "1: image generation", question, "Image generation is only supported by Microsoft Foundry");
         }

@@ -68,7 +68,7 @@ az cognitiveservices account deployment create \
   --model-version "2025-08-07"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
-  --sku-name "Standard"
+  --sku-name "GlobalStandard"
 
 echo "Deploying a text-embedding-3-small..."
 echo "----------------------"
@@ -82,17 +82,17 @@ az cognitiveservices account deployment create \
   --sku-capacity 1 \
   --sku-name "Standard"
 
-echo "Deploying a dall-e-3 model..."
+echo "Deploying a gpt-image-1-mini model..."
 echo "----------------------"
 az cognitiveservices account deployment create \
   --name "$AZURE_AI_SERVICE" \
   --resource-group "$AZURE_RESOURCE_GROUP" \
-  --deployment-name "dall-e-3" \
-  --model-name "dall-e-3" \
-  --model-version "3.0"  \
+  --deployment-name "gpt-image-1-mini" \
+  --model-name "gpt-image-1-mini" \
+  --model-version "2025-10-06"  \
   --model-format "OpenAI" \
   --sku-capacity 1 \
-  --sku-name "Standard"
+  --sku-name "GlobalStandard"
 
 echo "Creating the AI Search Service..."
 echo "---------------------------------"

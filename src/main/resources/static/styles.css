@@ -96,16 +96,6 @@ footer.custom-footer .footer-text a:hover {
   margin-bottom: 1rem;
 }
 
-.image-container {
-  text-align: center;
-}
-
-.image-container img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid #dee2e6;
-}
-
 #answer-content {
   min-height: 50px;
 }

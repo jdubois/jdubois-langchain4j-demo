@@ -1,6 +1,7 @@
 package com.example.demo.configuration;
 
 import com.example.demo.service.ModelsDiscoveryService;
+import com.openai.models.images.ImageGenerateParams;
 import dev.langchain4j.model.image.DisabledImageModel;
 import dev.langchain4j.model.image.ImageModel;
 import dev.langchain4j.model.openaiofficial.OpenAiOfficialImageModel;
@@ -27,8 +28,8 @@ public class ImageModelConfiguration {
         ImageModel imageModel = OpenAiOfficialImageModel.builder()
                 .baseUrl(modelsDiscoveryService.getOpenAiBaseUrl())
                 .apiKey(modelsDiscoveryService.getOpenAiApiKey())
-                    .modelName(imageModelName)
-                    .build();
+                .modelName(imageModelName)
+                .build();
 
         log.info(String.format("OpenAI Image Model created in %.3f seconds", stopWatch.getTotalTimeSeconds()));
         return imageModel;

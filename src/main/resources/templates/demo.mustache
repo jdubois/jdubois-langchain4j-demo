@@ -30,6 +30,13 @@
                 <div id="answer-content" data-answer="{{answer}}"></div>
             </div>
         </div>
+  {{#image}}
+         <div class="row">
+           <div class="col-12">
+               <img src="data:image/png;base64,{{image}}" alt="Generated image" class="img-fluid" style="max-width: 100%; height: auto;">
+            </div>
+          </div>
+  {{/image}}
 {{/demo}}
       </div>
 {{> partials/footer}}
