@@ -15,7 +15,7 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>25</java.version>
-		<langchain4j.version>1.9.1</langchain4j.version>
+		<langchain4j.version>1.10.0</langchain4j.version>
         <elasticsearch.version>9.2.2</elasticsearch.version>
 	</properties>
 	<dependencyManagement>
