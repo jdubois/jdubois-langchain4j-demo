@@ -10,7 +10,6 @@ public class DemoApplication {
         SpringApplication app = new SpringApplication(DemoApplication.class);
         // Startup performance optimizations
         app.setLazyInitialization(true);
-        app.setRegisterShutdownHook(false);
         app.run(args);
     }
 }
