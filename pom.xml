@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.2</version>
+		<version>4.0.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
@@ -15,8 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>25</java.version>
-		<langchain4j.version>1.10.0</langchain4j.version>
-        <elasticsearch.version>9.3.0</elasticsearch.version>
+		<langchain4j.version>1.11.0</langchain4j.version>
+    <elasticsearch.version>9.3.0</elasticsearch.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
