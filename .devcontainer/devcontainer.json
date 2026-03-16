@@ -14,11 +14,17 @@
 			"installGradle": "false"
 		},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
-    },
-    "ghcr.io/prulloac/devcontainer-features/ollama:1": {
-      "pull": "nomic-embed-text,mistral:7b"
     }
   },
+
+  // Install zstd (required by the Ollama installer) and Ollama itself.
+  "onCreateCommand": "sudo apt-get update && sudo apt-get install -y zstd && curl -fsSL https://ollama.com/install.sh | sudo sh",
+
+  // Pull required Ollama models on first container creation.
+  "postCreateCommand": "nohup ollama serve > /tmp/ollama.log 2>&1 & sleep 5 && ollama pull nomic-embed-text && ollama pull mistral:7b",
+
+  // Ensure the Ollama service is running on every container start.
+  "postStartCommand": "sudo systemctl start ollama 2>/dev/null || (nohup ollama serve > /tmp/ollama.log 2>&1 &)",
 
   // Configure tool-specific properties.
   "customizations": {
