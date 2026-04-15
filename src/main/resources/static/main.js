@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (!answer) return;
 
     // Check if it's JSON
-    else if (isJSON(answer)) {
+    if (isJSON(answer)) {
         displayJSON(answerElement, answer);
     }
     // Otherwise, display as text
