@@ -30,7 +30,7 @@ Demos can either run in the cloud (using Microsoft Foundry and Azure AI Search) 
 
 ### _Option 1_ : Running in the cloud with Microsoft Foundry and Azure AI Search
 
-_This is the recommended option for the best experience. If environnement variables are not set, it will fallback to option 2 (running locally)_
+_This is the recommended option for the best experience. If environment variables are not set, it will fallback to option 2 (running locally)_
 
 This configuration uses:
 
