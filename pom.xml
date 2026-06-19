@@ -197,6 +197,17 @@
                 <junit.jupiter.tags.include>github-dependent</junit.jupiter.tags.include>
             </properties>
         </profile>
+		<profile>
+			<!-- Dev-only profile: enables the BootUI local developer console. Activate with -Pdev. -->
+			<id>dev</id>
+			<dependencies>
+				<dependency>
+					<groupId>com.julien-dubois.bootui</groupId>
+					<artifactId>bootui-spring-boot-starter</artifactId>
+					<version>1.5.2</version>
+				</dependency>
+			</dependencies>
+		</profile>
 	</profiles>
 
 </project>
