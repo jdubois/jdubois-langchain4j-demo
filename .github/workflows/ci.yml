@@ -28,7 +28,3 @@ jobs:
 
       - name: Build and run tests
         run: ./mvnw -B verify
-
-      - name: BootUI diagnostics
-        uses: jdubois/boot-ui@v2.4.0
-
