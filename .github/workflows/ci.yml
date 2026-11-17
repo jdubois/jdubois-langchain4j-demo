@@ -31,5 +31,3 @@ jobs:
 
       - name: BootUI diagnostics
         uses: jdubois/boot-ui@v2.5.0
-        with:
-          app-command: ./mvnw -B -Pdev spring-boot:run
